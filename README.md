@@ -1,5 +1,5 @@
 # Gawires
-Gawires(As Game Assets Wires) is a version control system designed around making the management of large projects like video games simpler.
+Gawires(As Game Assets Wires) is a new genre version control system designed around making the management of large projects like video games simpler.
 
 This vcs try to solves the problem of other vcs like git, that is challenging in large project with larger teams and Perforce that add much useless complexity(And is pretty expensive).
 
