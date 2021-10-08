@@ -41,7 +41,7 @@ use structopt::StructOpt;
     }
 
     #[derive(Debug, PartialEq, StructOpt)]
-    pub struct UnLock{
+    pub struct Unlock{
     }
 
     #[derive(Debug, PartialEq, StructOpt)]
@@ -102,4 +102,8 @@ use structopt::StructOpt;
 
     #[derive(Debug, PartialEq, StructOpt)]
     pub struct Install{
+    }
+
+    #[derive(Debug, PartialEq, StructOpt)]
+    pub struct Gist{
     }
