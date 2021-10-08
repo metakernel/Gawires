@@ -6,18 +6,16 @@ use crate::cli::command::*;
     #[derive(Debug, PartialEq, StructOpt)]
     #[structopt(name = "gawires", about = "Please use -h or --help to know more about gawires commands")]
     pub enum Opt{
-        Stage(Stage),
+        Add(Add),
         Checkout(Checkout),
+        Release(Release),
         Init(Init),
-        Clone(Clone),
         Sync(Sync),
         Status(Status),
         Channel(Channel),
-        Lock(Lock),
-        Unlock(Unlock),
         Push(Push),
         Pull(Pull),
-        Mode(Mode),
+        Workspace(Workspace),
         Preview(Preview),
         Reset(Reset),
         Remove(Remove),
@@ -27,8 +25,11 @@ use crate::cli::command::*;
         Connect(Connect),
         Filter(Filter),
         Rebase(Rebase),
+        Merge(Merge),
+        Clean(Clean),
         Central(Central),
         Install(Install),
+        Uninstall(Uninstall),
         Gist(Gist),
         
     }
