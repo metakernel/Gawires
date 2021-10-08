@@ -5,6 +5,6 @@ use crate::cli::command::*;
 
     #[derive(Debug, PartialEq, StructOpt)]
     #[structopt(name = "gawires", about = "Please use -h or --help to know more about gawires commands")]
-    pub enum Cli{
-        Add(Add),
+    pub enum Opt{
+        Stage(Stage),
     }
