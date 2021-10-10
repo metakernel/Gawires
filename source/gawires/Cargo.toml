@@ -1,0 +1,12 @@
+[package]
+name = "gawires"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+gwcore = {path = "../gawires-core"}
+
+structopt = {version = "0.3", features = ["paw"]}
+paw = "1.0.0"
+notify = "4.0.17"
+libloading = "0.7.0"

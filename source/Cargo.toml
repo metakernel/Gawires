@@ -1,0 +1,2 @@
+[workspace]
+members = ["gawires","gawires-ext","gawires-core"]
