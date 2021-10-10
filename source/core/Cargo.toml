@@ -1,5 +1,5 @@
 [package]
-name = "gwcore"
+name = "gawires-core"
 version = "0.1.0"
 edition = "2021"
 
