@@ -1,13 +1,13 @@
 mod cli;
 
 use structopt::StructOpt;
-use gwcore;
+use gawires_core;
 
 use crate::cli::Opt;
 
 #[paw::main]
 fn main(_args: paw::Args) {
-    gwcore::test();
+    gawires_core::test();
     let opt = Opt::from_args();
     println!("{:#?}", opt);
 }
