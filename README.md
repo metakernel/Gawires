@@ -10,4 +10,4 @@ This will be a long road but i think that the game industry needs something new 
 
 Feel free to join me if you have any questions or want to give an hand! Thanks :)
 
-![alt text](.github/medias/Gawires_BaseConcept_Diagram.png)
+![alt text](.github/medias/GawiresArch_Concept.png)
