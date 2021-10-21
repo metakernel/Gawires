@@ -18,9 +18,11 @@ use structopt::StructOpt;
     pub struct Checkout{
         /// Specific assets or complete directory structure can be checkout
         path: Option<std::path::PathBuf>,
-        /// Option use to specify if a lock should be put on the assets, so that no one can modify them
+        /// Option use to specify if a lock should be put on the assets, this will tell central to lock them. (On by default, WARNING: if centralized you should use "gawires checkout --clone" if you dont want any conflict issues)
         #[structopt(name = "Lock",short = "-l", long = "--lock")]
-        ignore_path: Option<bool>,
+        lock_assets: Option<bool>,
+        /// Can be use to specify that the checkout must clone the assets instead of synchronizing them.(Will need to initiate a push request each time you try to synchronize)
+        clone: Option<bool>,
 
     }
     /// Release checkout assets from local workspace.
