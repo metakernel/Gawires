@@ -1,2 +1,36 @@
-[workspace]
-members = ["cli","ext","core","gist","central"]
+[package]
+name = "gawires"
+version = "0.1.0"
+edition = "2021"
+authors = ["Vincent Roy"]
+license = "GPLv3"
+readme = "README.md"
+repository = "https://github.com/metakernel/Gawires"
+
+[[bin]]
+name = "gawires"
+path = "src/main.rs"
+
+[lib]
+name = "gawireslib"
+path = "src/lib.rs"
+crate-type = ["cdylib","rlib"]
+
+
+
+[dependencies]
+notify = "4.0.17"
+libloading = "0.7.0"
+xxhash-rust = {version = "0.8.2", features = ["xxh3"]}
+structopt = {version = "0.3", features = ["paw"]}
+paw = "1.0.0"
+interprocess = "1.1.1"
+
+
+[target.'cfg(unix)'.dependencies]
+# Used for the filesystem in linux and macos
+fuser = "0.9.1"
+
+[target.'cfg(windows)'.dependencies]
+# Used for the filesystem in windows
+dokan = "0.2.0+dokan150"
