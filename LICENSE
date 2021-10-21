@@ -1,7 +1,10 @@
 
-Copyright © 2021 Vincent Roy All rights reserved.
+**Copyright © 2021 Vincent Roy All rights reserved.**
 
-Most of the project is distributed under GPL v3. Some part like gawires-ext and gawires-core use the LGPLv3 so that extensions with different licenses can still link against the dynamic library. External packages use their own license.
+Most of the project is distributed under [GPL v3](docs/License/COPYING), if not it will be specified. 
 
-License used in the project can be found in [docs/licenses](docs/licenses) folder.
+Licenses used in the project can be found in [docs/License](docs/License/) folder.
 
+> Note that GPLv3 also apply to any extensions created using Gawires and its libraries (gawires-ext, gawires-core, etc.) and so must comply with GPLv3 terms. 
+> 
+> **For any custom licensing request, please contact me.**
