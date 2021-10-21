@@ -11,9 +11,7 @@ rust-latest:
   script:
     - cargo build --verbose
     - cargo test --verbose
-  when: never
-  only:
-    - dev-internal
+  when: manual
   allow_failure: true
 
 rust-nightly:
