@@ -1,4 +1,7 @@
 # Gawires
+
+> **Gawires is under development and is actually unusable. Please sit tight and an unstable alpha should be there soon for you to test :)** 
+
 ![alt text](.github/medias/Github_Repos_1280x640.png)
 Gawires(a.k.a *Game Assets Wires*) is a new genre version control system designed around making the management of large projects like video games simpler.
 
