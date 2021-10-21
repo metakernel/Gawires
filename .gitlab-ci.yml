@@ -5,6 +5,8 @@ rust-latest:
   stage: test
   image: rust:latest
   script:
+    - sudo apt-get install fuse
+    - sudo apt-get install libfuse-dev pkg-config
     - cargo build --verbose
     - cargo test --verbose
 
@@ -12,6 +14,8 @@ rust-nightly:
   stage: test
   image: rustlang/rust:nightly
   script:
+    - sudo apt-get install fuse
+    - sudo apt-get install libfuse-dev pkg-config
     - cargo build --verbose
     - cargo test --verbose
   allow_failure: true
