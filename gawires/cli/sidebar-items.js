@@ -1,0 +1,1 @@
+initSidebarItems({"derive":[["StructOpt","Generates the `StructOpt` impl."]],"enum":[["Opt",""]],"mod":[["command",""]],"trait":[["StructOpt","A struct that is converted from command line arguments."]]});

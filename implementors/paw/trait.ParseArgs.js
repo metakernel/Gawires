@@ -1,0 +1,3 @@
+(function() {var implementors = {};
+implementors["paw"] = [{"text":"impl <a class=\"trait\" href=\"paw/trait.ParseArgs.html\" title=\"trait paw::ParseArgs\">ParseArgs</a> for <a class=\"struct\" href=\"paw/struct.Args.html\" title=\"struct paw::Args\">Args</a>","synthetic":false,"types":["paw::Args"]},{"text":"impl <a class=\"trait\" href=\"paw/trait.ParseArgs.html\" title=\"trait paw::ParseArgs\">ParseArgs</a> for <a class=\"struct\" href=\"paw/struct.ArgsOs.html\" title=\"struct paw::ArgsOs\">ArgsOs</a>","synthetic":false,"types":["paw::ArgsOs"]}];
+if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

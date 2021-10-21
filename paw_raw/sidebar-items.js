@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["ParseArgs","Allow a type to be parsed as arguments to main."]]});

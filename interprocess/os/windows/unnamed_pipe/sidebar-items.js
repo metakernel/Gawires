@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["UnnamedPipeCreationOptions","Builder used to create unnamed pipes while supplying additional options."]]});

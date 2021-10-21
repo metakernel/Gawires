@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["fifo_file","Creating and using FIFO files, which are also known as “named pipes” but totally different from named pipes on Windows."],["signal","Signal support for Unix-like systems."],["udsocket","Support for Unix domain sockets, abbreviated here as “Ud-sockets”."]]});
