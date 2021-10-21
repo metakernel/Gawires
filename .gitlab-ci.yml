@@ -25,6 +25,5 @@ rust-nightly:
   script:
     - cargo build --verbose
     - cargo test --verbose
-  when: manual
   only:
     - dev-internal
