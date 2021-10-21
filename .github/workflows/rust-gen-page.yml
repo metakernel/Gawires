@@ -6,6 +6,9 @@ jobs:
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v2.3.1
+
+      - name: Install fuse libfuse-dev pkg-config
+        run: sudo apt-get install -y fuse libfuse-dev pkg-config
       
       - uses: actions-rs/toolchain@v1
         with:
