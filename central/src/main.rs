@@ -1,6 +1,10 @@
-// This exe will be used to start a central server
-// TODO: We will use Rocket.rs for our framework
-
+use gawires_central::*;
 fn main() {
-    println!("Hello, world!");
+    init();
+}
+
+fn init(){
+
+    println!("Normaly central server would be initializing now");
+
 }

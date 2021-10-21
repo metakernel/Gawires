@@ -2,6 +2,10 @@
 name = "gawires-core"
 version = "0.1.0"
 edition = "2021"
+authors = ["Vincent Roy"]
+license = "GPLv3"
+readme = "README.md"
+repository = "https://github.com/metakernel/Gawires"
 
 [lib]
 crate-type = ["cdylib","rlib"]
@@ -9,5 +13,13 @@ crate-type = ["cdylib","rlib"]
 [dependencies]
 notify = "4.0.17"
 libloading = "0.7.0"
+xxhash-rust = {version = "0.8.2", features = ["xxh3"]}
+
+
+[target.'cfg(unix)'.dependencies]
+# Used for the filesystem in linux and macos
+fuser = "0.9.1"
+
+[target.'cfg(windows)'.dependencies]
+# Used for the filesystem in windows
 dokan = "0.2.0+dokan150"
-xxhash-rust = {version = "0.8.2", feature = "xxh3"}
