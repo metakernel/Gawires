@@ -13,9 +13,15 @@ use structopt::StructOpt;
             ignore_path: Option<std::path::PathBuf>,
     }
 
-    /// Checkout assets in local workspace.
+    /// Checkout assets in local workspace. When assets are checkout, they are locked by default when in centralized mode.
     #[derive(Debug, PartialEq, StructOpt)]
     pub struct Checkout{
+        /// Specific assets or complete directory structure can be checkout
+        path: Option<std::path::PathBuf>,
+        /// Option use to specify if a lock should be put on the assets, so that no one can modify them
+        #[structopt(name = "Lock",short = "-l", long = "--lock")]
+        ignore_path: Option<bool>,
+
     }
     /// Release checkout assets from local workspace.
     #[derive(Debug, PartialEq, StructOpt)]

@@ -7,3 +7,7 @@ edition = "2021"
 crate-type = ["cdylib","rlib"]
 
 [dependencies]
+notify = "4.0.17"
+libloading = "0.7.0"
+dokan = "0.2.0+dokan150"
+xxhash-rust = {version = "0.8.2", feature = "xxh3"}
