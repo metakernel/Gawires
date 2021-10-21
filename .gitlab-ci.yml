@@ -9,6 +9,7 @@ rust-latest:
     - sudo apt-get install libfuse-dev pkg-config
     - cargo build --verbose
     - cargo test --verbose
+  allow_failure: true
 
 rust-nightly:
   stage: test
@@ -18,4 +19,3 @@ rust-nightly:
     - sudo apt-get install libfuse-dev pkg-config
     - cargo build --verbose
     - cargo test --verbose
-  allow_failure: true
