@@ -5,9 +5,9 @@ rust-latest:
   stage: test
   image: rust:latest
   before_script:
-    - apt update
-    - apt-get install fuse
-    - apt-get install libfuse-dev pkg-config
+    - apt update --yes --force-yes
+    - apt install fuse --yes --force-yes
+    - apt install libfuse-dev pkg-config --yes --force-yes
   script:
     - cargo build --verbose
     - cargo test --verbose
@@ -17,9 +17,9 @@ rust-nightly:
   stage: test
   image: rustlang/rust:nightly
   before_script:
-    - apt update
-    - apt install fuse
-    - apt-get install libfuse-dev pkg-config
+    - apt update --yes --force-yes
+    - apt install fuse --yes --force-yes
+    - apt install libfuse-dev pkg-config --yes --force-yes
   script:
     - cargo build --verbose
     - cargo test --verbose
