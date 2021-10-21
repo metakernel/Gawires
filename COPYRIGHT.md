@@ -1,9 +1,7 @@
 
 **Copyright © 2021 Vincent Roy All rights reserved.**
 
-Most of the project is distributed under [GPL v3](docs/License/COPYING.md), if not it will be specified. 
-
-Licenses used in the project can be found in [docs/License](docs/License/) folder.
+Most of the project is distributed under [GPL v3](LICENSE.md), if not it will be specified. 
 
 > Note that GPLv3 also apply to any extensions created using Gawires and its libraries (gawires-ext, gawires-core, etc.) and so must comply with GPLv3 terms. 
 > 
