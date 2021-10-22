@@ -12,7 +12,7 @@ jobs:
       
       - uses: actions-rs/toolchain@v1
         with:
-          toolchain: stable
+          toolchain: nightly
       - run: cargo build --release --all-features
       - run: RUSTDOCFLAGS='-Z unstable-options --enable-index-page' cargo doc --bin gawires
 
