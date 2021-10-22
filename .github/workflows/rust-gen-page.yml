@@ -16,7 +16,7 @@ jobs:
           override: true
           components: rustfmt, clippy
       - run: cargo build --release --all-features
-      - run: RUSTDOCFLAGS='-Z unstable-options --enable-index-page' cargo doc --bin gawires
+      - run: RUSTDOCFLAGS='-Z unstable-options --enable-index-page' cargo doc --bin gawires --no-deps
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.5
