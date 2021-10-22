@@ -13,6 +13,8 @@ jobs:
       - uses: actions-rs/toolchain@v1
         with:
           toolchain: nightly
+          override: true
+          components: rustfmt, clippy
       - run: cargo build --release --all-features
       - run: RUSTDOCFLAGS='-Z unstable-options --enable-index-page' cargo doc --bin gawires
 
