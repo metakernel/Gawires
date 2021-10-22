@@ -1,1 +1,0 @@
-initSidebarItems({"attr":[["main",""]],"struct":[["Args","An iterator over the arguments of a process, yielding an `String` value for each argument."],["ArgsOs","An iterator over the arguments of a process, yielding an `OsString` value for each argument."]],"trait":[["ParseArgs","Allow a type to be parsed as arguments to main."]]});

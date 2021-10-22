@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["xxh3","XXH3 implementation"]]});

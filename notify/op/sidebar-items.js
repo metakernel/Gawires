@@ -1,1 +1,0 @@
-initSidebarItems({"constant":[["CHMOD",""],["CLOSE_WRITE",""],["CREATE",""],["REMOVE",""],["RENAME",""],["RESCAN",""],["WRITE",""]],"struct":[["Op","Holds a set of bit flags representing the actions for the event."]]});

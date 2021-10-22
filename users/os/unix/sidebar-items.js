@@ -1,1 +1,0 @@
-initSidebarItems({"struct":[["GroupExtras","Unix-specific fields for `Group`s."],["UserExtras","Unix-specific fields for `User`s."]],"trait":[["GroupExt","Unix-specific extensions for `Group`s."],["UserExt","Unix-specific extensions for `User`s."]]});

@@ -1,3 +1,0 @@
-(function() {var implementors = {};
-implementors["spinning"] = [{"text":"impl <a class=\"trait\" href=\"lock_api/mutex/trait.RawMutex.html\" title=\"trait lock_api::mutex::RawMutex\">RawMutex</a> for <a class=\"struct\" href=\"spinning/struct.RawMutex.html\" title=\"struct spinning::RawMutex\">RawMutex</a>","synthetic":false,"types":["spinning::RawMutex"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

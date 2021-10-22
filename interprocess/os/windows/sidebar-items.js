@@ -1,1 +1,0 @@
-initSidebarItems({"mod":[["named_pipe","Support for named pipes on Windows."],["signal","C signal support on Windows."],["unnamed_pipe","Platform-specific functionality for unnamed pipes."]],"trait":[["ShareHandle","Objects which own handles which can be shared with another processes."]]});
