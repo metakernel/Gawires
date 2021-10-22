@@ -14,7 +14,7 @@ jobs:
         with:
           toolchain: stable
       - run: cargo build --release --all-features
-      - run: cargo doc --bin gawires
+      - run: RUSTDOCFLAGS='-Z unstable-options --enable-index-page' cargo doc --bin gawires
 
       - name: Deploy 🚀
         uses: JamesIves/github-pages-deploy-action@4.1.5
