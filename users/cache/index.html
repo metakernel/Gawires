@@ -4,7 +4,7 @@ short-running programs to cache the results instead of getting the most
 up-to-date entries every time. The <a href="struct.UsersCache.html"><code>UsersCache</code></a>
 type helps with this, providing methods that have the same name as the
 others in this crate, only they store the results.</p>
-<h2 id="example" class="section-header"><a href="#example">Example</a></h2>
+<h3 id="example" class="section-header"><a href="#example">Example</a></h3>
 <div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use</span> <span class="ident">std::sync::Arc</span>;
 <span class="kw">use</span> <span class="ident">users</span>::{<span class="ident">Users</span>, <span class="ident">UsersCache</span>};
 
@@ -14,7 +14,7 @@ others in this crate, only they store the results.</p>
 
 <span class="comment">// The two returned values point to the same User</span>
 <span class="macro">assert!</span>(<span class="ident">Arc::ptr_eq</span>(<span class="kw-2">&amp;</span><span class="ident">user</span>, <span class="kw-2">&amp;</span><span class="ident">same_user</span>));</code></pre></div>
-<h2 id="caching-multiple-threads-and-mutability" class="section-header"><a href="#caching-multiple-threads-and-mutability">Caching, multiple threads, and mutability</a></h2>
+<h3 id="caching-multiple-threads-and-mutability" class="section-header"><a href="#caching-multiple-threads-and-mutability">Caching, multiple threads, and mutability</a></h3>
 <p>The <code>UsersCache</code> type is caught between a rock and a hard place when it
 comes to providing references to users and groups.</p>
 <p>Instead of returning a fresh <code>User</code> struct each time, for example, it will
@@ -66,7 +66,7 @@ the values themselves don’t count as being stored <em>in</em> the cache anymor
 it can be queried multiple times or go out of scope and the values it
 produces are not affected.</p>
 </div></details><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
-<div class="item-table"><div class="item-left module-item"><a class="struct" href="struct.UsersCache.html" title="users::cache::UsersCache struct">UsersCache</a></div><div class="item-right docblock-short"><p>A producer of user and group instances that caches every result.</p>
-</div></div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="users" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.UsersCache.html" title="users::cache::UsersCache struct">UsersCache</a></div><div class="item-right docblock-short"><p>A producer of user and group instances that caches every result.</p>
+</div></div></div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="users" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script>
 </body></html>

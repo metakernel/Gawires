@@ -74,7 +74,7 @@
     <span class="ident">mountpoint</span>: <span class="ident">CString</span>,
 }
 <span class="kw">impl</span> <span class="ident">Mount</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">mountpoint</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">options</span>: <span class="kw-2">&amp;</span>[<span class="ident">MountOption</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span>, <span class="ident">Mount</span>)<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">mountpoint</span>: <span class="kw-2">&amp;</span><span class="ident">Path</span>, <span class="ident">options</span>: <span class="kw-2">&amp;</span>[<span class="ident">MountOption</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span>, <span class="ident">Mount</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">mountpoint</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">mountpoint</span>.<span class="ident">as_os_str</span>().<span class="ident">as_bytes</span>()).<span class="ident">unwrap</span>();
         <span class="ident">with_fuse_args</span>(<span class="ident">options</span>, <span class="op">|</span><span class="ident">args</span><span class="op">|</span> {
             <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">fuse_mount_compat25</span>(<span class="ident">mountpoint</span>.<span class="ident">as_ptr</span>(), <span class="ident">args</span>) };
@@ -100,7 +100,7 @@
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span> <span class="ident"><span class="kw">super</span>::libc_umount</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">mountpoint</span>) {
             <span class="comment">// Linux always returns EPERM for non-root users.  We have to let the</span>
             <span class="comment">// library go through the setuid-root &quot;fusermount -u&quot; to unmount.</span>
-            <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">kind</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">PermissionDenied</span> {
+            <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">kind</span>() <span class="op">==</span> <span class="ident">PermissionDenied</span> {
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(
                     <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>,
                     <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;freebsd&quot;</span>,

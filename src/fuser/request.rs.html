@@ -685,10 +685,10 @@
 
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Create a new request from the given data</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ch</span>: <span class="ident">ChannelSender</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">ch</span>: <span class="ident">ChannelSender</span>, <span class="ident">data</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Request</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">request</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">ll::AnyRequest::try_from</span>(<span class="ident">data</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">request</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">request</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">request</span>) =&gt; <span class="ident">request</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; {
                 <span class="macro">error!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">err</span>);
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
@@ -705,9 +705,9 @@
         <span class="kw">let</span> <span class="ident">unique</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">unique</span>();
 
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">dispatch_req</span>(<span class="ident">se</span>) {
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">resp</span>)) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">resp</span>,
-            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span>,
-            <span class="prelude-val">Err</span>(<span class="ident">errno</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">reply_err</span>(<span class="ident">errno</span>),
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">resp</span>)) =&gt; <span class="ident">resp</span>,
+            <span class="prelude-val">Ok</span>(<span class="prelude-val">None</span>) =&gt; <span class="kw">return</span>,
+            <span class="prelude-val">Err</span>(<span class="ident">errno</span>) =&gt; <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">reply_err</span>(<span class="ident">errno</span>),
         }
         .<span class="ident">with_iovec</span>(<span class="ident">unique</span>, <span class="op">|</span><span class="ident">iov</span><span class="op">|</span> <span class="self">self</span>.<span class="ident">ch</span>.<span class="ident">send</span>(<span class="ident">iov</span>));
 
@@ -719,13 +719,13 @@
     <span class="kw">fn</span> <span class="ident">dispatch_req</span><span class="op">&lt;</span><span class="ident">FS</span>: <span class="ident">Filesystem</span><span class="op">&gt;</span>(
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">se</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Session</span><span class="op">&lt;</span><span class="ident">FS</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&gt;</span>, <span class="ident">Errno</span><span class="op">&gt;</span> {
+    ) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Response</span><span class="op">&gt;</span>, <span class="ident">Errno</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">op</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">operation</span>().<span class="ident">map_err</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">Errno::ENOSYS</span>)<span class="question-mark">?</span>;
         <span class="comment">// Implement allow_root &amp; access check for auto_unmount</span>
-        <span class="kw">if</span> (<span class="ident">se</span>.<span class="ident">allowed</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SessionACL::RootAndOwner</span>
+        <span class="kw">if</span> (<span class="ident">se</span>.<span class="ident">allowed</span> <span class="op">==</span> <span class="ident">SessionACL::RootAndOwner</span>
             <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">uid</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">se</span>.<span class="ident">session_owner</span>
             <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">uid</span>() <span class="op">!</span><span class="op">=</span> <span class="number">0</span>)
-            <span class="op">|</span><span class="op">|</span> (<span class="ident">se</span>.<span class="ident">allowed</span> <span class="op">=</span><span class="op">=</span> <span class="ident">SessionACL::Owner</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">uid</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">se</span>.<span class="ident">session_owner</span>)
+            <span class="op">|</span><span class="op">|</span> (<span class="ident">se</span>.<span class="ident">allowed</span> <span class="op">==</span> <span class="ident">SessionACL::Owner</span> <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">uid</span>() <span class="op">!</span><span class="op">=</span> <span class="ident">se</span>.<span class="ident">session_owner</span>)
         {
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;abi-7-21&quot;</span>)]</span>
             {
@@ -742,8 +742,8 @@
                     <span class="op">|</span> <span class="ident">ll::Operation::FSync</span>(<span class="kw">_</span>)
                     <span class="op">|</span> <span class="ident">ll::Operation::FSyncDir</span>(<span class="kw">_</span>)
                     <span class="op">|</span> <span class="ident">ll::Operation::Release</span>(<span class="kw">_</span>)
-                    <span class="op">|</span> <span class="ident">ll::Operation::ReleaseDir</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="op">|</span> <span class="ident">ll::Operation::ReleaseDir</span>(<span class="kw">_</span>) =&gt; {}
+                    <span class="kw">_</span> =&gt; {
                         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Errno::EACCES</span>);
                     }
                 }
@@ -762,8 +762,8 @@
                     <span class="op">|</span> <span class="ident">ll::Operation::FSync</span>(<span class="kw">_</span>)
                     <span class="op">|</span> <span class="ident">ll::Operation::FSyncDir</span>(<span class="kw">_</span>)
                     <span class="op">|</span> <span class="ident">ll::Operation::Release</span>(<span class="kw">_</span>)
-                    <span class="op">|</span> <span class="ident">ll::Operation::ReleaseDir</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="op">|</span> <span class="ident">ll::Operation::ReleaseDir</span>(<span class="kw">_</span>) =&gt; {}
+                    <span class="kw">_</span> =&gt; {
                         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Errno::EACCES</span>);
                     }
                 }
@@ -781,8 +781,8 @@
                     <span class="op">|</span> <span class="ident">ll::Operation::FSync</span>(<span class="kw">_</span>)
                     <span class="op">|</span> <span class="ident">ll::Operation::FSyncDir</span>(<span class="kw">_</span>)
                     <span class="op">|</span> <span class="ident">ll::Operation::Release</span>(<span class="kw">_</span>)
-                    <span class="op">|</span> <span class="ident">ll::Operation::ReleaseDir</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {}
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="op">|</span> <span class="ident">ll::Operation::ReleaseDir</span>(<span class="kw">_</span>) =&gt; {}
+                    <span class="kw">_</span> =&gt; {
                         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Errno::EACCES</span>);
                     }
                 }
@@ -790,7 +790,7 @@
         }
         <span class="kw">match</span> <span class="ident">op</span> {
             <span class="comment">// Filesystem initialization</span>
-            <span class="ident">ll::Operation::Init</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Init</span>(<span class="ident">x</span>) =&gt; {
                 <span class="comment">// We don&#39;t support ABI versions before 7.6</span>
                 <span class="kw">let</span> <span class="ident">v</span> <span class="op">=</span> <span class="ident">x</span>.<span class="ident">version</span>();
                 <span class="kw">if</span> <span class="ident">v</span> <span class="op">&lt;</span> <span class="ident">ll::Version</span>(<span class="number">7</span>, <span class="number">6</span>) {
@@ -822,28 +822,28 @@
                 <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">x</span>.<span class="ident">reply</span>(<span class="kw-2">&amp;</span><span class="ident">config</span>)));
             }
             <span class="comment">// Any operation is invalid before initialization</span>
-            <span class="kw">_</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">se</span>.<span class="ident">initialized</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">_</span> <span class="kw">if</span> <span class="op">!</span><span class="ident">se</span>.<span class="ident">initialized</span> =&gt; {
                 <span class="macro">warn!</span>(<span class="string">&quot;Ignoring FUSE operation before init: {}&quot;</span>, <span class="self">self</span>.<span class="ident">request</span>);
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Errno::EIO</span>);
             }
             <span class="comment">// Filesystem destroyed</span>
-            <span class="ident">ll::Operation::Destroy</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Destroy</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">destroy</span>();
                 <span class="ident">se</span>.<span class="ident">destroyed</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Some</span>(<span class="ident">x</span>.<span class="ident">reply</span>()));
             }
             <span class="comment">// Any operation is invalid after destroy</span>
-            <span class="kw">_</span> <span class="kw">if</span> <span class="ident">se</span>.<span class="ident">destroyed</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="kw">_</span> <span class="kw">if</span> <span class="ident">se</span>.<span class="ident">destroyed</span> =&gt; {
                 <span class="macro">warn!</span>(<span class="string">&quot;Ignoring FUSE operation after destroy: {}&quot;</span>, <span class="self">self</span>.<span class="ident">request</span>);
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Errno::EIO</span>);
             }
 
-            <span class="ident">ll::Operation::Interrupt</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Interrupt</span>(<span class="kw">_</span>) =&gt; {
                 <span class="comment">// TODO: handle FUSE_INTERRUPT</span>
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Errno::ENOSYS</span>);
             }
 
-            <span class="ident">ll::Operation::Lookup</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Lookup</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">lookup</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -851,15 +851,15 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::Forget</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Forget</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>
                     .<span class="ident">forget</span>(<span class="self">self</span>, <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(), <span class="ident">x</span>.<span class="ident">nlookup</span>()); <span class="comment">// no reply</span>
             }
-            <span class="ident">ll::Operation::GetAttr</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::GetAttr</span>(<span class="kw">_</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>
                     .<span class="ident">getattr</span>(<span class="self">self</span>, <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(), <span class="self">self</span>.<span class="ident">reply</span>());
             }
-            <span class="ident">ll::Operation::SetAttr</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::SetAttr</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">setattr</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -878,11 +878,11 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::ReadLink</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::ReadLink</span>(<span class="kw">_</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>
                     .<span class="ident">readlink</span>(<span class="self">self</span>, <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(), <span class="self">self</span>.<span class="ident">reply</span>());
             }
-            <span class="ident">ll::Operation::MkNod</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::MkNod</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">mknod</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -893,7 +893,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::MkDir</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::MkDir</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">mkdir</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -903,7 +903,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::Unlink</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Unlink</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">unlink</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -911,7 +911,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::RmDir</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::RmDir</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">rmdir</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -919,7 +919,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::SymLink</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::SymLink</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">symlink</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -928,7 +928,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::Rename</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Rename</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">rename</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -939,7 +939,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::Link</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Link</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">link</span>(
                     <span class="self">self</span>,
                     <span class="ident">x</span>.<span class="ident">inode_no</span>().<span class="ident">into</span>(),
@@ -948,11 +948,11 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::Open</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Open</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>
                     .<span class="ident">open</span>(<span class="self">self</span>, <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(), <span class="ident">x</span>.<span class="ident">flags</span>(), <span class="self">self</span>.<span class="ident">reply</span>());
             }
-            <span class="ident">ll::Operation::Read</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Read</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">read</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -964,7 +964,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::Write</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Write</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">write</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -977,7 +977,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::Flush</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Flush</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">flush</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -986,7 +986,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::Release</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Release</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">release</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -997,7 +997,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::FSync</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::FSync</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">fsync</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1006,11 +1006,11 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::OpenDir</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::OpenDir</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>
                     .<span class="ident">opendir</span>(<span class="self">self</span>, <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(), <span class="ident">x</span>.<span class="ident">flags</span>(), <span class="self">self</span>.<span class="ident">reply</span>());
             }
-            <span class="ident">ll::Operation::ReadDir</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::ReadDir</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">readdir</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1023,7 +1023,7 @@
                     ),
                 );
             }
-            <span class="ident">ll::Operation::ReleaseDir</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::ReleaseDir</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">releasedir</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1032,7 +1032,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::FSyncDir</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::FSyncDir</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">fsyncdir</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1041,11 +1041,11 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::StatFs</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::StatFs</span>(<span class="kw">_</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>
                     .<span class="ident">statfs</span>(<span class="self">self</span>, <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(), <span class="self">self</span>.<span class="ident">reply</span>());
             }
-            <span class="ident">ll::Operation::SetXAttr</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::SetXAttr</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">setxattr</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1056,7 +1056,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::GetXAttr</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::GetXAttr</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">getxattr</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1065,11 +1065,11 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::ListXAttr</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::ListXAttr</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>
                     .<span class="ident">listxattr</span>(<span class="self">self</span>, <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(), <span class="ident">x</span>.<span class="ident">size</span>(), <span class="self">self</span>.<span class="ident">reply</span>());
             }
-            <span class="ident">ll::Operation::RemoveXAttr</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::RemoveXAttr</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">removexattr</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1077,11 +1077,11 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::Access</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Access</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>
                     .<span class="ident">access</span>(<span class="self">self</span>, <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(), <span class="ident">x</span>.<span class="ident">mask</span>(), <span class="self">self</span>.<span class="ident">reply</span>());
             }
-            <span class="ident">ll::Operation::Create</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Create</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">create</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1092,7 +1092,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::GetLk</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::GetLk</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">getlk</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1105,7 +1105,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::SetLk</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::SetLk</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">setlk</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1119,7 +1119,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::SetLkW</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::SetLkW</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">setlk</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1133,7 +1133,7 @@
                     <span class="self">self</span>.<span class="ident">reply</span>(),
                 );
             }
-            <span class="ident">ll::Operation::BMap</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::BMap</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">bmap</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1144,7 +1144,7 @@
             }
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;abi-7-11&quot;</span>)]</span>
-            <span class="ident">ll::Operation::IoCtl</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::IoCtl</span>(<span class="ident">x</span>) =&gt; {
                 <span class="kw">if</span> <span class="ident">x</span>.<span class="ident">unrestricted</span>() {
                     <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Errno::ENOSYS</span>);
                 } <span class="kw">else</span> {
@@ -1161,21 +1161,21 @@
                 }
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;abi-7-11&quot;</span>)]</span>
-            <span class="ident">ll::Operation::Poll</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Poll</span>(<span class="kw">_</span>) =&gt; {
                 <span class="comment">// TODO: handle FUSE_POLL</span>
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Errno::ENOSYS</span>);
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;abi-7-15&quot;</span>)]</span>
-            <span class="ident">ll::Operation::NotifyReply</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::NotifyReply</span>(<span class="kw">_</span>) =&gt; {
                 <span class="comment">// TODO: handle FUSE_NOTIFY_REPLY</span>
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Errno::ENOSYS</span>);
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;abi-7-16&quot;</span>)]</span>
-            <span class="ident">ll::Operation::BatchForget</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::BatchForget</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">batch_forget</span>(<span class="self">self</span>, <span class="ident">x</span>.<span class="ident">nodes</span>()); <span class="comment">// no reply</span>
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;abi-7-19&quot;</span>)]</span>
-            <span class="ident">ll::Operation::FAllocate</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::FAllocate</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">fallocate</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1187,7 +1187,7 @@
                 );
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;abi-7-21&quot;</span>)]</span>
-            <span class="ident">ll::Operation::ReadDirPlus</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::ReadDirPlus</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">readdirplus</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1201,7 +1201,7 @@
                 );
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;abi-7-23&quot;</span>)]</span>
-            <span class="ident">ll::Operation::Rename2</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Rename2</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">rename</span>(
                     <span class="self">self</span>,
                     <span class="ident">x</span>.<span class="ident">from</span>().<span class="ident">dir</span>.<span class="ident">into</span>(),
@@ -1213,7 +1213,7 @@
                 );
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;abi-7-24&quot;</span>)]</span>
-            <span class="ident">ll::Operation::Lseek</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Lseek</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">lseek</span>(
                     <span class="self">self</span>,
                     <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(),
@@ -1224,7 +1224,7 @@
                 );
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;abi-7-28&quot;</span>)]</span>
-            <span class="ident">ll::Operation::CopyFileRange</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::CopyFileRange</span>(<span class="ident">x</span>) =&gt; {
                 <span class="kw">let</span> (<span class="ident">i</span>, <span class="ident">o</span>) <span class="op">=</span> (<span class="ident">x</span>.<span class="ident">src</span>(), <span class="ident">x</span>.<span class="ident">dest</span>());
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">copy_file_range</span>(
                     <span class="self">self</span>,
@@ -1240,16 +1240,16 @@
                 );
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>)]</span>
-            <span class="ident">ll::Operation::SetVolName</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::SetVolName</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">setvolname</span>(<span class="self">self</span>, <span class="ident">x</span>.<span class="ident">name</span>(), <span class="self">self</span>.<span class="ident">reply</span>());
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>)]</span>
-            <span class="ident">ll::Operation::GetXTimes</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::GetXTimes</span>(<span class="kw">_</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>
                     .<span class="ident">getxtimes</span>(<span class="self">self</span>, <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">nodeid</span>().<span class="ident">into</span>(), <span class="self">self</span>.<span class="ident">reply</span>());
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>)]</span>
-            <span class="ident">ll::Operation::Exchange</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::Exchange</span>(<span class="ident">x</span>) =&gt; {
                 <span class="ident">se</span>.<span class="ident">filesystem</span>.<span class="ident">exchange</span>(
                     <span class="self">self</span>,
                     <span class="ident">x</span>.<span class="ident">from</span>().<span class="ident">dir</span>.<span class="ident">into</span>(),
@@ -1262,7 +1262,7 @@
             }
 
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;abi-7-12&quot;</span>)]</span>
-            <span class="ident">ll::Operation::CuseInit</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">ll::Operation::CuseInit</span>(<span class="kw">_</span>) =&gt; {
                 <span class="comment">// TODO: handle CUSE_INIT</span>
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">Errno::ENOSYS</span>);
             }
@@ -1272,31 +1272,31 @@
 
     <span class="doccomment">/// Create a reply object for this request that can be passed to the filesystem</span>
     <span class="doccomment">/// implementation and makes sure that a request is replied exactly once</span>
-    <span class="kw">fn</span> <span class="ident">reply</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Reply</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+    <span class="kw">fn</span> <span class="ident">reply</span><span class="op">&lt;</span><span class="ident">T</span>: <span class="ident">Reply</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">T</span> {
         <span class="ident">Reply::new</span>(<span class="self">self</span>.<span class="ident">request</span>.<span class="ident">unique</span>().<span class="ident">into</span>(), <span class="self">self</span>.<span class="ident">ch</span>.<span class="ident">clone</span>())
     }
 
     <span class="doccomment">/// Returns the unique identifier of this request</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unique</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">unique</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u64</span> {
         <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">unique</span>().<span class="ident">into</span>()
     }
 
     <span class="doccomment">/// Returns the uid of this request</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">uid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">uid</span>()
     }
 
     <span class="doccomment">/// Returns the gid of this request</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">gid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">gid</span>()
     }
 
     <span class="doccomment">/// Returns the pid of this request</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">pid</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">u32</span> {
         <span class="self">self</span>.<span class="ident">request</span>.<span class="ident">pid</span>()
     }
 }

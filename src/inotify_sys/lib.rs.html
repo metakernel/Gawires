@@ -1308,7 +1308,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`inotify_init1`]: fn.inotify_init1.html</span>
     <span class="doccomment">/// [man page]: http://man7.org/linux/man-pages/man2/inotify_init.2.html</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inotify_init</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inotify_init</span>() -&gt; <span class="ident">c_int</span>;
 
     <span class="doccomment">/// Creates an inotify instance</span>
     <span class="doccomment">///</span>
@@ -1326,7 +1326,7 @@
     <span class="doccomment">/// [`IN_CLOEXEC`]: constant.IN_CLOEXEC.html</span>
     <span class="doccomment">/// [`IN_NONBLOCK`]: constant.IN_NONBLOCK.html</span>
     <span class="doccomment">/// [man page]: http://man7.org/linux/man-pages/man2/inotify_init1.2.html</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inotify_init1</span>(<span class="ident">flags</span>: <span class="ident">c_int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inotify_init1</span>(<span class="ident">flags</span>: <span class="ident">c_int</span>) -&gt; <span class="ident">c_int</span>;
 
     <span class="doccomment">/// Adds or updates an inotify watch</span>
     <span class="doccomment">///</span>
@@ -1402,7 +1402,7 @@
     <span class="doccomment">/// [`inotify_event`]: struct.inotify_event.html</span>
     <span class="doccomment">/// [`wd`]: struct.inotify_event.html#structfield.wd</span>
     <span class="doccomment">/// [man page]: http://man7.org/linux/man-pages/man2/inotify_add_watch.2.html</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inotify_add_watch</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>, <span class="ident">pathname</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_char</span>, <span class="ident">mask</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inotify_add_watch</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>, <span class="ident">pathname</span>: <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">c_char</span>, <span class="ident">mask</span>: <span class="ident">u32</span>) -&gt; <span class="ident">c_int</span>;
 
     <span class="doccomment">/// Removes an inotify watch</span>
     <span class="doccomment">///</span>
@@ -1415,7 +1415,7 @@
     <span class="doccomment">/// Please refer to the [man page] for additional details.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [man page]: http://man7.org/linux/man-pages/man2/inotify_rm_watch.2.html</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inotify_rm_watch</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>, <span class="ident">wd</span>: <span class="ident">c_int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span>;
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inotify_rm_watch</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>, <span class="ident">wd</span>: <span class="ident">c_int</span>) -&gt; <span class="ident">c_int</span>;
 }
 
 <span class="kw">pub</span> <span class="kw">use</span> <span class="ident">libc</span>::{

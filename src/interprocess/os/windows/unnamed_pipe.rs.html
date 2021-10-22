@@ -262,7 +262,7 @@
 <span class="kw">impl</span> <span class="ident">UnnamedPipeCreationOptions</span> {
     <span class="doccomment">/// Starts with the default parameters for the pipe. Identical to `Default::default()`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">inheritable</span>: <span class="bool-val">true</span>,
             <span class="ident">security_descriptor</span>: <span class="ident">ptr::null_mut</span>(),
@@ -276,7 +276,7 @@
     <span class="doccomment">/// [associated field]: #structfield.inheritable &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;this is not an in-place operation&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inheritable</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">inheritable</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inheritable</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">inheritable</span>: <span class="ident">bool</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">inheritable</span> <span class="op">=</span> <span class="ident">inheritable</span>;
         <span class="self">self</span>
     }
@@ -286,7 +286,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [associated field]: #structfield.security_descriptor &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;this is not an in-place operation&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">security_descriptor</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">security_descriptor</span>: <span class="ident">LPVOID</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">security_descriptor</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">security_descriptor</span>: <span class="ident">LPVOID</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">security_descriptor</span> <span class="op">=</span> <span class="ident">security_descriptor</span>;
         <span class="self">self</span>
     }
@@ -296,7 +296,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [associated field]: #structfield.buffer_size_hint &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;this is not an in-place operation&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">buffer_size_hint</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buffer_size_hint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroUsize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">buffer_size_hint</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buffer_size_hint</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroUsize</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">buffer_size_hint</span> <span class="op">=</span> <span class="ident">buffer_size_hint</span>;
         <span class="self">self</span>
     }
@@ -305,7 +305,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`SECURITY_ATTRIBUTES`]: https://docs.microsoft.com/en-us/previous-versions/windows/desktop/legacy/aa379560(v=vs.85)</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_security_attributes</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">SECURITY_ATTRIBUTES</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">extract_security_attributes</span>(<span class="self">self</span>) -&gt; <span class="ident">SECURITY_ATTRIBUTES</span> {
         <span class="comment">// Safe because WinAPI parameter structs are typically rejected if a required field is zero</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">security_attributes</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">zeroed</span>::<span class="op">&lt;</span><span class="ident">SECURITY_ATTRIBUTES</span><span class="op">&gt;</span>() };
         <span class="ident">security_attributes</span>.<span class="ident">nLength</span> <span class="op">=</span> <span class="ident">size_of</span>::<span class="op">&lt;</span><span class="ident">SECURITY_ATTRIBUTES</span><span class="op">&gt;</span>() <span class="kw">as</span> <span class="ident">u32</span>;
@@ -321,10 +321,10 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`security_descriptor`]: #field.security_descriptor &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">build</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">PubWriter</span>, <span class="ident">PubReader</span>)<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">build</span>(<span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">PubWriter</span>, <span class="ident">PubReader</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">hint_raw</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">buffer_size_hint</span> {
-            <span class="prelude-val">Some</span>(<span class="ident">num</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">num</span>.<span class="ident">get</span>(),
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="number">0</span>,
+            <span class="prelude-val">Some</span>(<span class="ident">num</span>) =&gt; <span class="ident">num</span>.<span class="ident">get</span>(),
+            <span class="prelude-val">None</span> =&gt; <span class="number">0</span>,
         } <span class="kw">as</span> <span class="ident">u32</span>;
         <span class="kw">let</span> [<span class="kw-2">mut</span> <span class="ident">writer</span>, <span class="kw-2">mut</span> <span class="ident">reader</span>] <span class="op">=</span> [<span class="ident">INVALID_HANDLE_VALUE</span>; <span class="number">2</span>];
         <span class="kw">let</span> <span class="ident">success</span> <span class="op">=</span> <span class="ident">CreatePipe</span>(
@@ -350,7 +350,7 @@
 }
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">UnnamedPipeCreationOptions</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::new</span>()
     }
 }
@@ -359,28 +359,28 @@
 <span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">Send</span> <span class="kw">for</span> <span class="ident">UnnamedPipeCreationOptions</span> {}
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">pipe</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">PubWriter</span>, <span class="ident">PubReader</span>)<span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">pipe</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">PubWriter</span>, <span class="ident">PubReader</span>)<span class="op">&gt;</span> {
     <span class="kw">unsafe</span> { <span class="ident">UnnamedPipeCreationOptions::default</span>().<span class="ident">build</span>() }
 }
 
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">UnnamedPipeReader</span>(<span class="ident">FileHandleOps</span>);
 <span class="kw">impl</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">UnnamedPipeReader</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">read</span>(<span class="ident">buf</span>)
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span> <span class="ident">AsRawHandle</span> <span class="kw">for</span> <span class="ident">UnnamedPipeReader</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HANDLE</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">HANDLE</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_raw_handle</span>()
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span> <span class="ident">IntoRawHandle</span> <span class="kw">for</span> <span class="ident">UnnamedPipeReader</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_raw_handle</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HANDLE</span> {
+    <span class="kw">fn</span> <span class="ident">into_raw_handle</span>(<span class="self">self</span>) -&gt; <span class="ident">HANDLE</span> {
         <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_raw_handle</span>();
         <span class="ident">mem::forget</span>(<span class="self">self</span>);
         <span class="ident">handle</span>
@@ -389,13 +389,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span> <span class="ident">FromRawHandle</span> <span class="kw">for</span> <span class="ident">UnnamedPipeReader</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">handle</span>: <span class="ident">HANDLE</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">handle</span>: <span class="ident">HANDLE</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">FileHandleOps::from_raw_handle</span>(<span class="ident">handle</span>))
     }
 }
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UnnamedPipeReader</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;UnnamedPipeReader&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;handle&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_raw_handle</span>())
             .<span class="ident">finish</span>()
@@ -405,25 +405,25 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">UnnamedPipeWriter</span>(<span class="ident">FileHandleOps</span>);
 <span class="kw">impl</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">UnnamedPipeWriter</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">write</span>(<span class="ident">buf</span>)
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">flush</span>()
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span> <span class="ident">AsRawHandle</span> <span class="kw">for</span> <span class="ident">UnnamedPipeWriter</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HANDLE</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">HANDLE</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_raw_handle</span>()
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span> <span class="ident">IntoRawHandle</span> <span class="kw">for</span> <span class="ident">UnnamedPipeWriter</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_raw_handle</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HANDLE</span> {
+    <span class="kw">fn</span> <span class="ident">into_raw_handle</span>(<span class="self">self</span>) -&gt; <span class="ident">HANDLE</span> {
         <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_raw_handle</span>();
         <span class="ident">mem::forget</span>(<span class="self">self</span>);
         <span class="ident">handle</span>
@@ -432,13 +432,13 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span> <span class="ident">FromRawHandle</span> <span class="kw">for</span> <span class="ident">UnnamedPipeWriter</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">handle</span>: <span class="ident">HANDLE</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">handle</span>: <span class="ident">HANDLE</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">FileHandleOps</span>(<span class="ident">handle</span>))
     }
 }
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UnnamedPipeWriter</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;UnnamedPipeWriter&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;handle&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_raw_handle</span>())
             .<span class="ident">finish</span>()

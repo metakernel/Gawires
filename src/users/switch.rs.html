@@ -274,8 +274,8 @@
 <span class="comment">// NOTE: for whatever reason, it seems these are not available in libc on BSD platforms, so they</span>
 <span class="comment">//       need to be included manually</span>
 <span class="kw">extern</span> {
-    <span class="kw">fn</span> <span class="ident">setreuid</span>(<span class="ident">ruid</span>: <span class="ident">uid_t</span>, <span class="ident">euid</span>: <span class="ident">uid_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span>;
-    <span class="kw">fn</span> <span class="ident">setregid</span>(<span class="ident">rgid</span>: <span class="ident">gid_t</span>, <span class="ident">egid</span>: <span class="ident">gid_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span>;
+    <span class="kw">fn</span> <span class="ident">setreuid</span>(<span class="ident">ruid</span>: <span class="ident">uid_t</span>, <span class="ident">euid</span>: <span class="ident">uid_t</span>) -&gt; <span class="ident">c_int</span>;
+    <span class="kw">fn</span> <span class="ident">setregid</span>(<span class="ident">rgid</span>: <span class="ident">gid_t</span>, <span class="ident">egid</span>: <span class="ident">gid_t</span>) -&gt; <span class="ident">c_int</span>;
 }
 
 
@@ -302,11 +302,11 @@
 <span class="doccomment">/// set_current_uid(1001);</span>
 <span class="doccomment">/// // current user ID is 1001</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_current_uid</span>(<span class="ident">uid</span>: <span class="ident">uid_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_current_uid</span>(<span class="ident">uid</span>: <span class="ident">uid_t</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">libc::setuid</span>(<span class="ident">uid</span>) } {
-         <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
-        <span class="op">-</span><span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
-         <span class="ident">n</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;setuid returned {}&quot;</span>, <span class="ident">n</span>)
+         <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()),
+        <span class="op">-</span><span class="number">1</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
+         <span class="ident">n</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;setuid returned {}&quot;</span>, <span class="ident">n</span>)
     }
 }
 
@@ -333,11 +333,11 @@
 <span class="doccomment">/// set_current_gid(1001);</span>
 <span class="doccomment">/// // current group ID is 1001</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_current_gid</span>(<span class="ident">gid</span>: <span class="ident">gid_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_current_gid</span>(<span class="ident">gid</span>: <span class="ident">gid_t</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">libc::setgid</span>(<span class="ident">gid</span>) } {
-         <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
-        <span class="op">-</span><span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
-         <span class="ident">n</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;setgid returned {}&quot;</span>, <span class="ident">n</span>)
+         <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()),
+        <span class="op">-</span><span class="number">1</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
+         <span class="ident">n</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;setgid returned {}&quot;</span>, <span class="ident">n</span>)
     }
 }
 
@@ -364,11 +364,11 @@
 <span class="doccomment">/// set_effective_uid(1001);</span>
 <span class="doccomment">/// // current effective user ID is 1001</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_effective_uid</span>(<span class="ident">uid</span>: <span class="ident">uid_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_effective_uid</span>(<span class="ident">uid</span>: <span class="ident">uid_t</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">libc::seteuid</span>(<span class="ident">uid</span>) } {
-         <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
-        <span class="op">-</span><span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
-         <span class="ident">n</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;seteuid returned {}&quot;</span>, <span class="ident">n</span>)
+         <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()),
+        <span class="op">-</span><span class="number">1</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
+         <span class="ident">n</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;seteuid returned {}&quot;</span>, <span class="ident">n</span>)
     }
 }
 
@@ -395,11 +395,11 @@
 <span class="doccomment">/// set_effective_gid(1001);</span>
 <span class="doccomment">/// // current effective group ID is 1001</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_effective_gid</span>(<span class="ident">gid</span>: <span class="ident">gid_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_effective_gid</span>(<span class="ident">gid</span>: <span class="ident">gid_t</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">libc::setegid</span>(<span class="ident">gid</span>) } {
-         <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
-        <span class="op">-</span><span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
-         <span class="ident">n</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;setegid returned {}&quot;</span>, <span class="ident">n</span>)
+         <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()),
+        <span class="op">-</span><span class="number">1</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
+         <span class="ident">n</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;setegid returned {}&quot;</span>, <span class="ident">n</span>)
     }
 }
 
@@ -426,11 +426,11 @@
 <span class="doccomment">/// set_both_uid(1001, 1001);</span>
 <span class="doccomment">/// // current user ID and effective user ID are 1001</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_both_uid</span>(<span class="ident">ruid</span>: <span class="ident">uid_t</span>, <span class="ident">euid</span>: <span class="ident">uid_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_both_uid</span>(<span class="ident">ruid</span>: <span class="ident">uid_t</span>, <span class="ident">euid</span>: <span class="ident">uid_t</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">setreuid</span>(<span class="ident">ruid</span>, <span class="ident">euid</span>) } {
-         <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
-        <span class="op">-</span><span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
-         <span class="ident">n</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;setreuid returned {}&quot;</span>, <span class="ident">n</span>)
+         <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()),
+        <span class="op">-</span><span class="number">1</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
+         <span class="ident">n</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;setreuid returned {}&quot;</span>, <span class="ident">n</span>)
     }
 }
 
@@ -457,11 +457,11 @@
 <span class="doccomment">/// set_both_gid(1001, 1001);</span>
 <span class="doccomment">/// // current user ID and effective group ID are 1001</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_both_gid</span>(<span class="ident">rgid</span>: <span class="ident">gid_t</span>, <span class="ident">egid</span>: <span class="ident">gid_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_both_gid</span>(<span class="ident">rgid</span>: <span class="ident">gid_t</span>, <span class="ident">egid</span>: <span class="ident">gid_t</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="kw">unsafe</span> { <span class="ident">setregid</span>(<span class="ident">rgid</span>, <span class="ident">egid</span>) } {
-         <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(()),
-        <span class="op">-</span><span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
-         <span class="ident">n</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(<span class="string">&quot;setregid returned {}&quot;</span>, <span class="ident">n</span>)
+         <span class="number">0</span> =&gt; <span class="prelude-val">Ok</span>(()),
+        <span class="op">-</span><span class="number">1</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>()),
+         <span class="ident">n</span> =&gt; <span class="macro">unreachable!</span>(<span class="string">&quot;setregid returned {}&quot;</span>, <span class="ident">n</span>)
     }
 }
 
@@ -518,7 +518,7 @@
 <span class="doccomment">/// }</span>
 <span class="doccomment">/// // back to the old values</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">switch_user_group</span>(<span class="ident">uid</span>: <span class="ident">uid_t</span>, <span class="ident">gid</span>: <span class="ident">gid_t</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SwitchUserGuard</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">switch_user_group</span>(<span class="ident">uid</span>: <span class="ident">uid_t</span>, <span class="ident">gid</span>: <span class="ident">gid_t</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">SwitchUserGuard</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">current_state</span> <span class="op">=</span> <span class="ident">SwitchUserGuard</span> {
         <span class="ident">gid</span>: <span class="ident">get_effective_gid</span>(),
         <span class="ident">uid</span>: <span class="ident">get_effective_uid</span>(),

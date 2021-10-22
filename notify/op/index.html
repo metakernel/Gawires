@@ -2,25 +2,25 @@
 <p><code>notify</code> aims to provide unified behavior across platforms. This however is not always possible
 due to the underlying technology of the various operating systems. So there are some issues
 <code>notify</code>-API users will have to take care of themselves, depending on their needs.</p>
-<h1 id="chmod" class="section-header"><a href="#chmod">Chmod</a></h1>
+<h2 id="chmod" class="section-header"><a href="#chmod">Chmod</a></h2>
 <p><strong>Linux, macOS</strong></p>
 <p>On Linux and macOS the <code>CHMOD</code> event is emitted whenever attributes or extended attributes
 change.</p>
 <p><strong>Windows</strong></p>
 <p>On Windows a <code>WRITE</code> event is emitted when attributes change. This makes it impossible to
 distinguish between writes to a file or its meta data.</p>
-<h1 id="close-write" class="section-header"><a href="#close-write">Close-Write</a></h1>
+<h2 id="close-write" class="section-header"><a href="#close-write">Close-Write</a></h2>
 <p>A <code>CLOSE_WRITE</code> event is emitted whenever a file that was opened for writing has been closed.</p>
 <p><strong>This event is only available on Linux</strong>.</p>
-<h1 id="create" class="section-header"><a href="#create">Create</a></h1>
+<h2 id="create" class="section-header"><a href="#create">Create</a></h2>
 <p>A <code>CREATE</code> event is emitted whenever a new file or directory is created.</p>
 <p>Upon receiving a <code>Create</code> event for a directory, it is necessary to scan the newly created
 directory for contents. The directory can contain files or directories if those contents were
 created before the directory could be watched, or if the directory was moved into the watched
 directory.</p>
-<h1 id="remove" class="section-header"><a href="#remove">Remove</a></h1><h2 id="remove-file-or-directory-within-a-watched-directory" class="section-header"><a href="#remove-file-or-directory-within-a-watched-directory">Remove file or directory within a watched directory</a></h2>
+<h2 id="remove" class="section-header"><a href="#remove">Remove</a></h2><h3 id="remove-file-or-directory-within-a-watched-directory" class="section-header"><a href="#remove-file-or-directory-within-a-watched-directory">Remove file or directory within a watched directory</a></h3>
 <p>A <code>REMOVE</code> event is emitted whenever a file or directory is removed.</p>
-<h2 id="remove-watched-file-or-directory-itself" class="section-header"><a href="#remove-watched-file-or-directory-itself">Remove watched file or directory itself</a></h2>
+<h3 id="remove-watched-file-or-directory-itself" class="section-header"><a href="#remove-watched-file-or-directory-itself">Remove watched file or directory itself</a></h3>
 <p>With the exception of Windows a <code>REMOVE</code> event is emitted whenever the watched file or
 directory itself is removed. The behavior after the remove differs between platforms though.</p>
 <p><strong>Linux</strong></p>
@@ -36,10 +36,10 @@ sent.</p>
 <p>While Linux and Windows monitor “inodes”, macOS monitors “paths”. So a watch stays active even
 after the watched file or directory has been removed and it will emit events in case a new file
 or directory is created in its place.</p>
-<h1 id="rename" class="section-header"><a href="#rename">Rename</a></h1>
+<h2 id="rename" class="section-header"><a href="#rename">Rename</a></h2>
 <p>A <code>RENAME</code> event is emitted whenever a file or directory has been renamed or moved to a
 different directory.</p>
-<h2 id="rename-file-or-directory-within-a-watched-directory" class="section-header"><a href="#rename-file-or-directory-within-a-watched-directory">Rename file or directory within a watched directory</a></h2>
+<h3 id="rename-file-or-directory-within-a-watched-directory" class="section-header"><a href="#rename-file-or-directory-within-a-watched-directory">Rename file or directory within a watched directory</a></h3>
 <p><strong>Linux, Windows</strong></p>
 <p>A rename with both the source and the destination path inside a watched directory produces two
 <code>RENAME</code> events. The first event contains the source path, the second contains the destination
@@ -57,7 +57,7 @@ renamed multiple times without a delay (test <code>fsevents_rename_rename_file_0
 rename cannot be caught properly but would be interpreted as a sequence of events where a file
 or directory is moved out of the watched directory and a different file or directory is moved
 in.</p>
-<h2 id="rename-watched-file-or-directory-itself" class="section-header"><a href="#rename-watched-file-or-directory-itself">Rename watched file or directory itself</a></h2>
+<h3 id="rename-watched-file-or-directory-itself" class="section-header"><a href="#rename-watched-file-or-directory-itself">Rename watched file or directory itself</a></h3>
 <p>With the exception of Windows a <code>RENAME</code> event is emitted whenever the watched file or
 directory itself is renamed. The behavior after the rename differs between platforms though.
 Depending on the platform either the moved file or directory will continue to be watched or the
@@ -73,7 +73,7 @@ continue to be watched and events will contain paths prefixed with the old path.
 watched.</p>
 <p><strong>macOS</strong></p>
 <p>macOS will continue to watch the (now non-existing) path.</p>
-<h2 id="rename-parent-directory-of-watched-file-or-directory" class="section-header"><a href="#rename-parent-directory-of-watched-file-or-directory">Rename parent directory of watched file or directory</a></h2>
+<h3 id="rename-parent-directory-of-watched-file-or-directory" class="section-header"><a href="#rename-parent-directory-of-watched-file-or-directory">Rename parent directory of watched file or directory</a></h3>
 <p>Currently no event will be emitted when any parent directory of the watched file or directory
 is renamed. Depending on the platform either the moved file or directory will continue to be
 watched or the old path. If the moved file or directory will continue to be watched, the paths
@@ -83,7 +83,7 @@ of emitted events will still be prefixed with the old path though.</p>
 prefixed with the old path.</p>
 <p><strong>macOS</strong></p>
 <p>macOS will continue to watch the (now non-existing) path.</p>
-<h1 id="rescan" class="section-header"><a href="#rescan">Rescan</a></h1>
+<h2 id="rescan" class="section-header"><a href="#rescan">Rescan</a></h2>
 <p>A <code>RESCAN</code> event indicates that an error occurred and the watched directories need to be
 rescanned. This can happen if the internal event queue has overflown and some events were
 dropped. Or with FSEvents if events were coalesced hierarchically.</p>
@@ -93,13 +93,13 @@ dropped. Or with FSEvents if events were coalesced hierarchically.</p>
 <p>Linux: <code>/proc/sys/fs/inotify/max_queued_events</code></p>
 <p>Windows: 16384 Bytes. The actual amount of events that fit into the queue depends on the length
 of the paths.</p>
-<h1 id="write" class="section-header"><a href="#write">Write</a></h1>
+<h2 id="write" class="section-header"><a href="#write">Write</a></h2>
 <p>A <code>WRITE</code> event is emitted whenever a file has been written to.</p>
 <p><strong>Windows</strong></p>
 <p>On Windows a <code>WRITE</code> event is emitted when attributes change.</p>
 </div></details><h2 id="structs" class="section-header"><a href="#structs">Structs</a></h2>
-<div class="item-table"><div class="item-left module-item"><a class="struct" href="struct.Op.html" title="notify::op::Op struct">Op</a></div><div class="item-right docblock-short"><p>Holds a set of bit flags representing the actions for the event.</p>
-</div></div><h2 id="constants" class="section-header"><a href="#constants">Constants</a></h2>
-<div class="item-table"><div class="item-left module-item"><a class="constant" href="constant.CHMOD.html" title="notify::op::CHMOD constant">CHMOD</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="constant" href="constant.CLOSE_WRITE.html" title="notify::op::CLOSE_WRITE constant">CLOSE_WRITE</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="constant" href="constant.CREATE.html" title="notify::op::CREATE constant">CREATE</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="constant" href="constant.REMOVE.html" title="notify::op::REMOVE constant">REMOVE</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="constant" href="constant.RENAME.html" title="notify::op::RENAME constant">RENAME</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="constant" href="constant.RESCAN.html" title="notify::op::RESCAN constant">RESCAN</a></div><div class="item-right docblock-short"></div><div class="item-left module-item"><a class="constant" href="constant.WRITE.html" title="notify::op::WRITE constant">WRITE</a></div><div class="item-right docblock-short"></div></div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="notify" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="struct" href="struct.Op.html" title="notify::op::Op struct">Op</a></div><div class="item-right docblock-short"><p>Holds a set of bit flags representing the actions for the event.</p>
+</div></div></div><h2 id="constants" class="section-header"><a href="#constants">Constants</a></h2>
+<div class="item-table"><div class="item-row"><div class="item-left module-item"><a class="constant" href="constant.CHMOD.html" title="notify::op::CHMOD constant">CHMOD</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="constant" href="constant.CLOSE_WRITE.html" title="notify::op::CLOSE_WRITE constant">CLOSE_WRITE</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="constant" href="constant.CREATE.html" title="notify::op::CREATE constant">CREATE</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="constant" href="constant.REMOVE.html" title="notify::op::REMOVE constant">REMOVE</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="constant" href="constant.RENAME.html" title="notify::op::RENAME constant">RENAME</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="constant" href="constant.RESCAN.html" title="notify::op::RESCAN constant">RESCAN</a></div><div class="item-right docblock-short"></div></div><div class="item-row"><div class="item-left module-item"><a class="constant" href="constant.WRITE.html" title="notify::op::WRITE constant">WRITE</a></div><div class="item-right docblock-short"></div></div></div></section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="notify" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script>
 </body></html>

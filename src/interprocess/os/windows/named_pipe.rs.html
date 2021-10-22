@@ -1287,7 +1287,7 @@
 
 <span class="kw">use</span> <span class="kw">crate</span>::{<span class="ident">PartialMsgWriteError</span>, <span class="ident">ReliableReadMsg</span>, <span class="ident">Sealed</span>};
 
-<span class="kw">fn</span> <span class="ident">convert_path</span>(<span class="ident">osstr</span>: <span class="kw-2">&amp;</span><span class="ident">OsStr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">convert_path</span>(<span class="ident">osstr</span>: <span class="kw-2">&amp;</span><span class="ident">OsStr</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">OsString::from</span>(<span class="string">r&quot;\\.\pipe\&quot;</span>);
     <span class="ident">path</span>.<span class="ident">push</span>(<span class="ident">osstr</span>);
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">encode_wide</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u16</span><span class="op">&gt;</span><span class="op">&gt;</span>();
@@ -1305,7 +1305,7 @@
     <span class="comment">// Store the nonblocking boolean separately to change it without mutable access</span>
     <span class="ident">nonblocking</span>: <span class="ident">AtomicBool</span>,
     <span class="ident">instances</span>: <span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span>(<span class="ident">PipeOps</span>, <span class="ident">AtomicBool</span>)<span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Stream</span><span class="op">&gt;</span>,
+    <span class="ident">_phantom</span>: <span class="ident">PhantomData</span><span class="op">&lt;</span><span class="kw">fn</span>() -&gt; <span class="ident">Stream</span><span class="op">&gt;</span>,
 }
 <span class="doccomment">/// An iterator that infinitely [`accept`]s connections on a [`PipeListener`].</span>
 <span class="doccomment">///</span>
@@ -1320,7 +1320,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Stream</span>: <span class="ident">PipeStream</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Incoming</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Stream</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Stream</span><span class="op">&gt;</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">listener</span>.<span class="ident">accept</span>())
     }
 }
@@ -1328,7 +1328,7 @@
     <span class="kw">type</span> <span class="ident">IntoIter</span> <span class="op">=</span> <span class="ident">Incoming</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Stream</span><span class="op">&gt;</span>;
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="op">&lt;</span><span class="ident">Incoming</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">Stream</span><span class="op">&gt;</span> <span class="kw">as</span> <span class="ident">Iterator</span><span class="op">&gt;</span><span class="ident">::Item</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::IntoIter</span> {
+    <span class="kw">fn</span> <span class="ident">into_iter</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::IntoIter</span> {
         <span class="self">self</span>.<span class="ident">incoming</span>()
     }
 }
@@ -1337,14 +1337,14 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// See `incoming` for an iterator version of this.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Stream</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Stream</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">instance</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">alloc_instance</span>()<span class="question-mark">?</span>;
         <span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">connect</span>()<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">Stream::from</span>(<span class="ident">instance</span>))
     }
     <span class="doccomment">/// Creates an iterator which accepts connections from clients, blocking each time `next()` is called until one connects.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">incoming</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Incoming</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Stream</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">incoming</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Incoming</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span>, <span class="ident">Stream</span><span class="op">&gt;</span> {
         <span class="ident">Incoming</span> { <span class="ident">listener</span>: <span class="self">self</span> }
     }
     <span class="doccomment">/// Enables or disables the nonblocking mode for all existing instances of the listener and future ones. By default, it is disabled.</span>
@@ -1355,7 +1355,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`nonblocking` field]: struct.PipeListenerOptions.html#structfield.nonblocking &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">for</span> <span class="ident">instance</span> <span class="kw">in</span> <span class="self">self</span>
             .<span class="ident">instances</span>
             .<span class="ident">read</span>()
@@ -1371,7 +1371,7 @@
     }
 
     <span class="doccomment">/// Returns a pipe instance either by using an existing one or returning a newly created instance using `add_instance`.</span>
-    <span class="kw">fn</span> <span class="ident">alloc_instance</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span>(<span class="ident">PipeOps</span>, <span class="ident">AtomicBool</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">alloc_instance</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span>(<span class="ident">PipeOps</span>, <span class="ident">AtomicBool</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">instances</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">instances</span>.<span class="ident">read</span>().<span class="ident">expect</span>(<span class="string">&quot;unexpected lock poison&quot;</span>);
         <span class="kw">for</span> <span class="ident">inst</span> <span class="kw">in</span> <span class="ident">instances</span>.<span class="ident">iter</span>() {
             <span class="comment">// Try to ownership for the instance by doing a combined compare+exchange, just</span>
@@ -1397,7 +1397,7 @@
     }
     <span class="doccomment">/// Increases instance count by 1 and returns the created instance.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">add_instance</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span>(<span class="ident">PipeOps</span>, <span class="ident">AtomicBool</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">add_instance</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span>(<span class="ident">PipeOps</span>, <span class="ident">AtomicBool</span>)<span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">new_instance</span> <span class="op">=</span> <span class="ident">Arc::new</span>(
             <span class="self">self</span>.<span class="ident">config</span>
                 .<span class="ident">create_instance</span>::<span class="op">&lt;</span><span class="ident">Stream</span><span class="op">&gt;</span>(<span class="bool-val">false</span>, <span class="self">self</span>.<span class="ident">nonblocking</span>.<span class="ident">load</span>(<span class="ident">Ordering::SeqCst</span>))<span class="question-mark">?</span>,
@@ -1412,7 +1412,7 @@
 <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_nonblocking_for_stream</span><span class="op">&lt;</span><span class="ident">Stream</span>: <span class="ident">PipeStream</span><span class="op">&gt;</span>(
     <span class="ident">handle</span>: <span class="ident">HANDLE</span>,
     <span class="ident">nonblocking</span>: <span class="ident">bool</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">read_mode</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="ident">Stream::READ_MODE</span>.<span class="ident">map_or</span>(<span class="number">0</span>, <span class="ident">PipeMode::to_readmode</span>);
     <span class="comment">// Bitcast the boolean without additional transformatinos since</span>
     <span class="comment">// the flag is in the first bit.</span>
@@ -1438,7 +1438,7 @@
     }
     <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Instance</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
             <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;PipeInstance&quot;</span>)
                 .<span class="ident">field</span>(<span class="string">&quot;handle&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">as_raw_handle</span>())
                 .<span class="ident">field</span>(<span class="string">&quot;connected&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">instance</span>.<span class="number">1</span>.<span class="ident">load</span>(<span class="ident">Ordering::Relaxed</span>))
@@ -1451,7 +1451,7 @@
     }
     <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">Instances</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">list_builder</span> <span class="op">=</span> <span class="ident">f</span>.<span class="ident">debug_list</span>();
             <span class="kw">for</span> <span class="ident">instance</span> <span class="kw">in</span> <span class="self">self</span>
                 .<span class="ident">instances</span>
@@ -1466,7 +1466,7 @@
     }
     <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">Stream</span>: <span class="ident">PipeStream</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">PipeListener</span><span class="op">&lt;</span><span class="ident">Stream</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+        <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
             <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;PipeListener&quot;</span>)
                 .<span class="ident">field</span>(<span class="string">&quot;config&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">config</span>)
                 .<span class="ident">field</span>(
@@ -1493,10 +1493,10 @@
     <span class="kw">impl</span> <span class="ident">PipeOps</span> {
         <span class="doccomment">/// Reads a message from the pipe instance into the specified buffer, returning the size of the message written as `Ok(Ok(...))`. If the buffer is too small to fit the message, a bigger buffer is allocated and returned as `Ok(Err(...))`, with the exact size and capacity to hold the message. Errors are returned as `Err(Err(...))`.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">read_msg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">read_msg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">try_read_msg</span>(<span class="ident">buf</span>)<span class="question-mark">?</span> {
-                <span class="prelude-val">Ok</span>(<span class="ident">bytes_read</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(<span class="ident">bytes_read</span>)),
-                <span class="prelude-val">Err</span>(<span class="ident">bytes_left_in_message</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">bytes_read</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="prelude-val">Ok</span>(<span class="ident">bytes_read</span>)),
+                <span class="prelude-val">Err</span>(<span class="ident">bytes_left_in_message</span>) =&gt; {
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_buffer</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0</span>; <span class="ident">bytes_left_in_message</span>];
                     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">_number_of_bytes_read</span>: <span class="ident">DWORD</span> <span class="op">=</span> <span class="number">0</span>;
                     <span class="kw">let</span> <span class="ident">success</span> <span class="op">=</span> <span class="kw">unsafe</span> {
@@ -1516,7 +1516,7 @@
                 }
             }
         }
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">try_read_msg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">try_read_msg</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> {
             <span class="macro">debug_assert!</span>(
                 <span class="ident">buf</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">DWORD::max_value</span>() <span class="kw">as</span> <span class="ident">usize</span>,
                 <span class="string">&quot;buffer is bigger than maximum buffer size for ReadFile&quot;</span>,
@@ -1531,7 +1531,7 @@
                     <span class="ident">ptr::null_mut</span>(),
                     <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">bytes_left_in_message</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>,
                 );
-                <span class="kw">if</span> <span class="ident">result</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+                <span class="kw">if</span> <span class="ident">result</span> <span class="op">==</span> <span class="number">0</span> {
                     <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::last_os_error</span>());
                 }
                 <span class="ident">bytes_left_in_message</span> <span class="kw">as</span> <span class="ident">usize</span>
@@ -1559,22 +1559,22 @@
         }
         <span class="doccomment">/// Reads bytes from the named pipe. Mirrors `std::io::Read`.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">read_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">read_bytes</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">read</span>(<span class="ident">buf</span>)
         }
         <span class="doccomment">/// Writes data to the named pipe. There is no way to check/ensure that the message boundaries will be preserved which is why there&#39;s only one function to do this.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">write</span>(<span class="ident">buf</span>)
         }
         <span class="doccomment">/// Blocks until the client has fully read the buffer.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="number">0</span>.<span class="ident">flush</span>()
         }
 
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">get_client_process_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">get_client_process_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">id</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0</span>;
             <span class="kw">let</span> <span class="ident">success</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">GetNamedPipeClientProcessId</span>(<span class="self">self</span>.<span class="number">0</span> .<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">id</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> };
             <span class="kw">if</span> <span class="ident">success</span> {
@@ -1584,7 +1584,7 @@
             }
         }
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">get_client_session_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">get_client_session_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">id</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0</span>;
             <span class="kw">let</span> <span class="ident">success</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">GetNamedPipeClientSessionId</span>(<span class="self">self</span>.<span class="number">0</span> .<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">id</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> };
             <span class="kw">if</span> <span class="ident">success</span> {
@@ -1594,7 +1594,7 @@
             }
         }
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">get_server_process_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">get_server_process_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">id</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0</span>;
             <span class="kw">let</span> <span class="ident">success</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">GetNamedPipeServerProcessId</span>(<span class="self">self</span>.<span class="number">0</span> .<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">id</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> };
             <span class="kw">if</span> <span class="ident">success</span> {
@@ -1604,7 +1604,7 @@
             }
         }
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">get_server_session_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">get_server_session_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">id</span>: <span class="ident">u32</span> <span class="op">=</span> <span class="number">0</span>;
             <span class="kw">let</span> <span class="ident">success</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">GetNamedPipeServerSessionId</span>(<span class="self">self</span>.<span class="number">0</span> .<span class="number">0</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">id</span> <span class="kw">as</span> <span class="kw-2">*</span><span class="kw-2">mut</span> <span class="kw">_</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> };
             <span class="kw">if</span> <span class="ident">success</span> {
@@ -1615,13 +1615,13 @@
         }
 
         <span class="doccomment">/// Blocks until connected. If connected, does not do anything.</span>
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">connect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">connect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">success</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">ConnectNamedPipe</span>(<span class="self">self</span>.<span class="ident">as_raw_handle</span>(), <span class="ident">ptr::null_mut</span>()) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> };
             <span class="kw">if</span> <span class="ident">success</span> {
                 <span class="prelude-val">Ok</span>(())
             } <span class="kw">else</span> {
                 <span class="kw">let</span> <span class="ident">last_error</span> <span class="op">=</span> <span class="ident">io::Error::last_os_error</span>();
-                <span class="kw">if</span> <span class="ident">last_error</span>.<span class="ident">raw_os_error</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">ERROR_PIPE_CONNECTED</span> <span class="kw">as</span> <span class="ident">i32</span>) {
+                <span class="kw">if</span> <span class="ident">last_error</span>.<span class="ident">raw_os_error</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">ERROR_PIPE_CONNECTED</span> <span class="kw">as</span> <span class="ident">i32</span>) {
                     <span class="prelude-val">Ok</span>(())
                 } <span class="kw">else</span> {
                     <span class="prelude-val">Err</span>(<span class="ident">last_error</span>)
@@ -1630,14 +1630,14 @@
         }
         <span class="doccomment">/// Flushes and disconnects, obviously.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">flush_and_disconnect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">flush_and_disconnect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
             <span class="self">self</span>.<span class="ident">flush</span>()<span class="question-mark">?</span>;
             <span class="self">self</span>.<span class="ident">disconnect</span>()<span class="question-mark">?</span>;
             <span class="prelude-val">Ok</span>(())
         }
         <span class="doccomment">/// Disconnects without flushing. Drops all data which has been sent but not yet received on the other side, if any.</span>
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">disconnect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+        <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">fn</span> <span class="ident">disconnect</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
             <span class="kw">let</span> <span class="ident">success</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">DisconnectNamedPipe</span>(<span class="self">self</span>.<span class="ident">as_raw_handle</span>()) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> };
             <span class="kw">if</span> <span class="ident">success</span> {
                 <span class="prelude-val">Ok</span>(())
@@ -1649,14 +1649,14 @@
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
     <span class="kw">impl</span> <span class="ident">AsRawHandle</span> <span class="kw">for</span> <span class="ident">PipeOps</span> {
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HANDLE</span> {
+        <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">HANDLE</span> {
             <span class="self">self</span>.<span class="number">0</span> .<span class="number">0</span> <span class="comment">// I hate this nested tuple syntax.</span>
         }
     }
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
     <span class="kw">impl</span> <span class="ident">IntoRawHandle</span> <span class="kw">for</span> <span class="ident">PipeOps</span> {
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">into_raw_handle</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HANDLE</span> {
+        <span class="kw">fn</span> <span class="ident">into_raw_handle</span>(<span class="self">self</span>) -&gt; <span class="ident">HANDLE</span> {
             <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_raw_handle</span>();
             <span class="ident">std::mem::forget</span>(<span class="self">self</span>);
             <span class="ident">handle</span>
@@ -1664,7 +1664,7 @@
     }
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
     <span class="kw">impl</span> <span class="ident">FromRawHandle</span> <span class="kw">for</span> <span class="ident">PipeOps</span> {
-        <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">handle</span>: <span class="ident">HANDLE</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+        <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">handle</span>: <span class="ident">HANDLE</span>) -&gt; <span class="self">Self</span> {
             <span class="self">Self</span>(<span class="ident">FileHandleOps::from_raw_handle</span>(<span class="ident">handle</span>))
         }
     }
@@ -1714,7 +1714,7 @@
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">PipeListenerOptions</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Creates a new builder with default options.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>() -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">name</span>: <span class="ident">Cow::Borrowed</span>(<span class="ident">OsStr::new</span>(<span class="string">&quot;&quot;</span>)),
             <span class="ident">mode</span>: <span class="ident">PipeMode::Bytes</span>,
@@ -1732,7 +1732,7 @@
     <span class="doccomment">/// [`name`]: #structfield.name &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;builder setters take the entire structure and return the result&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">OsStr</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">name</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">OsStr</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">name</span> <span class="op">=</span> <span class="ident">name</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
@@ -1741,7 +1741,7 @@
     <span class="doccomment">/// [`mode`]: #structfield.mode &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;builder setters take the entire structure and return the result&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mode</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mode</span>: <span class="ident">PipeMode</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">mode</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">mode</span>: <span class="ident">PipeMode</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">mode</span> <span class="op">=</span> <span class="ident">mode</span>;
         <span class="self">self</span>
     }
@@ -1750,7 +1750,7 @@
     <span class="doccomment">/// [`nonblocking`]: #structfield.nonblocking &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;builder setters take the entire structure and return the result&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nonblocking</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">nonblocking</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">nonblocking</span> <span class="op">=</span> <span class="ident">nonblocking</span>;
         <span class="self">self</span>
     }
@@ -1759,7 +1759,7 @@
     <span class="doccomment">/// [`instance_limit`]: #structfield.instance_limit &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;builder setters take the entire structure and return the result&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">instance_limit</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">instance_limit</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroU8</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">instance_limit</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">instance_limit</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">NonZeroU8</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">instance_limit</span> <span class="op">=</span> <span class="ident">instance_limit</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
@@ -1768,7 +1768,7 @@
     <span class="doccomment">/// [`write_through`]: #structfield.write_through &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;builder setters take the entire structure and return the result&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_through</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">write_through</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write_through</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">write_through</span>: <span class="ident">bool</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">write_through</span> <span class="op">=</span> <span class="ident">write_through</span>;
         <span class="self">self</span>
     }
@@ -1777,7 +1777,7 @@
     <span class="doccomment">/// [`accept_remote`]: #structfield.accept_remote &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;builder setters take the entire structure and return the result&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept_remote</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">accept_remote</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept_remote</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">accept_remote</span>: <span class="ident">bool</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">accept_remote</span> <span class="op">=</span> <span class="ident">accept_remote</span>;
         <span class="self">self</span>
     }
@@ -1786,7 +1786,7 @@
     <span class="doccomment">/// [`input_buffer_size_hint`]: #structfield.input_buffer_size_hint &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;builder setters take the entire structure and return the result&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">input_buffer_size_hint</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">input_buffer_size_hint</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">input_buffer_size_hint</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">input_buffer_size_hint</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">input_buffer_size_hint</span> <span class="op">=</span> <span class="ident">input_buffer_size_hint</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
@@ -1795,7 +1795,7 @@
     <span class="doccomment">/// [`output_buffer_size_hint`]: #structfield.output_buffer_size_hint &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;builder setters take the entire structure and return the result&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_buffer_size_hint</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">output_buffer_size_hint</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">output_buffer_size_hint</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">output_buffer_size_hint</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">output_buffer_size_hint</span> <span class="op">=</span> <span class="ident">output_buffer_size_hint</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
@@ -1804,7 +1804,7 @@
     <span class="doccomment">/// [`wait_timeout`]: #structfield.wait_timeout &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">must_use</span> <span class="op">=</span> <span class="string">&quot;builder setters take the entire structure and return the result&quot;</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wait_timeout</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">wait_timeout</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">NonZeroU32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">wait_timeout</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">wait_timeout</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">NonZeroU32</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">wait_timeout</span> <span class="op">=</span> <span class="ident">wait_timeout</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
@@ -1813,7 +1813,7 @@
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">first</span>: <span class="ident">bool</span>,
         <span class="ident">nonblocking</span>: <span class="ident">bool</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">PipeOps</span>, <span class="ident">AtomicBool</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">PipeOps</span>, <span class="ident">AtomicBool</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">convert_path</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">name</span>);
         <span class="kw">let</span> (<span class="ident">handle</span>, <span class="ident">success</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">CreateNamedPipeW</span>(
@@ -1855,7 +1855,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// For outbound or duplex pipes, the `mode` parameter must agree with the `Stream`&#39;s `WRITE_MODE`. Otherwise, the call will panic in debug builds or, in release builds, the `WRITE_MODE` will take priority.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create</span><span class="op">&lt;</span><span class="ident">Stream</span>: <span class="ident">PipeStream</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">PipeListener</span><span class="op">&lt;</span><span class="ident">Stream</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">create</span><span class="op">&lt;</span><span class="ident">Stream</span>: <span class="ident">PipeStream</span><span class="op">&gt;</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">PipeListener</span><span class="op">&lt;</span><span class="ident">Stream</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="comment">// We need this ugliness because the compiler does not understand that</span>
         <span class="comment">// PipeListenerOptions&lt;&#39;a&gt; can coerce into PipeListenerOptions&lt;&#39;static&gt; if we manually</span>
         <span class="comment">// replace the name field with Cow::Owned and just copy all other elements over thanks</span>
@@ -1888,7 +1888,7 @@
     }
 }
 <span class="kw">impl</span> <span class="ident">Default</span> <span class="kw">for</span> <span class="ident">PipeListenerOptions</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::new</span>()
     }
 }
@@ -1901,7 +1901,7 @@
             <span class="ident">read_mode</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">read_mode</span>:<span class="ident">expr</span>,
             <span class="ident">write_mode</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">write_mode</span>:<span class="ident">expr</span>,
             <span class="ident">doc</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">doc</span>:<span class="ident">tt</span>
-    )<span class="op">+</span>) <span class="op">=</span><span class="op">&gt;</span> ($(
+    )<span class="op">+</span>) =&gt; ($(
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">doc</span>]</span>
         <span class="kw">pub</span> <span class="kw">struct</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span> {
             <span class="ident">instance</span>: <span class="ident">Arc</span><span class="op">&lt;</span>(<span class="ident">PipeOps</span>, <span class="ident">AtomicBool</span>)<span class="op">&gt;</span>,
@@ -1909,7 +1909,7 @@
         <span class="kw">impl</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span> {
             <span class="doccomment">/// Connects to an existing named pipe.</span>
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect</span>(<span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">OsStr</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect</span>(<span class="ident">name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">OsStr</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="ident">name</span> <span class="op">=</span> <span class="ident">convert_path</span>(<span class="ident">name</span>.<span class="ident">as_ref</span>());
                 <span class="kw">let</span> (<span class="ident">success</span>, <span class="ident">handle</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
                     <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="ident">CreateFileW</span>(
@@ -1945,34 +1945,34 @@
             <span class="doccomment">/// [`nonblocking`]: struct.PipeListenerOptions.html#structfield.nonblocking &quot; &quot;</span>
             <span class="doccomment">/// [`set_nonblocking`]: struct.PipeListener.html#method.set_nonblocking &quot; &quot;</span>
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
                 <span class="kw">unsafe</span> {
                     <span class="ident">set_nonblocking_for_stream</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>(<span class="self">self</span>.<span class="ident">as_raw_handle</span>(), <span class="ident">nonblocking</span>)
                 }
             }
             <span class="doccomment">/// Retrieves the process identifier of the client side of the named pipe connection.</span>
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">client_process_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">client_process_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">get_client_process_id</span>()
             }
             <span class="doccomment">/// Retrieves the session identifier of the client side of the named pipe connection.</span>
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">client_session_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">client_session_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">get_client_session_id</span>()
             }
             <span class="doccomment">/// Retrieves the process identifier of the server side of the named pipe connection.</span>
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">server_process_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">server_process_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">get_server_process_id</span>()
             }
             <span class="doccomment">/// Retrieves the session identifier of the server side of the named pipe connection.</span>
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">server_session_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">server_session_id</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">get_server_session_id</span>()
             }
             <span class="doccomment">/// Disconnects the named pipe stream without flushing buffers, causing all data in those buffers to be lost. This is much faster than simply dropping the stream, since the `Drop` implementation flushes first. Only makes sense for server-side pipes and will panic in debug builds if called on a client stream.</span>
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">disconnect_without_flushing</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">disconnect_without_flushing</span>(<span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
                 <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">disconnect</span>()<span class="question-mark">?</span>;
                 <span class="comment">// We keep the atomic store anyway since checking whether we&#39;re a client or a server and avoiding an atomic write is potentially slower than that write.</span>
                 <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">1</span>.<span class="ident">store</span>(<span class="bool-val">false</span>, <span class="ident">Ordering::Release</span>);
@@ -2007,21 +2007,21 @@
         <span class="attribute">#[<span class="ident">doc</span>(<span class="ident">hidden</span>)]</span>
         <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Arc</span><span class="op">&lt;</span>(<span class="ident">PipeOps</span>, <span class="ident">AtomicBool</span>)<span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span> {
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">instance</span>: <span class="ident">Arc</span><span class="op">&lt;</span>(<span class="ident">PipeOps</span>, <span class="ident">AtomicBool</span>)<span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">instance</span>: <span class="ident">Arc</span><span class="op">&lt;</span>(<span class="ident">PipeOps</span>, <span class="ident">AtomicBool</span>)<span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
                 <span class="self">Self</span> {<span class="ident">instance</span>}
             }
         }
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
         <span class="kw">impl</span> <span class="ident">AsRawHandle</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span> {
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HANDLE</span> {
+            <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">HANDLE</span> {
                 <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">as_raw_handle</span>()
             }
         }
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
         <span class="kw">impl</span> <span class="ident">IntoRawHandle</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span> {
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">into_raw_handle</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HANDLE</span> {
+            <span class="kw">fn</span> <span class="ident">into_raw_handle</span>(<span class="self">self</span>) -&gt; <span class="ident">HANDLE</span> {
                 <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">as_raw_handle</span>();
                 <span class="ident">handle</span>
             }
@@ -2029,7 +2029,7 @@
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
         <span class="kw">impl</span> <span class="ident">FromRawHandle</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span> {
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">handle</span>: <span class="ident">HANDLE</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+            <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">handle</span>: <span class="ident">HANDLE</span>) -&gt; <span class="self">Self</span> {
                 <span class="self">Self</span> {
                     <span class="ident">instance</span>: <span class="ident">Arc::new</span>((
                         <span class="ident">PipeOps::from_raw_handle</span>(<span class="ident">handle</span>),
@@ -2040,7 +2040,7 @@
         }
         <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span> {
             <span class="attribute">#[<span class="ident">inline</span>]</span>
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
                 <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">ty</span>))
                     .<span class="ident">field</span>(<span class="string">&quot;handle&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_raw_handle</span>())
                     .<span class="ident">finish</span>()
@@ -2127,96 +2127,96 @@ Created either by using `PipeListener` or by connecting to a named pipe server.
 
 <span class="kw">impl</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">ByteReaderPipeStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">read_bytes</span>(<span class="ident">buf</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">ByteWriterPipeStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">write</span>(<span class="ident">buf</span>)
     }
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">flush</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">DuplexBytePipeStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">read_bytes</span>(<span class="ident">buf</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">DuplexBytePipeStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">write</span>(<span class="ident">buf</span>)
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">flush</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">MsgReaderPipeStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">read_bytes</span>(<span class="ident">buf</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">ReliableReadMsg</span> <span class="kw">for</span> <span class="ident">MsgReaderPipeStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">read_msg</span>(<span class="ident">buf</span>)
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">try_read_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_read_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">try_read_msg</span>(<span class="ident">buf</span>)
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">MsgWriterPipeStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">write</span>(<span class="ident">buf</span>)<span class="question-mark">?</span> <span class="op">=</span><span class="op">=</span> <span class="ident">buf</span>.<span class="ident">len</span>() {
+    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">write</span>(<span class="ident">buf</span>)<span class="question-mark">?</span> <span class="op">==</span> <span class="ident">buf</span>.<span class="ident">len</span>() {
             <span class="prelude-val">Ok</span>(<span class="ident">buf</span>.<span class="ident">len</span>())
         } <span class="kw">else</span> {
             <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(<span class="ident">io::ErrorKind::Other</span>, <span class="ident">PartialMsgWriteError</span>))
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">flush</span>()
     }
 }
 
 <span class="kw">impl</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">DuplexMsgPipeStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">read_bytes</span>(<span class="ident">buf</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">ReliableReadMsg</span> <span class="kw">for</span> <span class="ident">DuplexMsgPipeStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">read_msg</span>(<span class="ident">buf</span>)
     }
-    <span class="kw">fn</span> <span class="ident">try_read_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_read_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">try_read_msg</span>(<span class="ident">buf</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">DuplexMsgPipeStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">write</span>(<span class="ident">buf</span>)<span class="question-mark">?</span> <span class="op">=</span><span class="op">=</span> <span class="ident">buf</span>.<span class="ident">len</span>() {
+    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">write</span>(<span class="ident">buf</span>)<span class="question-mark">?</span> <span class="op">==</span> <span class="ident">buf</span>.<span class="ident">len</span>() {
             <span class="prelude-val">Ok</span>(<span class="ident">buf</span>.<span class="ident">len</span>())
         } <span class="kw">else</span> {
             <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(<span class="ident">io::ErrorKind::Other</span>, <span class="ident">PartialMsgWriteError</span>))
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">instance</span>.<span class="number">0</span>.<span class="ident">flush</span>()
     }
 }
@@ -2252,7 +2252,7 @@ Created either by using `PipeListener` or by connecting to a named pipe server.
 <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect</span><span class="op">&lt;</span><span class="ident">Stream</span>: <span class="ident">PipeStream</span><span class="op">&gt;</span>(
     <span class="ident">pipe_name</span>: <span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">OsStr</span><span class="op">&gt;</span>,
     <span class="ident">hostname</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw">impl</span> <span class="ident">AsRef</span><span class="op">&lt;</span><span class="ident">OsStr</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Stream</span><span class="op">&gt;</span> {
+) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Stream</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">OsString::from</span>(<span class="string">r&quot;\\.&quot;</span>);
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">host</span>) <span class="op">=</span> <span class="ident">hostname</span> {
@@ -2336,11 +2336,11 @@ Created either by using `PipeListener` or by connecting to a named pipe server.
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">client_role</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PipeStreamRole</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">client_role</span>(<span class="self">self</span>) -&gt; <span class="ident">PipeStreamRole</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::ClientToServer</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PipeStreamRole::Writer</span>,
-            <span class="ident"><span class="self">Self</span>::ServerToClient</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PipeStreamRole::Reader</span>,
-            <span class="ident"><span class="self">Self</span>::Duplex</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PipeStreamRole::ReaderAndWriter</span>,
+            <span class="ident"><span class="self">Self</span>::ClientToServer</span> =&gt; <span class="ident">PipeStreamRole::Writer</span>,
+            <span class="ident"><span class="self">Self</span>::ServerToClient</span> =&gt; <span class="ident">PipeStreamRole::Reader</span>,
+            <span class="ident"><span class="self">Self</span>::Duplex</span> =&gt; <span class="ident">PipeStreamRole::ReaderAndWriter</span>,
         }
     }
     <span class="doccomment">/// Returns the role which the pipe server will have in this direction setting.</span>
@@ -2364,11 +2364,11 @@ Created either by using `PipeListener` or by connecting to a named pipe server.
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">server_role</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PipeStreamRole</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">server_role</span>(<span class="self">self</span>) -&gt; <span class="ident">PipeStreamRole</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::ClientToServer</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PipeStreamRole::Reader</span>,
-            <span class="ident"><span class="self">Self</span>::ServerToClient</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PipeStreamRole::Writer</span>,
-            <span class="ident"><span class="self">Self</span>::Duplex</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PipeStreamRole::ReaderAndWriter</span>,
+            <span class="ident"><span class="self">Self</span>::ClientToServer</span> =&gt; <span class="ident">PipeStreamRole::Reader</span>,
+            <span class="ident"><span class="self">Self</span>::ServerToClient</span> =&gt; <span class="ident">PipeStreamRole::Writer</span>,
+            <span class="ident"><span class="self">Self</span>::Duplex</span> =&gt; <span class="ident">PipeStreamRole::ReaderAndWriter</span>,
         }
     }
 }
@@ -2379,7 +2379,7 @@ Created either by using `PipeListener` or by connecting to a named pipe server.
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">/// Returns `Err` if the value is not a valid pipe direction constant.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">op</span>: <span class="ident">DWORD</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, ()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">op</span>: <span class="ident">DWORD</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, ()<span class="op">&gt;</span> {
         <span class="macro">assert!</span>((<span class="number">1</span>..<span class="op">=</span><span class="number">3</span>).<span class="ident">contains</span>(<span class="kw-2">&amp;</span><span class="ident">op</span>));
         <span class="comment">// See the comment block above for why this is safe.</span>
         <span class="kw">unsafe</span> { <span class="ident">mem::transmute</span>(<span class="ident">op</span>) }
@@ -2387,7 +2387,7 @@ Created either by using `PipeListener` or by connecting to a named pipe server.
 }
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">PipeDirection</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">DWORD</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">PipeDirection</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">PipeDirection</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">unsafe</span> { <span class="ident">mem::transmute</span>(<span class="ident">op</span>) }
     }
 }
@@ -2431,11 +2431,11 @@ Created either by using `PipeListener` or by connecting to a named pipe server.
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">direction_as_server</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PipeDirection</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">direction_as_server</span>(<span class="self">self</span>) -&gt; <span class="ident">PipeDirection</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::Reader</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PipeDirection::ClientToServer</span>,
-            <span class="ident"><span class="self">Self</span>::Writer</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PipeDirection::ServerToClient</span>,
-            <span class="ident"><span class="self">Self</span>::ReaderAndWriter</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PipeDirection::Duplex</span>,
+            <span class="ident"><span class="self">Self</span>::Reader</span> =&gt; <span class="ident">PipeDirection::ClientToServer</span>,
+            <span class="ident"><span class="self">Self</span>::Writer</span> =&gt; <span class="ident">PipeDirection::ServerToClient</span>,
+            <span class="ident"><span class="self">Self</span>::ReaderAndWriter</span> =&gt; <span class="ident">PipeDirection::Duplex</span>,
         }
     }
     <span class="doccomment">/// Returns the data flow direction of the data stream, assuming that the value describes the role of the client.</span>
@@ -2459,11 +2459,11 @@ Created either by using `PipeListener` or by connecting to a named pipe server.
     <span class="doccomment">/// # }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">direction_as_client</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">PipeDirection</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">direction_as_client</span>(<span class="self">self</span>) -&gt; <span class="ident">PipeDirection</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::Reader</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PipeDirection::ServerToClient</span>,
-            <span class="ident"><span class="self">Self</span>::Writer</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PipeDirection::ClientToServer</span>,
-            <span class="ident"><span class="self">Self</span>::ReaderAndWriter</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PipeDirection::Duplex</span>,
+            <span class="ident"><span class="self">Self</span>::Reader</span> =&gt; <span class="ident">PipeDirection::ServerToClient</span>,
+            <span class="ident"><span class="self">Self</span>::Writer</span> =&gt; <span class="ident">PipeDirection::ClientToServer</span>,
+            <span class="ident"><span class="self">Self</span>::ReaderAndWriter</span> =&gt; <span class="ident">PipeDirection::Duplex</span>,
         }
     }
 }
@@ -2480,15 +2480,15 @@ Created either by using `PipeListener` or by connecting to a named pipe server.
 <span class="kw">impl</span> <span class="ident">PipeMode</span> {
     <span class="doccomment">/// Converts the value into a raw `DWORD`-typed constant, either `PIPE_TYPE_BYTE` or `PIPE_TYPE_MESSAGE` depending on the value.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_pipe_type</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DWORD</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_pipe_type</span>(<span class="self">self</span>) -&gt; <span class="ident">DWORD</span> {
         <span class="self">self</span> <span class="kw">as</span> <span class="kw">_</span>
     }
     <span class="doccomment">/// Converts the value into a raw `DWORD`-typed constant, either `PIPE_READMODE_BYTE` or `PIPE_READMODE_MESSAGE` depending on the value.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_readmode</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">DWORD</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">to_readmode</span>(<span class="self">self</span>) -&gt; <span class="ident">DWORD</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::Bytes</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PIPE_READMODE_BYTE</span>,
-            <span class="ident"><span class="self">Self</span>::Messages</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">PIPE_READMODE_MESSAGE</span>,
+            <span class="ident"><span class="self">Self</span>::Bytes</span> =&gt; <span class="ident">PIPE_READMODE_BYTE</span>,
+            <span class="ident"><span class="self">Self</span>::Messages</span> =&gt; <span class="ident">PIPE_READMODE_MESSAGE</span>,
         }
     }
 }
@@ -2499,12 +2499,12 @@ Created either by using `PipeListener` or by connecting to a named pipe server.
     <span class="doccomment">/// # Errors</span>
     <span class="doccomment">/// Returns `Err` if the value is not a valid pipe stream mode constant.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">op</span>: <span class="ident">DWORD</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, ()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">op</span>: <span class="ident">DWORD</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, ()<span class="op">&gt;</span> {
         <span class="comment">// It&#39;s nicer to only match than to check and transmute</span>
         <span class="kw">match</span> <span class="ident">op</span> {
-            <span class="ident">PIPE_TYPE_BYTE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Bytes</span>),
-            <span class="ident">PIPE_READMODE_MESSAGE</span> <span class="op">|</span> <span class="ident">PIPE_TYPE_MESSAGE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Messages</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(()),
+            <span class="ident">PIPE_TYPE_BYTE</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Bytes</span>),
+            <span class="ident">PIPE_READMODE_MESSAGE</span> <span class="op">|</span> <span class="ident">PIPE_TYPE_MESSAGE</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Messages</span>),
+            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(()),
         }
     }
 }

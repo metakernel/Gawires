@@ -297,33 +297,33 @@
 }
 
 <span class="kw">impl</span> <span class="ident">MountOption</span> {
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">MountOption</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">from_str</span>(<span class="ident">s</span>: <span class="kw-2">&amp;</span><span class="ident">str</span>) -&gt; <span class="ident">MountOption</span> {
         <span class="kw">match</span> <span class="ident">s</span> {
-            <span class="string">&quot;auto_unmount&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::AutoUnmount</span>,
-            <span class="string">&quot;allow_other&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::AllowOther</span>,
-            <span class="string">&quot;allow_root&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::AllowRoot</span>,
-            <span class="string">&quot;default_permissions&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::DefaultPermissions</span>,
-            <span class="string">&quot;dev&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::Dev</span>,
-            <span class="string">&quot;nodev&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::NoDev</span>,
-            <span class="string">&quot;suid&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::Suid</span>,
-            <span class="string">&quot;nosuid&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::NoSuid</span>,
-            <span class="string">&quot;ro&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::RO</span>,
-            <span class="string">&quot;rw&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::RW</span>,
-            <span class="string">&quot;exec&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::Exec</span>,
-            <span class="string">&quot;noexec&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::NoExec</span>,
-            <span class="string">&quot;atime&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::Atime</span>,
-            <span class="string">&quot;noatime&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::NoAtime</span>,
-            <span class="string">&quot;dirsync&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::DirSync</span>,
-            <span class="string">&quot;sync&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::Sync</span>,
-            <span class="string">&quot;async&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::Async</span>,
-            <span class="ident">x</span> <span class="kw">if</span> <span class="ident">x</span>.<span class="ident">starts_with</span>(<span class="string">&quot;fsname=&quot;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::FSName</span>(<span class="ident">x</span>[<span class="number">7</span>..].<span class="ident">into</span>()),
-            <span class="ident">x</span> <span class="kw">if</span> <span class="ident">x</span>.<span class="ident">starts_with</span>(<span class="string">&quot;subtype=&quot;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::Subtype</span>(<span class="ident">x</span>[<span class="number">8</span>..].<span class="ident">into</span>()),
-            <span class="ident">x</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">MountOption::CUSTOM</span>(<span class="ident">x</span>.<span class="ident">into</span>()),
+            <span class="string">&quot;auto_unmount&quot;</span> =&gt; <span class="ident">MountOption::AutoUnmount</span>,
+            <span class="string">&quot;allow_other&quot;</span> =&gt; <span class="ident">MountOption::AllowOther</span>,
+            <span class="string">&quot;allow_root&quot;</span> =&gt; <span class="ident">MountOption::AllowRoot</span>,
+            <span class="string">&quot;default_permissions&quot;</span> =&gt; <span class="ident">MountOption::DefaultPermissions</span>,
+            <span class="string">&quot;dev&quot;</span> =&gt; <span class="ident">MountOption::Dev</span>,
+            <span class="string">&quot;nodev&quot;</span> =&gt; <span class="ident">MountOption::NoDev</span>,
+            <span class="string">&quot;suid&quot;</span> =&gt; <span class="ident">MountOption::Suid</span>,
+            <span class="string">&quot;nosuid&quot;</span> =&gt; <span class="ident">MountOption::NoSuid</span>,
+            <span class="string">&quot;ro&quot;</span> =&gt; <span class="ident">MountOption::RO</span>,
+            <span class="string">&quot;rw&quot;</span> =&gt; <span class="ident">MountOption::RW</span>,
+            <span class="string">&quot;exec&quot;</span> =&gt; <span class="ident">MountOption::Exec</span>,
+            <span class="string">&quot;noexec&quot;</span> =&gt; <span class="ident">MountOption::NoExec</span>,
+            <span class="string">&quot;atime&quot;</span> =&gt; <span class="ident">MountOption::Atime</span>,
+            <span class="string">&quot;noatime&quot;</span> =&gt; <span class="ident">MountOption::NoAtime</span>,
+            <span class="string">&quot;dirsync&quot;</span> =&gt; <span class="ident">MountOption::DirSync</span>,
+            <span class="string">&quot;sync&quot;</span> =&gt; <span class="ident">MountOption::Sync</span>,
+            <span class="string">&quot;async&quot;</span> =&gt; <span class="ident">MountOption::Async</span>,
+            <span class="ident">x</span> <span class="kw">if</span> <span class="ident">x</span>.<span class="ident">starts_with</span>(<span class="string">&quot;fsname=&quot;</span>) =&gt; <span class="ident">MountOption::FSName</span>(<span class="ident">x</span>[<span class="number">7</span>..].<span class="ident">into</span>()),
+            <span class="ident">x</span> <span class="kw">if</span> <span class="ident">x</span>.<span class="ident">starts_with</span>(<span class="string">&quot;subtype=&quot;</span>) =&gt; <span class="ident">MountOption::Subtype</span>(<span class="ident">x</span>[<span class="number">8</span>..].<span class="ident">into</span>()),
+            <span class="ident">x</span> =&gt; <span class="ident">MountOption::CUSTOM</span>(<span class="ident">x</span>.<span class="ident">into</span>()),
         }
     }
 }
 
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">check_option_conflicts</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span>[<span class="ident">MountOption</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io::Error</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">check_option_conflicts</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span>[<span class="ident">MountOption</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">io::Error</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">options_set</span> <span class="op">=</span> <span class="ident">HashSet::new</span>();
     <span class="ident">options_set</span>.<span class="ident">extend</span>(<span class="ident">options</span>.<span class="ident">iter</span>().<span class="ident">cloned</span>());
     <span class="kw">let</span> <span class="ident">conflicting</span>: <span class="ident">HashSet</span><span class="op">&lt;</span><span class="ident">MountOption</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">options</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="ident">conflicts_with</span>).<span class="ident">flatten</span>().<span class="ident">collect</span>();
@@ -338,56 +338,56 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">conflicts_with</span>(<span class="ident">option</span>: <span class="kw-2">&amp;</span><span class="ident">MountOption</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MountOption</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">conflicts_with</span>(<span class="ident">option</span>: <span class="kw-2">&amp;</span><span class="ident">MountOption</span>) -&gt; <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MountOption</span><span class="op">&gt;</span> {
     <span class="kw">match</span> <span class="ident">option</span> {
-        <span class="ident">MountOption::FSName</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[],
-        <span class="ident">MountOption::Subtype</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[],
-        <span class="ident">MountOption::CUSTOM</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[],
-        <span class="ident">MountOption::AllowOther</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::AllowRoot</span>],
-        <span class="ident">MountOption::AllowRoot</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::AllowOther</span>],
-        <span class="ident">MountOption::AutoUnmount</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[],
-        <span class="ident">MountOption::DefaultPermissions</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[],
-        <span class="ident">MountOption::Dev</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::NoDev</span>],
-        <span class="ident">MountOption::NoDev</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::Dev</span>],
-        <span class="ident">MountOption::Suid</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::NoSuid</span>],
-        <span class="ident">MountOption::NoSuid</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::Suid</span>],
-        <span class="ident">MountOption::RO</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::RW</span>],
-        <span class="ident">MountOption::RW</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::RO</span>],
-        <span class="ident">MountOption::Exec</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::NoExec</span>],
-        <span class="ident">MountOption::NoExec</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::Exec</span>],
-        <span class="ident">MountOption::Atime</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::NoAtime</span>],
-        <span class="ident">MountOption::NoAtime</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::Atime</span>],
-        <span class="ident">MountOption::DirSync</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[],
-        <span class="ident">MountOption::Sync</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::Async</span>],
-        <span class="ident">MountOption::Async</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">vec!</span>[<span class="ident">MountOption::Sync</span>],
+        <span class="ident">MountOption::FSName</span>(<span class="kw">_</span>) =&gt; <span class="macro">vec!</span>[],
+        <span class="ident">MountOption::Subtype</span>(<span class="kw">_</span>) =&gt; <span class="macro">vec!</span>[],
+        <span class="ident">MountOption::CUSTOM</span>(<span class="kw">_</span>) =&gt; <span class="macro">vec!</span>[],
+        <span class="ident">MountOption::AllowOther</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::AllowRoot</span>],
+        <span class="ident">MountOption::AllowRoot</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::AllowOther</span>],
+        <span class="ident">MountOption::AutoUnmount</span> =&gt; <span class="macro">vec!</span>[],
+        <span class="ident">MountOption::DefaultPermissions</span> =&gt; <span class="macro">vec!</span>[],
+        <span class="ident">MountOption::Dev</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::NoDev</span>],
+        <span class="ident">MountOption::NoDev</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::Dev</span>],
+        <span class="ident">MountOption::Suid</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::NoSuid</span>],
+        <span class="ident">MountOption::NoSuid</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::Suid</span>],
+        <span class="ident">MountOption::RO</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::RW</span>],
+        <span class="ident">MountOption::RW</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::RO</span>],
+        <span class="ident">MountOption::Exec</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::NoExec</span>],
+        <span class="ident">MountOption::NoExec</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::Exec</span>],
+        <span class="ident">MountOption::Atime</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::NoAtime</span>],
+        <span class="ident">MountOption::NoAtime</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::Atime</span>],
+        <span class="ident">MountOption::DirSync</span> =&gt; <span class="macro">vec!</span>[],
+        <span class="ident">MountOption::Sync</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::Async</span>],
+        <span class="ident">MountOption::Async</span> =&gt; <span class="macro">vec!</span>[<span class="ident">MountOption::Sync</span>],
     }
 }
 
 <span class="comment">// Format option to be passed to libfuse or kernel</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">option_to_string</span>(<span class="ident">option</span>: <span class="kw-2">&amp;</span><span class="ident">MountOption</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">option_to_string</span>(<span class="ident">option</span>: <span class="kw-2">&amp;</span><span class="ident">MountOption</span>) -&gt; <span class="ident">String</span> {
     <span class="kw">match</span> <span class="ident">option</span> {
-        <span class="ident">MountOption::FSName</span>(<span class="ident">name</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;fsname={}&quot;</span>, <span class="ident">name</span>),
-        <span class="ident">MountOption::Subtype</span>(<span class="ident">subtype</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">format!</span>(<span class="string">&quot;subtype={}&quot;</span>, <span class="ident">subtype</span>),
-        <span class="ident">MountOption::CUSTOM</span>(<span class="ident">value</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">value</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::AutoUnmount</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;auto_unmount&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::AllowOther</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;allow_other&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::FSName</span>(<span class="ident">name</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;fsname={}&quot;</span>, <span class="ident">name</span>),
+        <span class="ident">MountOption::Subtype</span>(<span class="ident">subtype</span>) =&gt; <span class="macro">format!</span>(<span class="string">&quot;subtype={}&quot;</span>, <span class="ident">subtype</span>),
+        <span class="ident">MountOption::CUSTOM</span>(<span class="ident">value</span>) =&gt; <span class="ident">value</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::AutoUnmount</span> =&gt; <span class="string">&quot;auto_unmount&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::AllowOther</span> =&gt; <span class="string">&quot;allow_other&quot;</span>.<span class="ident">to_string</span>(),
         <span class="comment">// AllowRoot is implemented by allowing everyone access and then restricting to</span>
         <span class="comment">// root + owner within fuser</span>
-        <span class="ident">MountOption::AllowRoot</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;allow_other&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::DefaultPermissions</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;default_permissions&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::Dev</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;dev&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::NoDev</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;nodev&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::Suid</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;suid&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::NoSuid</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;nosuid&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::RO</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;ro&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::RW</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;rw&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::Exec</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;exec&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::NoExec</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;noexec&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::Atime</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;atime&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::NoAtime</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;noatime&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::DirSync</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;dirsync&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::Sync</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;sync&quot;</span>.<span class="ident">to_string</span>(),
-        <span class="ident">MountOption::Async</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;async&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::AllowRoot</span> =&gt; <span class="string">&quot;allow_other&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::DefaultPermissions</span> =&gt; <span class="string">&quot;default_permissions&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::Dev</span> =&gt; <span class="string">&quot;dev&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::NoDev</span> =&gt; <span class="string">&quot;nodev&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::Suid</span> =&gt; <span class="string">&quot;suid&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::NoSuid</span> =&gt; <span class="string">&quot;nosuid&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::RO</span> =&gt; <span class="string">&quot;ro&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::RW</span> =&gt; <span class="string">&quot;rw&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::Exec</span> =&gt; <span class="string">&quot;exec&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::NoExec</span> =&gt; <span class="string">&quot;noexec&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::Atime</span> =&gt; <span class="string">&quot;atime&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::NoAtime</span> =&gt; <span class="string">&quot;noatime&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::DirSync</span> =&gt; <span class="string">&quot;dirsync&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::Sync</span> =&gt; <span class="string">&quot;sync&quot;</span>.<span class="ident">to_string</span>(),
+        <span class="ident">MountOption::Async</span> =&gt; <span class="string">&quot;async&quot;</span>.<span class="ident">to_string</span>(),
     }
 }
 
@@ -395,7 +395,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// Input: [&quot;-o&quot;, &quot;suid&quot;, &quot;-o&quot;, &quot;ro,nodev,noexec&quot;, &quot;-osync&quot;]</span>
 <span class="doccomment">/// Output Ok([Suid, RO, NoDev, NoExec, Sync])</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">parse_options_from_args</span>(<span class="ident">args</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">OsStr</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MountOption</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">parse_options_from_args</span>(<span class="ident">args</span>: <span class="kw-2">&amp;</span>[<span class="kw-2">&amp;</span><span class="ident">OsStr</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">MountOption</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">io::Error::new</span>(<span class="ident">ErrorKind::InvalidInput</span>, <span class="ident">x</span>);
     <span class="kw">let</span> <span class="ident">args</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="ident">to_str</span>()).<span class="ident">collect</span>();
     <span class="kw">let</span> <span class="ident">args</span> <span class="op">=</span> <span class="ident">args</span>.<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">err</span>(<span class="string">&quot;Error parsing args: Invalid UTF-8&quot;</span>.<span class="ident">to_owned</span>()))<span class="question-mark">?</span>;
@@ -403,12 +403,12 @@
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="macro">vec!</span>[];
     <span class="kw">loop</span> {
         <span class="kw">let</span> <span class="ident">opt</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">it</span>.<span class="ident">next</span>() {
-            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span>,
-            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="string">&quot;-o&quot;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">*</span><span class="ident">it</span>.<span class="ident">next</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
+            <span class="prelude-val">None</span> =&gt; <span class="kw">break</span>,
+            <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="string">&quot;-o&quot;</span>) =&gt; <span class="kw-2">*</span><span class="ident">it</span>.<span class="ident">next</span>().<span class="ident">ok_or_else</span>(<span class="op">|</span><span class="op">|</span> {
                 <span class="ident">err</span>(<span class="string">&quot;Error parsing args: Expected option, reached end of args&quot;</span>.<span class="ident">to_owned</span>())
             })<span class="question-mark">?</span>,
-            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="kw">if</span> <span class="ident">x</span>.<span class="ident">starts_with</span>(<span class="string">&quot;-o&quot;</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="ident">x</span>[<span class="number">2</span>..],
-            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>(<span class="macro">format!</span>(<span class="string">&quot;Error parsing args: expected -o, got {}&quot;</span>, <span class="ident">x</span>))),
+            <span class="prelude-val">Some</span>(<span class="ident">x</span>) <span class="kw">if</span> <span class="ident">x</span>.<span class="ident">starts_with</span>(<span class="string">&quot;-o&quot;</span>) =&gt; <span class="kw-2">&amp;</span><span class="ident">x</span>[<span class="number">2</span>..],
+            <span class="prelude-val">Some</span>(<span class="ident">x</span>) =&gt; <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">err</span>(<span class="macro">format!</span>(<span class="string">&quot;Error parsing args: expected -o, got {}&quot;</span>, <span class="ident">x</span>))),
         };
         <span class="kw">for</span> <span class="ident">x</span> <span class="kw">in</span> <span class="ident">opt</span>.<span class="ident">split</span>(<span class="string">&#39;,&#39;</span>) {
             <span class="ident">out</span>.<span class="ident">push</span>(<span class="ident">MountOption::from_str</span>(<span class="ident">x</span>))

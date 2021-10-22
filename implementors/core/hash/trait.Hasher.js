@@ -1,3 +1,3 @@
 (function() {var implementors = {};
-implementors["xxhash_rust"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/1.56.0/core/hash/trait.Hasher.html\" title=\"trait core::hash::Hasher\">Hasher</a> for <a class=\"struct\" href=\"xxhash_rust/xxh3/struct.Xxh3.html\" title=\"struct xxhash_rust::xxh3::Xxh3\">Xxh3</a>","synthetic":false,"types":["xxhash_rust::xxh3::Xxh3"]}];
+implementors["xxhash_rust"] = [{"text":"impl <a class=\"trait\" href=\"https://doc.rust-lang.org/nightly/core/hash/trait.Hasher.html\" title=\"trait core::hash::Hasher\">Hasher</a> for <a class=\"struct\" href=\"xxhash_rust/xxh3/struct.Xxh3.html\" title=\"struct xxhash_rust::xxh3::Xxh3\">Xxh3</a>","synthetic":false,"types":["xxhash_rust::xxh3::Xxh3"]}];
 if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

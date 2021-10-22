@@ -119,7 +119,7 @@
 
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_macros</span>)]</span>
 <span class="macro">macro_rules!</span> <span class="ident">fake_signals</span> {
-    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>),<span class="op">+</span> $(,)<span class="question-mark">?</span>) <span class="op">=</span><span class="op">&gt;</span> (
+    ($(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>:<span class="ident">expr</span>),<span class="op">+</span> $(,)<span class="question-mark">?</span>) =&gt; (
         $(
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">unix</span>))]</span>
             <span class="kw">pub</span>(<span class="kw">super</span>) <span class="kw">const</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span> : <span class="ident">i32</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">val</span>;

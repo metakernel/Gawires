@@ -255,7 +255,7 @@
 <span class="doccomment">/// extern crate page_size;</span>
 <span class="doccomment">/// println!(&quot;{}&quot;, page_size::get());</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>() -&gt; <span class="ident">usize</span> {
     <span class="ident">get_helper</span>()
 }
 
@@ -267,7 +267,7 @@
 <span class="doccomment">/// extern crate page_size;</span>
 <span class="doccomment">/// println!(&quot;{}&quot;, page_size::get_granularity());</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_granularity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_granularity</span>() -&gt; <span class="ident">usize</span> {
     <span class="ident">get_granularity_helper</span>()
 }
 
@@ -275,7 +275,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">unix</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;no_std&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">fn</span> <span class="ident">get_helper</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">get_helper</span>() -&gt; <span class="ident">usize</span> {
     <span class="kw">static</span> <span class="ident">INIT</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
     
     <span class="kw-2">*</span><span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="ident">unix::get</span>)
@@ -283,7 +283,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">unix</span>, <span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;no_std&quot;</span>)))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">fn</span> <span class="ident">get_helper</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">get_helper</span>() -&gt; <span class="ident">usize</span> {
     <span class="kw">static</span> <span class="ident">INIT</span>: <span class="ident">Once</span> <span class="op">=</span> <span class="ident">Once::new</span>();
     <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">PAGE_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
 
@@ -297,7 +297,7 @@
 <span class="comment">// The page size works well.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">fn</span> <span class="ident">get_granularity_helper</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">get_granularity_helper</span>() -&gt; <span class="ident">usize</span> {
     <span class="ident">get_helper</span>()
 }
 
@@ -306,7 +306,7 @@
     <span class="kw">use</span> <span class="ident">libc</span>::{<span class="ident">_SC_PAGESIZE</span>, <span class="ident">sysconf</span>};
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>() -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="ident">sysconf</span>(<span class="ident">_SC_PAGESIZE</span>) <span class="kw">as</span> <span class="ident">usize</span>
         }
@@ -317,7 +317,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">windows</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;no_std&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">fn</span> <span class="ident">get_helper</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">get_helper</span>() -&gt; <span class="ident">usize</span> {
     <span class="kw">static</span> <span class="ident">INIT</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
     
     <span class="kw-2">*</span><span class="ident">INIT</span>.<span class="ident">call_once</span>(<span class="ident">windows::get</span>)
@@ -325,7 +325,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">windows</span>, <span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;no_std&quot;</span>)))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">fn</span> <span class="ident">get_helper</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">get_helper</span>() -&gt; <span class="ident">usize</span> {
     <span class="kw">static</span> <span class="ident">INIT</span>: <span class="ident">Once</span> <span class="op">=</span> <span class="ident">Once::new</span>();
     <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">PAGE_SIZE</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
 
@@ -337,7 +337,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">windows</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;no_std&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">fn</span> <span class="ident">get_granularity_helper</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">get_granularity_helper</span>() -&gt; <span class="ident">usize</span> {
     <span class="kw">static</span> <span class="ident">GRINIT</span>: <span class="ident">Once</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Once::new</span>();
     
     <span class="kw-2">*</span><span class="ident">GRINIT</span>.<span class="ident">call_once</span>(<span class="ident">windows::get_granularity</span>)
@@ -345,7 +345,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">windows</span>, <span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;no_std&quot;</span>)))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">fn</span> <span class="ident">get_granularity_helper</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">get_granularity_helper</span>() -&gt; <span class="ident">usize</span> {
     <span class="kw">static</span> <span class="ident">GRINIT</span>: <span class="ident">Once</span> <span class="op">=</span> <span class="ident">Once::new</span>();
     <span class="kw">static</span> <span class="kw-2">mut</span> <span class="ident">GRANULARITY</span>: <span class="ident">usize</span> <span class="op">=</span> <span class="number">0</span>;
 
@@ -366,7 +366,7 @@
     <span class="kw">use</span> <span class="ident">winapi::um::sysinfoapi::GetSystemInfo</span>;
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>() -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span>: <span class="ident">SYSTEM_INFO</span> <span class="op">=</span> <span class="ident">mem::zeroed</span>();
             <span class="ident">GetSystemInfo</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">info</span> <span class="kw">as</span> <span class="ident">LPSYSTEM_INFO</span>);
@@ -376,7 +376,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_granularity</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_granularity</span>() -&gt; <span class="ident">usize</span> {
         <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">info</span>: <span class="ident">SYSTEM_INFO</span> <span class="op">=</span> <span class="ident">mem::zeroed</span>();
             <span class="ident">GetSystemInfo</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">info</span> <span class="kw">as</span> <span class="ident">LPSYSTEM_INFO</span>);
@@ -390,7 +390,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">unix</span>, <span class="ident">windows</span>)))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">fn</span> <span class="ident">get_helper</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+<span class="kw">fn</span> <span class="ident">get_helper</span>() -&gt; <span class="ident">usize</span> {
     <span class="number">4096</span> <span class="comment">// 4k is the default on many systems</span>
 }
 

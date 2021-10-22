@@ -466,7 +466,7 @@
 <span class="doccomment">/// # Ok(()) }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_handler</span>(<span class="ident">signal_type</span>: <span class="ident">SignalType</span>, <span class="ident">handler</span>: <span class="ident">SignalHandler</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_handler</span>(<span class="ident">signal_type</span>: <span class="ident">SignalType</span>, <span class="ident">handler</span>: <span class="ident">SignalHandler</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
     <span class="kw">if</span> <span class="ident">signal_type</span>.<span class="ident">is_unsafe</span>() {
         <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SetHandlerError::UnsafeSignal</span>);
     }
@@ -511,7 +511,7 @@
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_unsafe_handler</span>(
     <span class="ident">signal_type</span>: <span class="ident">SignalType</span>,
     <span class="ident">handler</span>: <span class="ident">SignalHandler</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">signal_type</span> <span class="op">=</span> <span class="ident">signal_type</span> <span class="kw">as</span> <span class="ident">u64</span>;
     <span class="kw">let</span> <span class="ident">handlers</span> <span class="op">=</span> <span class="ident">HANDLERS</span>.<span class="ident">upgradable_read</span>();
     <span class="kw">let</span> <span class="ident">new_signal</span> <span class="op">=</span> <span class="ident">handlers</span>.<span class="ident">get</span>(<span class="ident">signal_type</span>).<span class="ident">is_none</span>();
@@ -522,8 +522,8 @@
         <span class="ident">drop</span>(<span class="ident">handlers</span>);
 
         <span class="kw">let</span> <span class="ident">hook_val</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">handler</span> {
-            <span class="ident">SignalHandler::Default</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SIG_DFL</span>,
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">signal_receiver</span> <span class="kw">as</span> <span class="ident">usize</span>,
+            <span class="ident">SignalHandler::Default</span> =&gt; <span class="ident">SIG_DFL</span>,
+            <span class="kw">_</span> =&gt; <span class="ident">signal_receiver</span> <span class="kw">as</span> <span class="ident">usize</span>,
         };
         <span class="kw">unsafe</span> {
             <span class="comment">// SAFETY: we&#39;re using a correct value for the hook</span>
@@ -537,7 +537,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">all</span>(<span class="ident">windows</span>, <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;signals&quot;</span>))]</span>
 <span class="kw">static</span> <span class="ident">HANDLERS</span>: <span class="ident">Lazy</span><span class="op">&lt;</span><span class="ident">RwLock</span><span class="op">&lt;</span><span class="ident">IntMap</span><span class="op">&lt;</span><span class="ident">SignalHandler</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="op">=</span> <span class="ident">Lazy::new</span>(<span class="op">|</span><span class="op">|</span> <span class="ident">RwLock::new</span>(<span class="ident">IntMap::new</span>()));
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">install_hook</span>(<span class="ident">signum</span>: <span class="ident">i32</span>, <span class="ident">hook</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">install_hook</span>(<span class="ident">signum</span>: <span class="ident">i32</span>, <span class="ident">hook</span>: <span class="ident">usize</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), ()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">success</span> <span class="op">=</span> { <span class="ident">libc::signal</span>(<span class="ident">signum</span>, <span class="ident">hook</span>) <span class="op">!</span><span class="op">=</span> <span class="ident">libc::SIG_ERR</span> <span class="kw">as</span> <span class="kw">_</span> };
     <span class="kw">if</span> <span class="ident">success</span> {
         <span class="prelude-val">Ok</span>(())
@@ -557,10 +557,10 @@
             <span class="kw-2">*</span><span class="ident">val</span>
         };
         <span class="kw">match</span> <span class="ident">handler</span> {
-            <span class="ident">SignalHandler::Ignore</span> <span class="op">=</span><span class="op">&gt;</span> {}
-            <span class="ident">SignalHandler::Hook</span>(<span class="ident">hook</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">hook</span>.<span class="ident">inner</span>()(),
-            <span class="ident">SignalHandler::NoReturnHook</span>(<span class="ident">hook</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">hook</span>.<span class="ident">inner</span>()(),
-            <span class="ident">SignalHandler::Default</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(
+            <span class="ident">SignalHandler::Ignore</span> =&gt; {}
+            <span class="ident">SignalHandler::Hook</span>(<span class="ident">hook</span>) =&gt; <span class="ident">hook</span>.<span class="ident">inner</span>()(),
+            <span class="ident">SignalHandler::NoReturnHook</span>(<span class="ident">hook</span>) =&gt; <span class="ident">hook</span>.<span class="ident">inner</span>()(),
+            <span class="ident">SignalHandler::Default</span> =&gt; <span class="macro">unreachable!</span>(
                 <span class="string">&quot;signal receiver was unregistered but has been called by the OS anyway&quot;</span>
             ),
         }
@@ -607,14 +607,14 @@ an unsafe signal was attempted to be handled using `set_handler` instead of `set
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Default`]: #variant.Default.html &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_default</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_default</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident"><span class="self">Self</span>::Default</span>)
     }
     <span class="doccomment">/// Returns `true` for the [`Ignore`] variant, `false` otherwise.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Ignore`]: #variant.Ignore.html &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ignore</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ignore</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident"><span class="self">Self</span>::Ignore</span>)
     }
     <span class="doccomment">/// Returns `true` for the [`Hook`] and [`NoReturnHook`] variants, `false` otherwise.</span>
@@ -622,7 +622,7 @@ an unsafe signal was attempted to be handled using `set_handler` instead of `set
     <span class="doccomment">/// [`Hook`]: #variant.Hook.html &quot; &quot;</span>
     <span class="doccomment">/// [`NoReturnHook`]: #variant.NoReturnHook.html &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_hook</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_hook</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident"><span class="self">Self</span>::Hook</span>(..))
     }
     <span class="doccomment">/// Creates a handler which calls the specified function.</span>
@@ -632,7 +632,7 @@ an unsafe signal was attempted to be handled using `set_handler` instead of `set
     <span class="doccomment">///</span>
     <span class="doccomment">/// [module-level section on signal-safe C functions]: index.html#signal-safe-c-functions &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_fn</span>(<span class="ident">function</span>: <span class="kw">fn</span>()) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_fn</span>(<span class="ident">function</span>: <span class="kw">fn</span>()) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Hook</span>(<span class="ident">SignalHook::from_fn</span>(<span class="ident">function</span>))
     }
     <span class="doccomment">/// Creates a handler which calls the specified function and is known to never return.</span>
@@ -642,7 +642,7 @@ an unsafe signal was attempted to be handled using `set_handler` instead of `set
     <span class="doccomment">///</span>
     <span class="doccomment">/// [module-level section on signal-safe C functions]: index.html#signal-safe-c-functions &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_fn_noreturn</span>(<span class="ident">function</span>: <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_fn_noreturn</span>(<span class="ident">function</span>: <span class="kw">fn</span>() -&gt; <span class="op">!</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::NoReturnHook</span>(<span class="ident">NoReturnSignalHook::from_fn</span>(<span class="ident">function</span>))
     }
 }
@@ -651,7 +651,7 @@ an unsafe signal was attempted to be handled using `set_handler` instead of `set
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`SignalHandler::Default`]: #variant.Default &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Default</span>
     }
 }
@@ -668,18 +668,18 @@ an unsafe signal was attempted to be handled using `set_handler` instead of `set
     <span class="doccomment">///</span>
     <span class="doccomment">/// [module-level section on signal-safe functions]: index.html#signal-safe-functions &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_fn</span>(<span class="ident">function</span>: <span class="kw">fn</span>()) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_fn</span>(<span class="ident">function</span>: <span class="kw">fn</span>()) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">function</span>)
     }
     <span class="doccomment">/// Returns the wrapped function.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">fn</span>() {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="self">self</span>) -&gt; <span class="kw">fn</span>() {
         <span class="self">self</span>.<span class="number">0</span>
     }
 }
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SignalHook</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw">fn</span>() {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalHook</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalHook</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">op</span>.<span class="number">0</span>
     }
 }
@@ -687,7 +687,7 @@ an unsafe signal was attempted to be handled using `set_handler` instead of `set
 <span class="doccomment">/// A function which can be used as a signal handler, but one which also never returns.</span>
 <span class="attribute">#[<span class="ident">repr</span>(<span class="ident">transparent</span>)]</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
-<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoReturnSignalHook</span>(<span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span>);
+<span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">NoReturnSignalHook</span>(<span class="kw">fn</span>() -&gt; <span class="op">!</span>);
 <span class="kw">impl</span> <span class="ident">NoReturnSignalHook</span> {
     <span class="doccomment">/// Creates a hook which calls the specified function.</span>
     <span class="doccomment">///</span>
@@ -696,18 +696,18 @@ an unsafe signal was attempted to be handled using `set_handler` instead of `set
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`SignalHook`]: struct.SignalHook.html &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_fn</span>(<span class="ident">function</span>: <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_fn</span>(<span class="ident">function</span>: <span class="kw">fn</span>() -&gt; <span class="op">!</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">function</span>)
     }
     <span class="doccomment">/// Returns the wrapped function.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="self">self</span>) -&gt; <span class="kw">fn</span>() -&gt; <span class="op">!</span> {
         <span class="self">self</span>.<span class="number">0</span>
     }
 }
-<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">NoReturnSignalHook</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw">fn</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="op">!</span> {
+<span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">NoReturnSignalHook</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw">fn</span>() -&gt; <span class="op">!</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">NoReturnSignalHook</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">NoReturnSignalHook</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">op</span>.<span class="number">0</span>
     }
 }
@@ -760,7 +760,7 @@ an unsafe signal was attempted to be handled using `set_handler` instead of `set
 <span class="kw">impl</span> <span class="ident">SignalType</span> {
     <span class="doccomment">/// Returns `true` if the value is a signal which requires its custom handler functions to never return, `false` otherwise.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">requires_diverging_hook</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">requires_diverging_hook</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(
             <span class="self">self</span>,
             <span class="ident"><span class="self">Self</span>::SegmentationFault</span> <span class="op">|</span> <span class="ident"><span class="self">Self</span>::IllegalInstruction</span> <span class="op">|</span> <span class="ident"><span class="self">Self</span>::MathException</span>
@@ -768,40 +768,40 @@ an unsafe signal was attempted to be handled using `set_handler` instead of `set
     }
     <span class="doccomment">/// Returns `true` if the value is an unsafe signal which requires unsafe code when setting a handling method, `false` otherwise.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_unsafe</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_unsafe</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident"><span class="self">Self</span>::SegmentationFault</span> <span class="op">|</span> <span class="ident"><span class="self">Self</span>::IllegalInstruction</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SignalType</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">i32</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalType</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">op</span> <span class="kw">as</span> <span class="ident">i32</span>
     }
 }
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SignalType</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">u32</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalType</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">op</span> <span class="kw">as</span> <span class="ident">u32</span>
     }
 }
 <span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SignalType</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">UnknownSignalError</span>;
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">i32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">value</span> {
-            <span class="ident">SIGINT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::KeyboardInterrupt</span>),
-            <span class="ident">SIGILL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::IllegalInstruction</span>),
-            <span class="ident">SIGABRT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Abort</span>),
-            <span class="ident">SIGFPE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::MathException</span>),
-            <span class="ident">SIGSEGV</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::SegmentationFault</span>),
-            <span class="ident">SIGTERM</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Termination</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">UnknownSignalError</span> { <span class="ident">value</span> }),
+            <span class="ident">SIGINT</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::KeyboardInterrupt</span>),
+            <span class="ident">SIGILL</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::IllegalInstruction</span>),
+            <span class="ident">SIGABRT</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Abort</span>),
+            <span class="ident">SIGFPE</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::MathException</span>),
+            <span class="ident">SIGSEGV</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::SegmentationFault</span>),
+            <span class="ident">SIGTERM</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Termination</span>),
+            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">UnknownSignalError</span> { <span class="ident">value</span> }),
         }
     }
 }
 <span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SignalType</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">UnknownSignalError</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         (<span class="ident">value</span> <span class="kw">as</span> <span class="ident">u32</span>).<span class="ident">try_into</span>()
     }
 }
@@ -817,27 +817,27 @@ an unsafe signal was attempted to be handled using `set_handler` instead of `set
 }
 <span class="kw">impl</span> <span class="ident">fmt::Display</span> <span class="kw">for</span> <span class="ident">UnknownSignalError</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;unknown signal value {}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">fmt::Binary</span> <span class="kw">for</span> <span class="ident">UnknownSignalError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;unknown signal value {:b}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">fmt::LowerHex</span> <span class="kw">for</span> <span class="ident">UnknownSignalError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;unknown signal value {:x}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">fmt::UpperExp</span> <span class="kw">for</span> <span class="ident">UnknownSignalError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;unknown signal value {:X}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">fmt::Octal</span> <span class="kw">for</span> <span class="ident">UnknownSignalError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;unknown signal value {:o}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>)
     }
 }

@@ -1348,7 +1348,7 @@
 <span class="doccomment">/// Returns `true` if the specified signal is a valid real-time signal value, `false` otherwise.</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::absurd_extreme_comparisons</span>)]</span> <span class="comment">// For systems where there are no realtime signals</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_valid_rtsignal</span>(<span class="ident">rtsignal</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_valid_rtsignal</span>(<span class="ident">rtsignal</span>: <span class="ident">u32</span>) -&gt; <span class="ident">bool</span> {
     <span class="ident">rtsignal</span> <span class="op">&lt;</span> <span class="ident">NUM_REALTIME_SIGNALS</span>
 }
 
@@ -1388,7 +1388,7 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`HandlerOptions`]: struct.HandlerOptions.html &quot; &quot;</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_handler</span>(<span class="ident">signal_type</span>: <span class="ident">SignalType</span>, <span class="ident">handler</span>: <span class="ident">SignalHandler</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_handler</span>(<span class="ident">signal_type</span>: <span class="ident">SignalType</span>, <span class="ident">handler</span>: <span class="ident">SignalHandler</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
     <span class="ident">HandlerOptions::for_signal</span>(<span class="ident">signal_type</span>)
         .<span class="ident">set_new_handler</span>(<span class="ident">handler</span>)
         .<span class="ident">set</span>()
@@ -1432,7 +1432,7 @@
 <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_unsafe_handler</span>(
     <span class="ident">signal_type</span>: <span class="ident">SignalType</span>,
     <span class="ident">handler</span>: <span class="ident">SignalHandler</span>,
-) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
+) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
     <span class="ident">HandlerOptions::for_signal</span>(<span class="ident">signal_type</span>)
         .<span class="ident">set_new_handler</span>(<span class="ident">handler</span>)
         .<span class="ident">set_unsafe</span>()
@@ -1466,13 +1466,13 @@
 <span class="doccomment">///</span>
 <span class="doccomment">/// [`HandlerOptions`]: struct.HandlerOptions.html &quot; &quot;</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rthandler</span>(<span class="ident">rtsignal</span>: <span class="ident">u32</span>, <span class="ident">handler</span>: <span class="ident">SignalHandler</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_rthandler</span>(<span class="ident">rtsignal</span>: <span class="ident">u32</span>, <span class="ident">handler</span>: <span class="ident">SignalHandler</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
     <span class="ident">HandlerOptions::for_rtsignal</span>(<span class="ident">rtsignal</span>)
         .<span class="ident">set_new_handler</span>(<span class="ident">handler</span>)
         .<span class="ident">set</span>()
 }
 
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">install_hook</span>(<span class="ident">signum</span>: <span class="ident">i32</span>, <span class="ident">hook</span>: <span class="ident">usize</span>, <span class="ident">flags</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">install_hook</span>(<span class="ident">signum</span>: <span class="ident">i32</span>, <span class="ident">hook</span>: <span class="ident">usize</span>, <span class="ident">flags</span>: <span class="ident">i32</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">success</span> <span class="op">=</span> {
         <span class="kw">let</span> [<span class="kw-2">mut</span> <span class="ident">old_handler</span>, <span class="kw-2">mut</span> <span class="ident">new_handler</span>] <span class="op">=</span> [<span class="ident">zeroed</span>::<span class="op">&lt;</span><span class="ident">sigaction</span><span class="op">&gt;</span>(); <span class="number">2</span>];
         <span class="ident">new_handler</span>.<span class="ident">sa_sigaction</span> <span class="op">=</span> <span class="ident">hook</span> <span class="kw">as</span> <span class="ident">usize</span>;
@@ -1554,7 +1554,7 @@
 <span class="kw">impl</span> <span class="ident">HandlerOptions</span> {
     <span class="doccomment">/// Creates a builder for a handler for the specified signal.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_signal</span>(<span class="ident">signal</span>: <span class="ident">SignalType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_signal</span>(<span class="ident">signal</span>: <span class="ident">SignalType</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> {
             <span class="ident">signal</span>: <span class="ident">signal</span>.<span class="ident">into</span>(),
             <span class="ident">handler</span>: <span class="prelude-val">None</span>,
@@ -1570,7 +1570,7 @@
     <span class="doccomment">/// Guaranteed to panic if the specified real-time signal is outside the range of real-time signals supported by the OS. See [`NUM_REALTIME_SIGNALS`].</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`NUM_REALTIME_SIGNALS`]: constant.NUM_REALTIME_SIGNALS.html &quot; &quot;</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_rtsignal</span>(<span class="ident">rtsignal</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">for_rtsignal</span>(<span class="ident">rtsignal</span>: <span class="ident">u32</span>) -&gt; <span class="self">Self</span> {
         <span class="macro">assert!</span>(
             <span class="ident">is_valid_rtsignal</span>(<span class="ident">rtsignal</span>),
             <span class="string">&quot;invalid real-time signal value — check the NUM_REALTIME_SIGNALS constant to see how \
@@ -1587,7 +1587,7 @@
     }
     <span class="doccomment">/// Sets the handler for the signal to the specified value. If `None`, the old value is used.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_new_handler</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SignalHandler</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_new_handler</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">handler</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SignalHandler</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">handler</span> <span class="op">=</span> <span class="ident">handler</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
@@ -1595,7 +1595,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`ignore_child_stop_events`]: #structfield.ignore_child_stop_events &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ignore_child_stop_events</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ignore</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ignore_child_stop_events</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">ignore</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">ignore_child_stop_events</span> <span class="op">=</span> <span class="ident">ignore</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
@@ -1603,7 +1603,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`recursive_handler`]: #structfield.recursive_handler &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recursive_handler</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">recursive</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recursive_handler</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">recursive</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">recursive_handler</span> <span class="op">=</span> <span class="ident">recursive</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
@@ -1611,7 +1611,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`system_call_restart`]: #structfield.system_call_restart &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">system_call_restart</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">restart</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">system_call_restart</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">restart</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">system_call_restart</span> <span class="op">=</span> <span class="ident">restart</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
@@ -1619,13 +1619,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`auto_reset_handler`]: #structfield.auto_reset_handler &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">auto_reset_handler</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">reset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">auto_reset_handler</span>(<span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">reset</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">self</span>.<span class="ident">auto_reset_handler</span> <span class="op">=</span> <span class="ident">reset</span>.<span class="ident">into</span>();
         <span class="self">self</span>
     }
     <span class="doccomment">/// Installs the signal handler.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">val</span>) <span class="op">=</span> <span class="ident">SignalType::try_from</span>(<span class="self">self</span>.<span class="ident">signal</span>) {
             <span class="kw">if</span> <span class="ident">val</span>.<span class="ident">is_unsafe</span>() {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SetHandlerError::UnsafeSignal</span>);
@@ -1643,7 +1643,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`SegmentationFault`]: enum.SignalType.html#variant.SegmentationFault &quot; &quot;</span>
     <span class="doccomment">/// [`BusError`]: enum.SignalType.html#variant.BusError &quot; &quot;</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_unsafe</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">set_unsafe</span>(<span class="self">self</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">SetHandlerError</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Ok</span>(<span class="ident">val</span>) <span class="op">=</span> <span class="ident">SignalType::try_from</span>(<span class="self">self</span>.<span class="ident">signal</span>) {
             <span class="kw">if</span> <span class="ident">val</span>.<span class="ident">is_unblockable</span>() {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">SetHandlerError::UnblockableSignal</span>(<span class="ident">val</span>));
@@ -1687,8 +1687,8 @@
         }
         <span class="kw">if</span> <span class="ident">need_to_install_hook</span> {
             <span class="kw">let</span> <span class="ident">hook_val</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span>.<span class="ident">handler</span>.<span class="ident">unwrap_or_default</span>() {
-                <span class="ident">SignalHandler::Default</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">SIG_DFL</span>,
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">signal_receiver</span> <span class="kw">as</span> <span class="ident">usize</span>,
+                <span class="ident">SignalHandler::Default</span> =&gt; <span class="ident">SIG_DFL</span>,
+                <span class="kw">_</span> =&gt; <span class="ident">signal_receiver</span> <span class="kw">as</span> <span class="ident">usize</span>,
             };
             <span class="kw">unsafe</span> {
                 <span class="comment">// SAFETY: we&#39;re using a correct value for the hook</span>
@@ -1699,7 +1699,7 @@
     }
 
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">flags_as_i32</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">i32</span> {
+    <span class="kw">fn</span> <span class="ident">flags_as_i32</span>(<span class="self">self</span>) -&gt; <span class="ident">i32</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">handler</span>.<span class="ident">unwrap_or_default</span>().<span class="ident">is_default</span>() {
             <span class="macro">debug_assert_eq!</span>(
                 <span class="self">self</span>.<span class="ident">recursive_handler</span>, <span class="bool-val">false</span>,
@@ -1783,9 +1783,9 @@
             <span class="kw-2">*</span><span class="ident">val</span>
         };
         <span class="kw">match</span> <span class="ident">handler_and_flags</span>.<span class="number">0</span> {
-            <span class="ident">SignalHandler::Ignore</span> <span class="op">=</span><span class="op">&gt;</span> {}
-            <span class="ident">SignalHandler::Hook</span>(<span class="ident">hook</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">hook</span>.<span class="ident">inner</span>()(),
-            <span class="ident">SignalHandler::Default</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(
+            <span class="ident">SignalHandler::Ignore</span> =&gt; {}
+            <span class="ident">SignalHandler::Hook</span>(<span class="ident">hook</span>) =&gt; <span class="ident">hook</span>.<span class="ident">inner</span>()(),
+            <span class="ident">SignalHandler::Default</span> =&gt; <span class="macro">unreachable!</span>(
                 <span class="string">&quot;signal receiver was unregistered but has been called by the OS anyway&quot;</span>
             ),
         }
@@ -1816,21 +1816,21 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Default`]: #variant.Default.html &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_default</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_default</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident"><span class="self">Self</span>::Default</span>)
     }
     <span class="doccomment">/// Returns `true` for the [`Ignore`] variant, `false` otherwise.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Ignore`]: #variant.Ignore.html &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ignore</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_ignore</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident"><span class="self">Self</span>::Ignore</span>)
     }
     <span class="doccomment">/// Returns `true` for the [`Hook`] variant, `false` otherwise.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`Hook`]: #variant.Hook.html &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_hook</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_hook</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident"><span class="self">Self</span>::Hook</span>(..))
     }
     <span class="doccomment">/// Creates a handler which calls the specified function.</span>
@@ -1840,7 +1840,7 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [module-level section on signal-safe C functions]: index.html#signal-safe-c-functions &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_fn</span>(<span class="ident">function</span>: <span class="kw">fn</span>()) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_fn</span>(<span class="ident">function</span>: <span class="kw">fn</span>()) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Hook</span>(<span class="ident">SignalHook::from_fn</span>(<span class="ident">function</span>))
     }
 }
@@ -1849,13 +1849,13 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`SignalHandler::Default`]: #variant.Default &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">default</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">default</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Default</span>
     }
 }
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SignalHook</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SignalHandler</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalHook</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalHook</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Hook</span>(<span class="ident">op</span>)
     }
 }
@@ -1871,18 +1871,18 @@
     <span class="doccomment">///</span>
     <span class="doccomment">/// [module-level section on signal-safe C functions]: index.html#signal-safe-c-functions &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_fn</span>(<span class="ident">function</span>: <span class="kw">fn</span>()) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_fn</span>(<span class="ident">function</span>: <span class="kw">fn</span>()) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">function</span>)
     }
     <span class="doccomment">/// Returns the wrapped function.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw">fn</span>() {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">inner</span>(<span class="self">self</span>) -&gt; <span class="kw">fn</span>() {
         <span class="self">self</span>.<span class="number">0</span>
     }
 }
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SignalHook</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="kw">fn</span>() {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalHook</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalHook</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">op</span>.<span class="number">0</span>
     }
 }
@@ -1902,7 +1902,7 @@
 <span class="doccomment">/// # Ok(()) }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send</span>(<span class="ident">signal</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SignalType</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">pid</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send</span>(<span class="ident">signal</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SignalType</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">pid</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">pid</span> <span class="op">=</span>
         <span class="ident">i32::try_from</span>(<span class="ident">pid</span>.<span class="ident">into</span>()).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro">panic!</span>(<span class="string">&quot;process identifier out of range&quot;</span>));
     <span class="macro">debug_assert_ne!</span>(
@@ -1931,7 +1931,7 @@
 <span class="doccomment">/// # Ok(()) }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_rt</span>(<span class="ident">signal</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">pid</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_rt</span>(<span class="ident">signal</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">pid</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">pid</span> <span class="op">=</span>
         <span class="ident">i32::try_from</span>(<span class="ident">pid</span>.<span class="ident">into</span>()).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro">panic!</span>(<span class="string">&quot;process identifier out of range&quot;</span>));
     <span class="macro">debug_assert_ne!</span>(
@@ -1963,7 +1963,7 @@
 <span class="doccomment">/// # }</span>
 <span class="doccomment">/// # Ok(()) }</span>
 <span class="doccomment">/// ```</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_to_group</span>(<span class="ident">signal</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SignalType</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">pid</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_to_group</span>(<span class="ident">signal</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">SignalType</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">pid</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::neg_multiply</span>)]</span> <span class="comment">// &quot;it&#39;s more readable to just negate&quot;? how about no</span>
     <span class="kw">let</span> <span class="ident">pid</span> <span class="op">=</span> <span class="ident">i32::try_from</span>(<span class="ident">pid</span>.<span class="ident">into</span>())
         .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro">panic!</span>(<span class="string">&quot;process group identifier out of range&quot;</span>))
@@ -1990,7 +1990,7 @@
 <span class="doccomment">/// # Ok(()) }</span>
 <span class="doccomment">/// ```</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_rt_to_group</span>(<span class="ident">signal</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">pid</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_rt_to_group</span>(<span class="ident">signal</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span><span class="op">&gt;</span>, <span class="ident">pid</span>: <span class="kw">impl</span> <span class="ident">Into</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::neg_multiply</span>)]</span>
     <span class="kw">let</span> <span class="ident">pid</span> <span class="op">=</span> <span class="ident">i32::try_from</span>(<span class="ident">pid</span>.<span class="ident">into</span>())
         .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="macro">panic!</span>(<span class="string">&quot;process identifier out of range&quot;</span>))
@@ -2197,12 +2197,12 @@
     <span class="doccomment">/// [`Kill`]: #variant.Kill &quot; &quot;</span>
     <span class="doccomment">/// [`ForceSuspend`]: #variant.ForceSuspend &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_unblockable</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_unblockable</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(<span class="self">self</span>, <span class="ident"><span class="self">Self</span>::Kill</span> <span class="op">|</span> <span class="ident"><span class="self">Self</span>::ForceSuspend</span>)
     }
     <span class="doccomment">/// Returns `true` if the value is an unsafe signal which requires unsafe code when setting a handling method, `false` otherwise.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_unsafe</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">is_unsafe</span>(<span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="macro">matches!</span>(
             <span class="self">self</span>,
             <span class="ident"><span class="self">Self</span>::SegmentationFault</span> <span class="op">|</span> <span class="ident"><span class="self">Self</span>::MemoryBusError</span> <span class="op">|</span> <span class="ident"><span class="self">Self</span>::IllegalInstruction</span>
@@ -2211,41 +2211,41 @@
 }
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SignalType</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">i32</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalType</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">op</span> <span class="kw">as</span> <span class="ident">i32</span>
     }
 }
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">SignalType</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">u32</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalType</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">SignalType</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">op</span> <span class="kw">as</span> <span class="ident">u32</span>
     }
 }
 <span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">i32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SignalType</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">UnknownSignalError</span>;
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">i32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">value</span> {
-            <span class="ident">SIGHUP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Hangup</span>),
-            <span class="ident">SIGINT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::KeyboardInterrupt</span>),
-            <span class="ident">SIGQUIT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::QuitAndDump</span>),
-            <span class="ident">SIGILL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::IllegalInstruction</span>),
-            <span class="ident">SIGABRT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Abort</span>),
-            <span class="ident">SIGFPE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::MathException</span>),
-            <span class="ident">SIGKILL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Kill</span>),
-            <span class="ident">SIGSEGV</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::SegmentationFault</span>),
-            <span class="ident">SIGPIPE</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::BrokenPipe</span>),
-            <span class="ident">SIGALRM</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::AlarmClock</span>),
-            <span class="ident">SIGTERM</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Termination</span>),
-            <span class="ident">SIGUSR1</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::UserSignal1</span>),
-            <span class="ident">SIGUSR2</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::UserSignal2</span>),
-            <span class="ident">SIGCHLD</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::ChildProcessEvent</span>),
-            <span class="ident">SIGCONT</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Continue</span>),
-            <span class="ident">SIGSTOP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::ForceSuspend</span>),
-            <span class="ident">SIGTSTP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Suspend</span>),
-            <span class="ident">SIGTTIN</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::TerminalInputWhileInBackground</span>),
-            <span class="ident">SIGTTOU</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::TerminalOutputWhileInBackground</span>),
-            <span class="ident">SIGBUS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::MemoryBusError</span>),
-            <span class="ident">SIGPROF</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::ProfilerClock</span>),
+            <span class="ident">SIGHUP</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Hangup</span>),
+            <span class="ident">SIGINT</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::KeyboardInterrupt</span>),
+            <span class="ident">SIGQUIT</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::QuitAndDump</span>),
+            <span class="ident">SIGILL</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::IllegalInstruction</span>),
+            <span class="ident">SIGABRT</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Abort</span>),
+            <span class="ident">SIGFPE</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::MathException</span>),
+            <span class="ident">SIGKILL</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Kill</span>),
+            <span class="ident">SIGSEGV</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::SegmentationFault</span>),
+            <span class="ident">SIGPIPE</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::BrokenPipe</span>),
+            <span class="ident">SIGALRM</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::AlarmClock</span>),
+            <span class="ident">SIGTERM</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Termination</span>),
+            <span class="ident">SIGUSR1</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::UserSignal1</span>),
+            <span class="ident">SIGUSR2</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::UserSignal2</span>),
+            <span class="ident">SIGCHLD</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::ChildProcessEvent</span>),
+            <span class="ident">SIGCONT</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Continue</span>),
+            <span class="ident">SIGSTOP</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::ForceSuspend</span>),
+            <span class="ident">SIGTSTP</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Suspend</span>),
+            <span class="ident">SIGTTIN</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::TerminalInputWhileInBackground</span>),
+            <span class="ident">SIGTTOU</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::TerminalOutputWhileInBackground</span>),
+            <span class="ident">SIGBUS</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::MemoryBusError</span>),
+            <span class="ident">SIGPROF</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::ProfilerClock</span>),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
                 <span class="ident">doc</span>,
                 <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>,
@@ -2256,21 +2256,21 @@
                 <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;solaris&quot;</span>,
                 <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;illumos&quot;</span>,
             ))]</span>
-            <span class="ident">libc::SIGPOLL</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::PollNotification</span>),
-            <span class="ident">SIGSYS</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::InvalidSystemCall</span>),
-            <span class="ident">SIGTRAP</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Breakpoint</span>),
-            <span class="ident">SIGURG</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::OutOfBandDataAvailable</span>),
-            <span class="ident">SIGVTALRM</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::UserModeProfilerClock</span>),
-            <span class="ident">SIGXCPU</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::CpuTimeLimitExceeded</span>),
-            <span class="ident">SIGXFSZ</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::FileSizeLimitExceeded</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">UnknownSignalError</span> { <span class="ident">value</span> }),
+            <span class="ident">libc::SIGPOLL</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::PollNotification</span>),
+            <span class="ident">SIGSYS</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::InvalidSystemCall</span>),
+            <span class="ident">SIGTRAP</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Breakpoint</span>),
+            <span class="ident">SIGURG</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::OutOfBandDataAvailable</span>),
+            <span class="ident">SIGVTALRM</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::UserModeProfilerClock</span>),
+            <span class="ident">SIGXCPU</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::CpuTimeLimitExceeded</span>),
+            <span class="ident">SIGXFSZ</span> =&gt; <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::FileSizeLimitExceeded</span>),
+            <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">UnknownSignalError</span> { <span class="ident">value</span> }),
         }
     }
 }
 <span class="kw">impl</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="ident">u32</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">SignalType</span> {
     <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">UnknownSignalError</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">u32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">value</span>: <span class="ident">u32</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident"><span class="self">Self</span>::Error</span><span class="op">&gt;</span> {
         (<span class="ident">value</span> <span class="kw">as</span> <span class="ident">u32</span>).<span class="ident">try_into</span>()
     }
 }
@@ -2287,27 +2287,27 @@
 }
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">UnknownSignalError</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;unknown signal value {}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">fmt::Binary</span> <span class="kw">for</span> <span class="ident">UnknownSignalError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;unknown signal value {:b}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">fmt::LowerHex</span> <span class="kw">for</span> <span class="ident">UnknownSignalError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;unknown signal value {:x}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">fmt::UpperExp</span> <span class="kw">for</span> <span class="ident">UnknownSignalError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;unknown signal value {:X}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">fmt::Octal</span> <span class="kw">for</span> <span class="ident">UnknownSignalError</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;unknown signal value {:o}&quot;</span>, <span class="self">self</span>.<span class="ident">value</span>)
     }
 }

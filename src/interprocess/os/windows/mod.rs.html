@@ -178,7 +178,7 @@
     <span class="doccomment">/// Duplicates the handle to make it accessible in the specified process (taken as a handle to that process) and returns the raw value of the handle which can then be sent via some form of IPC, typically named pipes. This is the only way to use any form of IPC other than named pipes to communicate between two processes which do not have a parent-child relationship or if the handle wasn&#39;t created as inheritable, therefore named pipes paired with this are a hard requirement in order to communicate between processes if one wasn&#39;t spawned by another.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// Backed by [`DuplicateHandle`]. Doesn&#39;t require unsafe code since `DuplicateHandle` never leads to undefined behavior if the `lpTargetHandle` parameter is a valid pointer, only creates an error.</span>
-    <span class="kw">fn</span> <span class="ident">share</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">reciever</span>: <span class="ident">HANDLE</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">HANDLE</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">share</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">reciever</span>: <span class="ident">HANDLE</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">HANDLE</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">success</span>, <span class="ident">new_handle</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_handle</span> <span class="op">=</span> <span class="ident">INVALID_HANDLE_VALUE</span>;
             <span class="kw">let</span> <span class="ident">success</span> <span class="op">=</span> <span class="ident">DuplicateHandle</span>(
@@ -214,7 +214,7 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">FileHandleOps</span>(<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="ident">HANDLE</span>);
 <span class="kw">impl</span> <span class="ident">FileHandleOps</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="macro">debug_assert!</span>(
             <span class="ident">buf</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">DWORD::max_value</span>() <span class="kw">as</span> <span class="ident">usize</span>,
             <span class="string">&quot;buffer is bigger than maximum buffer size for ReadFile&quot;</span>,
@@ -237,7 +237,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="macro">debug_assert!</span>(
             <span class="ident">buf</span>.<span class="ident">len</span>() <span class="op">&lt;</span><span class="op">=</span> <span class="ident">DWORD::max_value</span>() <span class="kw">as</span> <span class="ident">usize</span>,
             <span class="string">&quot;buffer is bigger than maximum buffer size for WriteFile&quot;</span>,
@@ -260,7 +260,7 @@
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">success</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">FlushFileBuffers</span>(<span class="self">self</span>.<span class="number">0</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span> };
         <span class="kw">if</span> <span class="ident">success</span> {
             <span class="prelude-val">Ok</span>(())
@@ -278,14 +278,14 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span> <span class="ident">AsRawHandle</span> <span class="kw">for</span> <span class="ident">FileHandleOps</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HANDLE</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_handle</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">HANDLE</span> {
         <span class="self">self</span>.<span class="number">0</span>
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span> <span class="ident">IntoRawHandle</span> <span class="kw">for</span> <span class="ident">FileHandleOps</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_raw_handle</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">HANDLE</span> {
+    <span class="kw">fn</span> <span class="ident">into_raw_handle</span>(<span class="self">self</span>) -&gt; <span class="ident">HANDLE</span> {
         <span class="kw">let</span> <span class="ident">handle</span> <span class="op">=</span> <span class="self">self</span>.<span class="number">0</span>;
         <span class="ident">mem::forget</span>(<span class="self">self</span>);
         <span class="ident">handle</span>
@@ -294,7 +294,7 @@
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">windows</span>)]</span>
 <span class="kw">impl</span> <span class="ident">FromRawHandle</span> <span class="kw">for</span> <span class="ident">FileHandleOps</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">op</span>: <span class="ident">HANDLE</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_handle</span>(<span class="ident">op</span>: <span class="ident">HANDLE</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">op</span>)
     }
 }

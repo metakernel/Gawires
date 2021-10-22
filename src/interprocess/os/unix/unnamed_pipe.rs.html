@@ -126,11 +126,11 @@
 };
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">pipe</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">PubWriter</span>, <span class="ident">PubReader</span>)<span class="op">&gt;</span> {
+<span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">pipe</span>() -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">PubWriter</span>, <span class="ident">PubReader</span>)<span class="op">&gt;</span> {
     <span class="kw">let</span> (<span class="ident">success</span>, <span class="ident">fds</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">fds</span>: [<span class="ident">c_int</span>; <span class="number">2</span>] <span class="op">=</span> [<span class="number">0</span>; <span class="number">2</span>];
         <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">libc::pipe</span>(<span class="ident">fds</span>.<span class="ident">as_mut_ptr</span>());
-        (<span class="ident">result</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span>, <span class="ident">fds</span>)
+        (<span class="ident">result</span> <span class="op">==</span> <span class="number">0</span>, <span class="ident">fds</span>)
     };
     <span class="kw">if</span> <span class="ident">success</span> {
         <span class="kw">unsafe</span> {
@@ -155,20 +155,20 @@
 <span class="comment">// universe will collapse immediately.</span>
 <span class="kw">impl</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">UnnamedPipeReader</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">read</span>(<span class="ident">buf</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">Sealed</span> <span class="kw">for</span> <span class="ident">UnnamedPipeReader</span> {}
 <span class="kw">impl</span> <span class="ident">AsRawFd</span> <span class="kw">for</span> <span class="ident">UnnamedPipeReader</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_raw_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">c_int</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_raw_fd</span>()
     }
 }
 <span class="kw">impl</span> <span class="ident">IntoRawFd</span> <span class="kw">for</span> <span class="ident">UnnamedPipeReader</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_raw_fd</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+    <span class="kw">fn</span> <span class="ident">into_raw_fd</span>(<span class="self">self</span>) -&gt; <span class="ident">c_int</span> {
         <span class="kw">let</span> <span class="ident">fd</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_raw_fd</span>();
         <span class="ident">mem::forget</span>(<span class="self">self</span>);
         <span class="ident">fd</span>
@@ -176,13 +176,13 @@
 }
 <span class="kw">impl</span> <span class="ident">FromRawFd</span> <span class="kw">for</span> <span class="ident">UnnamedPipeReader</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">FdOps::from_raw_fd</span>(<span class="ident">fd</span>))
     }
 }
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UnnamedPipeReader</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;UnnamedPipeReader&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;file_descriptor&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_raw_fd</span>())
             .<span class="ident">finish</span>()
@@ -192,35 +192,35 @@
 <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">struct</span> <span class="ident">UnnamedPipeWriter</span>(<span class="ident">FdOps</span>);
 <span class="kw">impl</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">UnnamedPipeWriter</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">write</span>(<span class="ident">buf</span>)
     }
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">flush</span>()
     }
 }
 <span class="kw">impl</span> <span class="ident">Sealed</span> <span class="kw">for</span> <span class="ident">UnnamedPipeWriter</span> {}
 <span class="kw">impl</span> <span class="ident">AsRawFd</span> <span class="kw">for</span> <span class="ident">UnnamedPipeWriter</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_raw_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">c_int</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_raw_fd</span>()
     }
 }
 <span class="kw">impl</span> <span class="ident">IntoRawFd</span> <span class="kw">for</span> <span class="ident">UnnamedPipeWriter</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_raw_fd</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+    <span class="kw">fn</span> <span class="ident">into_raw_fd</span>(<span class="self">self</span>) -&gt; <span class="ident">c_int</span> {
         <span class="self">self</span>.<span class="number">0</span>.<span class="ident">into_raw_fd</span>()
     }
 }
 <span class="kw">impl</span> <span class="ident">FromRawFd</span> <span class="kw">for</span> <span class="ident">UnnamedPipeWriter</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">FdOps::new</span>(<span class="ident">fd</span>))
     }
 }
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UnnamedPipeWriter</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;UnnamedPipeWriter&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;file_descriptor&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_raw_fd</span>())
             .<span class="ident">finish</span>()

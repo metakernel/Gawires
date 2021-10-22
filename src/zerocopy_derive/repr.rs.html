@@ -316,19 +316,19 @@
     <span class="doccomment">/// conform to the requirements of `self`, and returns them. Regardless of</span>
     <span class="doccomment">/// whether `align` attributes are considered during validation, they are</span>
     <span class="doccomment">/// stripped out of the returned value since no callers care about them.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">validate_reprs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">DeriveInput</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">validate_reprs</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">input</span>: <span class="kw-2">&amp;</span><span class="ident">DeriveInput</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">R</span><span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">metas_reprs</span> <span class="op">=</span> <span class="ident">reprs</span>(<span class="kw-2">&amp;</span><span class="ident">input</span>.<span class="ident">attrs</span>)<span class="question-mark">?</span>;
         <span class="ident">metas_reprs</span>.<span class="ident">sort_by</span>(<span class="op">|</span><span class="ident">a</span>: <span class="kw-2">&amp;</span>(<span class="ident">NestedMeta</span>, <span class="ident">R</span>), <span class="ident">b</span><span class="op">|</span> <span class="ident">a</span>.<span class="number">1</span>.<span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="ident">b</span>.<span class="number">1</span>).<span class="ident">unwrap</span>());
 
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">derive_unaligned</span> {
             <span class="kw">match</span> <span class="ident">metas_reprs</span>.<span class="ident">iter</span>().<span class="ident">find</span>(<span class="op">|</span><span class="kw-2">&amp;</span><span class="ident">repr</span>: <span class="op">&amp;&amp;</span>(<span class="ident">NestedMeta</span>, <span class="ident">R</span>)<span class="op">|</span> <span class="ident">repr</span>.<span class="number">1</span>.<span class="ident">is_align_gt_one</span>()) {
-                <span class="prelude-val">Some</span>((<span class="ident">meta</span>, <span class="kw">_</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Some</span>((<span class="ident">meta</span>, <span class="kw">_</span>)) =&gt; {
                     <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="macro">vec!</span>[<span class="ident">Error::new_spanned</span>(
                         <span class="ident">meta</span>,
                         <span class="string">&quot;cannot derive Unaligned with repr(align(N &gt; 1))&quot;</span>,
                     )])
                 }
-                <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> (),
+                <span class="prelude-val">None</span> =&gt; (),
             }
         }
 
@@ -368,16 +368,16 @@
 
 <span class="comment">// The type of valid reprs for a particular kind (enum, struct, union).</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">KindRepr</span>: <span class="lifetime">&#39;static</span> <span class="op">+</span> <span class="ident">Sized</span> <span class="op">+</span> <span class="ident">Ord</span> {
-    <span class="kw">fn</span> <span class="ident">is_align</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
-    <span class="kw">fn</span> <span class="ident">is_align_gt_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span>;
-    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">meta</span>: <span class="kw-2">&amp;</span><span class="ident">NestedMeta</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">is_align</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">is_align_gt_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span>;
+    <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">meta</span>: <span class="kw-2">&amp;</span><span class="ident">NestedMeta</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>;
 }
 
 <span class="comment">// Define an enum for reprs which are valid for a given kind (structs, enums,</span>
 <span class="comment">// etc), and provide implementations of KindRepr, Ord, and Display, and those</span>
 <span class="comment">// traits&#39; super-traits.</span>
 <span class="macro">macro_rules!</span> <span class="ident">define_kind_specific_repr</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">type_name</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span>:<span class="ident">ident</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_variant</span>:<span class="ident">ident</span>),<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">type_name</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span>:<span class="ident">ident</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_variant</span>:<span class="ident">ident</span>),<span class="kw-2">*</span>) =&gt; {
         <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">Eq</span>, <span class="ident">PartialEq</span>)]</span>
         <span class="kw">pub</span> <span class="kw">enum</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span> {
             $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_variant</span>,)<span class="op">*</span>
@@ -385,25 +385,25 @@
         }
 
         <span class="kw">impl</span> <span class="ident">KindRepr</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span> {
-            <span class="kw">fn</span> <span class="ident">is_align</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="kw">fn</span> <span class="ident">is_align</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
                 <span class="kw">match</span> <span class="self">self</span> {
-                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name::Align</span>(<span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name::Align</span>(<span class="kw">_</span>) =&gt; <span class="bool-val">true</span>,
+                    <span class="kw">_</span> =&gt; <span class="bool-val">false</span>,
                 }
             }
 
-            <span class="kw">fn</span> <span class="ident">is_align_gt_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="kw">fn</span> <span class="ident">is_align_gt_one</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
                 <span class="kw">match</span> <span class="self">self</span> {
-                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name::Align</span>(<span class="ident">n</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">n</span> <span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="number">1</span>,
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
+                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name::Align</span>(<span class="ident">n</span>) =&gt; <span class="ident">n</span> <span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="number">1</span>,
+                    <span class="kw">_</span> =&gt; <span class="bool-val">false</span>,
                 }
             }
 
-            <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">meta</span>: <span class="kw-2">&amp;</span><span class="ident">NestedMeta</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">parse</span>(<span class="ident">meta</span>: <span class="kw-2">&amp;</span><span class="ident">NestedMeta</span>) -&gt; <span class="ident">syn::Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span><span class="op">&gt;</span> {
                 <span class="kw">match</span> <span class="ident">Repr::from_nested_meta</span>(<span class="ident">meta</span>)<span class="question-mark">?</span> {
-                    $(<span class="ident">Repr</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_variant</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_variant</span>),)<span class="op">*</span>
-                    <span class="ident">Repr::Align</span>(<span class="ident">u</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name::Align</span>(<span class="ident">u</span>)),
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Err</span>(<span class="ident">Error::new_spanned</span>(<span class="ident">meta</span>, <span class="macro">concat!</span>(<span class="string">&quot;unsupported representation for deriving FromBytes, AsBytes, or Unaligned on &quot;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">type_name</span>)))
+                    $(<span class="ident">Repr</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_variant</span> =&gt; <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_variant</span>),)<span class="op">*</span>
+                    <span class="ident">Repr::Align</span>(<span class="ident">u</span>) =&gt; <span class="prelude-val">Ok</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name::Align</span>(<span class="ident">u</span>)),
+                    <span class="kw">_</span> =&gt; <span class="prelude-val">Err</span>(<span class="ident">Error::new_spanned</span>(<span class="ident">meta</span>, <span class="macro">concat!</span>(<span class="string">&quot;unsupported representation for deriving FromBytes, AsBytes, or Unaligned on &quot;</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">type_name</span>)))
                 }
             }
         }
@@ -411,22 +411,22 @@
         <span class="comment">// Define a stable ordering so we can canonicalize lists of reprs. The</span>
         <span class="comment">// ordering itself doesn&#39;t matter so long as it&#39;s stable.</span>
         <span class="kw">impl</span> <span class="ident">PartialOrd</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span> {
-            <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">core::cmp::Ordering</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">partial_cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">core::cmp::Ordering</span><span class="op">&gt;</span> {
                 <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">cmp</span>(<span class="ident">other</span>))
             }
         }
 
         <span class="kw">impl</span> <span class="ident">Ord</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span> {
-            <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">core::cmp::Ordering</span> {
+            <span class="kw">fn</span> <span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="self">Self</span>) -&gt; <span class="ident">core::cmp::Ordering</span> {
                 <span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="self">self</span>).<span class="ident">cmp</span>(<span class="kw-2">&amp;</span><span class="macro">format!</span>(<span class="string">&quot;{:?}&quot;</span>, <span class="ident">other</span>))
             }
         }
 
         <span class="kw">impl</span> <span class="ident">core::fmt::Display</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">core::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">core::fmt::Result</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">core::fmt::Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">core::fmt::Result</span> {
                 <span class="kw">match</span> <span class="self">self</span> {
-                    $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_variant</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Repr</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_variant</span>,)<span class="op">*</span>
-                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name::Align</span>(<span class="ident">u</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">Repr::Align</span>(<span class="kw-2">*</span><span class="ident">u</span>),
+                    $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_variant</span> =&gt; <span class="ident">Repr</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_variant</span>,)<span class="op">*</span>
+                    <span class="macro-nonterminal">$</span><span class="macro-nonterminal">repr_name::Align</span>(<span class="ident">u</span>) =&gt; <span class="ident">Repr::Align</span>(<span class="kw-2">*</span><span class="ident">u</span>),
                 }.<span class="ident">fmt</span>(<span class="ident">f</span>)
             }
         }
@@ -458,37 +458,37 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Repr</span> {
-    <span class="kw">fn</span> <span class="ident">from_nested_meta</span>(<span class="ident">meta</span>: <span class="kw-2">&amp;</span><span class="ident">NestedMeta</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Repr</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">from_nested_meta</span>(<span class="ident">meta</span>: <span class="kw-2">&amp;</span><span class="ident">NestedMeta</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Repr</span>, <span class="ident">Error</span><span class="op">&gt;</span> {
         <span class="kw">match</span> <span class="ident">meta</span> {
-            <span class="ident">NestedMeta::Meta</span>(<span class="ident">Meta::Path</span>(<span class="ident">path</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">NestedMeta::Meta</span>(<span class="ident">Meta::Path</span>(<span class="ident">path</span>)) =&gt; {
                 <span class="kw">let</span> <span class="ident">ident</span> <span class="op">=</span> <span class="ident">path</span>
                     .<span class="ident">get_ident</span>()
                     .<span class="ident">ok_or</span>(<span class="ident">Error::new_spanned</span>(<span class="ident">meta</span>, <span class="string">&quot;unrecognized representation hint&quot;</span>))<span class="question-mark">?</span>;
                 <span class="kw">match</span> <span class="macro">format!</span>(<span class="string">&quot;{}&quot;</span>, <span class="ident">ident</span>).<span class="ident">as_str</span>() {
-                    <span class="string">&quot;u8&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::U8</span>),
-                    <span class="string">&quot;u16&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::U16</span>),
-                    <span class="string">&quot;u32&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::U32</span>),
-                    <span class="string">&quot;u64&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::U64</span>),
-                    <span class="string">&quot;usize&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::Usize</span>),
-                    <span class="string">&quot;i8&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::I8</span>),
-                    <span class="string">&quot;i16&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::I16</span>),
-                    <span class="string">&quot;i32&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::I32</span>),
-                    <span class="string">&quot;i64&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::I64</span>),
-                    <span class="string">&quot;isize&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::Isize</span>),
-                    <span class="string">&quot;C&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::C</span>),
-                    <span class="string">&quot;transparent&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::Transparent</span>),
-                    <span class="string">&quot;packed&quot;</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::Packed</span>),
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+                    <span class="string">&quot;u8&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::U8</span>),
+                    <span class="string">&quot;u16&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::U16</span>),
+                    <span class="string">&quot;u32&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::U32</span>),
+                    <span class="string">&quot;u64&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::U64</span>),
+                    <span class="string">&quot;usize&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::Usize</span>),
+                    <span class="string">&quot;i8&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::I8</span>),
+                    <span class="string">&quot;i16&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::I16</span>),
+                    <span class="string">&quot;i32&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::I32</span>),
+                    <span class="string">&quot;i64&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::I64</span>),
+                    <span class="string">&quot;isize&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::Isize</span>),
+                    <span class="string">&quot;C&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::C</span>),
+                    <span class="string">&quot;transparent&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::Transparent</span>),
+                    <span class="string">&quot;packed&quot;</span> =&gt; <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::Packed</span>),
+                    <span class="kw">_</span> =&gt; {}
                 }
             }
-            <span class="ident">NestedMeta::Meta</span>(<span class="ident">Meta::List</span>(<span class="ident">list</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">NestedMeta::Meta</span>(<span class="ident">Meta::List</span>(<span class="ident">list</span>)) =&gt; {
                 <span class="kw">if</span> <span class="kw">let</span> [<span class="kw-2">&amp;</span><span class="ident">NestedMeta::Lit</span>(<span class="ident">Lit::Int</span>(<span class="kw-2">ref</span> <span class="ident">n</span>))] <span class="op">=</span>
                     <span class="ident">list</span>.<span class="ident">nested</span>.<span class="ident">iter</span>().<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="kw">_</span><span class="op">&gt;</span><span class="op">&gt;</span>().<span class="ident">as_slice</span>()
                 {
                     <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">Repr::Align</span>(<span class="ident">n</span>.<span class="ident">base10_parse</span>::<span class="op">&lt;</span><span class="ident">u64</span><span class="op">&gt;</span>()<span class="question-mark">?</span>));
                 }
             }
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="kw">_</span> =&gt; {}
         }
 
         <span class="prelude-val">Err</span>(<span class="ident">Error::new_spanned</span>(<span class="ident">meta</span>, <span class="string">&quot;unrecognized representation hint&quot;</span>))
@@ -496,7 +496,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Display</span> <span class="kw">for</span> <span class="ident">Repr</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span>(), <span class="ident">fmt::Error</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">let</span> <span class="ident">Repr::Align</span>(<span class="ident">n</span>) <span class="op">=</span> <span class="self">self</span> {
             <span class="kw">return</span> <span class="macro">write!</span>(<span class="ident">f</span>, <span class="string">&quot;repr(align({}))&quot;</span>, <span class="ident">n</span>);
         }
@@ -504,26 +504,26 @@
             <span class="ident">f</span>,
             <span class="string">&quot;repr({})&quot;</span>,
             <span class="kw">match</span> <span class="self">self</span> {
-                <span class="ident">Repr::U8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;u8&quot;</span>,
-                <span class="ident">Repr::U16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;u16&quot;</span>,
-                <span class="ident">Repr::U32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;u32&quot;</span>,
-                <span class="ident">Repr::U64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;u64&quot;</span>,
-                <span class="ident">Repr::Usize</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;usize&quot;</span>,
-                <span class="ident">Repr::I8</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;i8&quot;</span>,
-                <span class="ident">Repr::I16</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;i16&quot;</span>,
-                <span class="ident">Repr::I32</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;i32&quot;</span>,
-                <span class="ident">Repr::I64</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;i64&quot;</span>,
-                <span class="ident">Repr::Isize</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;isize&quot;</span>,
-                <span class="ident">Repr::C</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;C&quot;</span>,
-                <span class="ident">Repr::Transparent</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;transparent&quot;</span>,
-                <span class="ident">Repr::Packed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="string">&quot;packed&quot;</span>,
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+                <span class="ident">Repr::U8</span> =&gt; <span class="string">&quot;u8&quot;</span>,
+                <span class="ident">Repr::U16</span> =&gt; <span class="string">&quot;u16&quot;</span>,
+                <span class="ident">Repr::U32</span> =&gt; <span class="string">&quot;u32&quot;</span>,
+                <span class="ident">Repr::U64</span> =&gt; <span class="string">&quot;u64&quot;</span>,
+                <span class="ident">Repr::Usize</span> =&gt; <span class="string">&quot;usize&quot;</span>,
+                <span class="ident">Repr::I8</span> =&gt; <span class="string">&quot;i8&quot;</span>,
+                <span class="ident">Repr::I16</span> =&gt; <span class="string">&quot;i16&quot;</span>,
+                <span class="ident">Repr::I32</span> =&gt; <span class="string">&quot;i32&quot;</span>,
+                <span class="ident">Repr::I64</span> =&gt; <span class="string">&quot;i64&quot;</span>,
+                <span class="ident">Repr::Isize</span> =&gt; <span class="string">&quot;isize&quot;</span>,
+                <span class="ident">Repr::C</span> =&gt; <span class="string">&quot;C&quot;</span>,
+                <span class="ident">Repr::Transparent</span> =&gt; <span class="string">&quot;transparent&quot;</span>,
+                <span class="ident">Repr::Packed</span> =&gt; <span class="string">&quot;packed&quot;</span>,
+                <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
             }
         )
     }
 }
 
-<span class="kw">fn</span> <span class="ident">reprs</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">KindRepr</span><span class="op">&gt;</span>(<span class="ident">attrs</span>: <span class="kw-2">&amp;</span>[<span class="ident">Attribute</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">NestedMeta</span>, <span class="ident">R</span>)<span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">reprs</span><span class="op">&lt;</span><span class="ident">R</span>: <span class="ident">KindRepr</span><span class="op">&gt;</span>(<span class="ident">attrs</span>: <span class="kw-2">&amp;</span>[<span class="ident">Attribute</span>]) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span>(<span class="ident">NestedMeta</span>, <span class="ident">R</span>)<span class="op">&gt;</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">Error</span><span class="op">&gt;</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">reprs</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">errors</span> <span class="op">=</span> <span class="ident">Vec::new</span>();
     <span class="kw">for</span> <span class="ident">attr</span> <span class="kw">in</span> <span class="ident">attrs</span> {
@@ -532,18 +532,18 @@
             <span class="kw">continue</span>;
         }
         <span class="kw">match</span> <span class="ident">attr</span>.<span class="ident">parse_meta</span>() {
-            <span class="prelude-val">Ok</span>(<span class="ident">Meta::List</span>(<span class="ident">meta_list</span>)) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">Meta::List</span>(<span class="ident">meta_list</span>)) =&gt; {
                 <span class="kw">if</span> <span class="ident">meta_list</span>.<span class="ident">path</span>.<span class="ident">is_ident</span>(<span class="string">&quot;repr&quot;</span>) {
                     <span class="kw">for</span> <span class="ident">nested_meta</span> <span class="kw">in</span> <span class="kw-2">&amp;</span><span class="ident">meta_list</span>.<span class="ident">nested</span> {
                         <span class="kw">match</span> <span class="ident">R::parse</span>(<span class="ident">nested_meta</span>) {
-                            <span class="prelude-val">Ok</span>(<span class="ident">repr</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">reprs</span>.<span class="ident">push</span>((<span class="ident">nested_meta</span>.<span class="ident">clone</span>(), <span class="ident">repr</span>)),
-                            <span class="prelude-val">Err</span>(<span class="ident">err</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">errors</span>.<span class="ident">push</span>(<span class="ident">err</span>),
+                            <span class="prelude-val">Ok</span>(<span class="ident">repr</span>) =&gt; <span class="ident">reprs</span>.<span class="ident">push</span>((<span class="ident">nested_meta</span>.<span class="ident">clone</span>(), <span class="ident">repr</span>)),
+                            <span class="prelude-val">Err</span>(<span class="ident">err</span>) =&gt; <span class="ident">errors</span>.<span class="ident">push</span>(<span class="ident">err</span>),
                         }
                     }
                 }
             }
-            <span class="prelude-val">Err</span>(<span class="ident">e</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">errors</span>.<span class="ident">push</span>(<span class="ident">e</span>),
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {}
+            <span class="prelude-val">Err</span>(<span class="ident">e</span>) =&gt; <span class="ident">errors</span>.<span class="ident">push</span>(<span class="ident">e</span>),
+            <span class="kw">_</span> =&gt; {}
         }
     }
 

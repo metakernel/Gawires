@@ -611,9 +611,9 @@
 <span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::zerocopy</span>;
 
 <span class="macro">macro_rules!</span> <span class="ident">impl_fmt_trait</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="kw">trait</span>:<span class="macro-nonterminal">ident</span>) =&gt; {
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="kw">trait</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
                 <span class="macro-nonterminal">$</span><span class="kw">trait</span><span class="macro-nonterminal">::fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">get</span>(), <span class="ident">f</span>)
             }
         }
@@ -621,14 +621,14 @@
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">doc_comment</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>:<span class="ident">expr</span>, $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>:<span class="ident">tt</span>)<span class="kw-2">*</span>) =&gt; {
         <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">x</span>]</span>
         $(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">tt</span>)<span class="op">*</span>
     };
 }
 
 <span class="macro">macro_rules!</span> <span class="ident">define_max_value_constant</span> {
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>:<span class="ident">expr</span>, <span class="ident">unsigned</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>:<span class="ident">expr</span>, <span class="ident">unsigned</span>) =&gt; {
         <span class="doccomment">/// The maximum value.</span>
         <span class="doccomment">///</span>
         <span class="doccomment">/// This constant should be preferred to constructing a new value using</span>
@@ -636,7 +636,7 @@
         <span class="doccomment">/// endianness `O` and the endianness of the platform.</span>
         <span class="kw">pub</span> <span class="kw">const</span> <span class="ident">MAX_VALUE</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>([<span class="number">0xFFu8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>], <span class="ident">PhantomData</span>);
     };
-    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>:<span class="ident">expr</span>, <span class="ident">signed</span>) <span class="op">=</span><span class="op">&gt;</span> {
+    (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>:<span class="ident">expr</span>, <span class="ident">signed</span>) =&gt; {
         <span class="comment">// We don&#39;t provide maximum and minimum value constants for signed</span>
         <span class="comment">// values because there&#39;s no way to do it generically - it would require</span>
         <span class="comment">// a different value depending on the value of the ByteOrder type</span>
@@ -657,7 +657,7 @@
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">write_method</span>:<span class="ident">ident</span>,
         <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sign</span>:<span class="ident">ident</span>,
         [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_native</span>:<span class="ident">ty</span>),<span class="kw-2">*</span>],
-        [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_byteorder</span>:<span class="ident">ident</span>),<span class="kw-2">*</span>]) <span class="op">=</span><span class="op">&gt;</span> {
+        [$(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_byteorder</span>:<span class="ident">ident</span>),<span class="kw-2">*</span>]) =&gt; {
         <span class="macro">doc_comment!</span> {
             <span class="macro">concat!</span>(<span class="string">&quot;A &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">bits</span>), <span class="string">&quot;-bit &quot;</span>, <span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">sign</span>), <span class="string">&quot; integer
 stored in `O` byte order.
@@ -715,7 +715,7 @@ example of how it can be used for parsing UDP packets.
 
             <span class="doccomment">/// Constructs a new value, possibly performing an endianness swap</span>
             <span class="doccomment">/// to guarantee that the returned value has endianness `O`.</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">n</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">n</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">out</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::default</span>();
                 <span class="ident">O</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">write_method</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">out</span>.<span class="number">0</span>[..], <span class="ident">n</span>);
                 <span class="ident">out</span>
@@ -724,7 +724,7 @@ example of how it can be used for parsing UDP packets.
             <span class="doccomment">/// Returns the value as a primitive type, possibly performing an</span>
             <span class="doccomment">/// endianness swap to guarantee that the return value has the</span>
             <span class="doccomment">/// endianness of the native platform.</span>
-            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span> {
+            <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span> {
                 <span class="ident">O</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">read_method</span>(<span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>[..])
             }
 
@@ -742,39 +742,39 @@ example of how it can be used for parsing UDP packets.
         <span class="comment">// inference issues.</span>
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>) -&gt; [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
                 <span class="ident">x</span>.<span class="number">0</span>
             }
         }
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>]) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>(<span class="ident">bytes</span>, <span class="ident">PhantomData</span>)
             }
         }
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span> {
                 <span class="ident">x</span>.<span class="ident">get</span>()
             }
         }
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
+            <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
                 <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::new</span>(<span class="ident">x</span>)
             }
         }
 
         $(
             <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_native</span> {
-                <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_native</span> {
+                <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_native</span> {
                     <span class="ident">x</span>.<span class="ident">get</span>().<span class="ident">into</span>()
                 }
             }
 
             <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_native</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
                 <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">TryFromIntError</span>;
-                <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_native</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>, <span class="ident">TryFromIntError</span><span class="op">&gt;</span> {
+                <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_native</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>, <span class="ident">TryFromIntError</span><span class="op">&gt;</span> {
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native::try_from</span>(<span class="ident">x</span>).<span class="ident">map</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::new</span>)
                 }
             }
@@ -782,39 +782,39 @@ example of how it can be used for parsing UDP packets.
 
         $(
             <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span>, <span class="ident">P</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_byteorder</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
-                <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_byteorder</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
+                <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_byteorder</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span> {
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_byteorder::new</span>(<span class="ident">x</span>.<span class="ident">get</span>().<span class="ident">into</span>())
                 }
             }
 
             <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span>, <span class="ident">P</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">TryFrom</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_byteorder</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
                 <span class="kw">type</span> <span class="ident">Error</span> <span class="op">=</span> <span class="ident">TryFromIntError</span>;
-                <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_byteorder</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>, <span class="ident">TryFromIntError</span><span class="op">&gt;</span> {
+                <span class="kw">fn</span> <span class="ident">try_from</span>(<span class="ident">x</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">larger_byteorder</span><span class="op">&lt;</span><span class="ident">P</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>, <span class="ident">TryFromIntError</span><span class="op">&gt;</span> {
                     <span class="ident">x</span>.<span class="ident">get</span>().<span class="ident">try_into</span>().<span class="ident">map</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::new</span>)
                 }
             }
         )<span class="op">*</span>
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
+            <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
                 <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
             }
         }
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
+            <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
                 <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="number">0</span>
             }
         }
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
-            <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span>) -&gt; <span class="ident">bool</span> {
                 <span class="self">self</span>.<span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="ident">other</span>.<span class="number">0</span>)
             }
         }
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">PartialEq</span><span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+            <span class="kw">fn</span> <span class="ident">eq</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">other</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>]) -&gt; <span class="ident">bool</span> {
                 <span class="self">self</span>.<span class="number">0</span>.<span class="ident">eq</span>(<span class="ident">other</span>)
             }
         }
@@ -826,7 +826,7 @@ example of how it can be used for parsing UDP packets.
         <span class="macro">impl_fmt_trait!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span>, <span class="ident">Binary</span>);
 
         <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
-            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+            <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
                 <span class="comment">// This results in a format like &quot;U16(42)&quot;</span>
                 <span class="macro">write!</span>(<span class="ident">f</span>, <span class="macro">concat!</span>(<span class="macro">stringify!</span>(<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>), <span class="string">&quot;({})&quot;</span>), <span class="self">self</span>.<span class="ident">get</span>())
             }
@@ -877,14 +877,14 @@ example of how it can be used for parsing UDP packets.
         <span class="kw">const</span> <span class="ident">ZERO</span>: <span class="self">Self</span>;
         <span class="kw">const</span> <span class="ident">MAX_VALUE</span>: <span class="self">Self</span>;
 
-        <span class="kw">fn</span> <span class="ident">rand</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+        <span class="kw">fn</span> <span class="ident">rand</span>() -&gt; <span class="self">Self</span>;
     }
 
     <span class="kw">trait</span> <span class="ident">ByteArray</span>:
         <span class="ident">FromBytes</span> <span class="op">+</span> <span class="ident">AsBytes</span> <span class="op">+</span> <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="op">+</span> <span class="ident">Debug</span> <span class="op">+</span> <span class="ident">Default</span> <span class="op">+</span> <span class="ident">Eq</span>
     {
         <span class="doccomment">/// Invert the order of the bytes in the array.</span>
-        <span class="kw">fn</span> <span class="ident">invert</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
+        <span class="kw">fn</span> <span class="ident">invert</span>(<span class="self">self</span>) -&gt; <span class="self">Self</span>;
     }
 
     <span class="kw">trait</span> <span class="ident">ByteOrderType</span>: <span class="ident">FromBytes</span> <span class="op">+</span> <span class="ident">AsBytes</span> <span class="op">+</span> <span class="ident">Unaligned</span> <span class="op">+</span> <span class="ident">Copy</span> <span class="op">+</span> <span class="ident">Eq</span> <span class="op">+</span> <span class="ident">Debug</span> {
@@ -893,11 +893,11 @@ example of how it can be used for parsing UDP packets.
 
         <span class="kw">const</span> <span class="ident">ZERO</span>: <span class="self">Self</span>;
 
-        <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">native</span>: <span class="ident"><span class="self">Self</span>::Native</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
-        <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Native</span>;
+        <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">native</span>: <span class="ident"><span class="self">Self</span>::Native</span>) -&gt; <span class="self">Self</span>;
+        <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::Native</span>;
         <span class="kw">fn</span> <span class="ident">set</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">native</span>: <span class="ident"><span class="self">Self</span>::Native</span>);
-        <span class="kw">fn</span> <span class="ident">from_bytes</span>(<span class="ident">bytes</span>: <span class="ident"><span class="self">Self</span>::ByteArray</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span>;
-        <span class="kw">fn</span> <span class="ident">into_bytes</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::ByteArray</span>;
+        <span class="kw">fn</span> <span class="ident">from_bytes</span>(<span class="ident">bytes</span>: <span class="ident"><span class="self">Self</span>::ByteArray</span>) -&gt; <span class="self">Self</span>;
+        <span class="kw">fn</span> <span class="ident">into_bytes</span>(<span class="self">self</span>) -&gt; <span class="ident"><span class="self">Self</span>::ByteArray</span>;
     }
 
     <span class="kw">trait</span> <span class="ident">ByteOrderTypeUnsigned</span>: <span class="ident">ByteOrderType</span> {
@@ -905,9 +905,9 @@ example of how it can be used for parsing UDP packets.
     }
 
     <span class="macro">macro_rules!</span> <span class="ident">impl_byte_array</span> {
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>:<span class="ident">expr</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>:<span class="ident">expr</span>) =&gt; {
             <span class="kw">impl</span> <span class="ident">ByteArray</span> <span class="kw">for</span> [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
-                <span class="kw">fn</span> <span class="ident">invert</span>(<span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
+                <span class="kw">fn</span> <span class="ident">invert</span>(<span class="kw-2">mut</span> <span class="self">self</span>) -&gt; [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
                     <span class="self">self</span>.<span class="ident">reverse</span>();
                     <span class="self">self</span>
                 }
@@ -921,21 +921,21 @@ example of how it can be used for parsing UDP packets.
     <span class="macro">impl_byte_array!</span>(<span class="number">16</span>);
 
     <span class="macro">macro_rules!</span> <span class="ident">impl_byte_order_type_unsigned</span> {
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="ident">unsigned</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="ident">unsigned</span>) =&gt; {
             <span class="kw">impl</span><span class="op">&lt;</span><span class="ident">O</span>: <span class="ident">ByteOrder</span><span class="op">&gt;</span> <span class="ident">ByteOrderTypeUnsigned</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
                 <span class="kw">const</span> <span class="ident">MAX_VALUE</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::MAX_VALUE</span>;
             }
         };
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="ident">signed</span>) <span class="op">=</span><span class="op">&gt;</span> {};
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="ident">signed</span>) =&gt; {};
     }
 
     <span class="macro">macro_rules!</span> <span class="ident">impl_traits</span> {
-        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sign</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span>:<span class="ident">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>:<span class="ident">expr</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">sign</span>:<span class="ident">ident</span>) =&gt; {
             <span class="kw">impl</span> <span class="ident">Native</span> <span class="kw">for</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span> {
                 <span class="kw">const</span> <span class="ident">ZERO</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span> <span class="op">=</span> <span class="number">0</span>;
                 <span class="kw">const</span> <span class="ident">MAX_VALUE</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span> <span class="op">=</span> <span class="ident">::core</span>::<span class="macro-nonterminal">$</span><span class="macro-nonterminal">native::MAX</span>;
 
-                <span class="kw">fn</span> <span class="ident">rand</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span> {
+                <span class="kw">fn</span> <span class="ident">rand</span>() -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span> {
                     <span class="ident">rand::random</span>()
                 }
             }
@@ -946,11 +946,11 @@ example of how it can be used for parsing UDP packets.
 
                 <span class="kw">const</span> <span class="ident">ZERO</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> <span class="op">=</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::ZERO</span>;
 
-                <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">native</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
+                <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">native</span>: <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::new</span>(<span class="ident">native</span>)
                 }
 
-                <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span> {
+                <span class="kw">fn</span> <span class="ident">get</span>(<span class="self">self</span>) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">native</span> {
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::get</span>(<span class="self">self</span>)
                 }
 
@@ -958,11 +958,11 @@ example of how it can be used for parsing UDP packets.
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::set</span>(<span class="self">self</span>, <span class="ident">native</span>)
                 }
 
-                <span class="kw">fn</span> <span class="ident">from_bytes</span>(<span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
+                <span class="kw">fn</span> <span class="ident">from_bytes</span>(<span class="ident">bytes</span>: [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>]) -&gt; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name</span><span class="op">&lt;</span><span class="ident">O</span><span class="op">&gt;</span> {
                     <span class="macro-nonterminal">$</span><span class="macro-nonterminal">name::from</span>(<span class="ident">bytes</span>)
                 }
 
-                <span class="kw">fn</span> <span class="ident">into_bytes</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
+                <span class="kw">fn</span> <span class="ident">into_bytes</span>(<span class="self">self</span>) -&gt; [<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>] {
                     <span class="op">&lt;</span>[<span class="ident">u8</span>; <span class="macro-nonterminal">$</span><span class="macro-nonterminal">bytes</span>]<span class="op">&gt;</span><span class="ident">::from</span>(<span class="self">self</span>)
                 }
             }
@@ -981,7 +981,7 @@ example of how it can be used for parsing UDP packets.
     <span class="macro">impl_traits!</span>(<span class="ident">I128</span>, <span class="ident">i128</span>, <span class="number">16</span>, <span class="ident">signed</span>);
 
     <span class="macro">macro_rules!</span> <span class="ident">call_for_all_types</span> {
-        (<span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">byteorder</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">byteorder</span>:<span class="ident">ident</span>) =&gt; {
             <span class="macro-nonterminal">$</span><span class="kw">fn</span>::<span class="op">&lt;</span><span class="macro-nonterminal">U16</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">byteorder</span><span class="op">&gt;</span><span class="op">&gt;</span>();
             <span class="macro-nonterminal">$</span><span class="kw">fn</span>::<span class="op">&lt;</span><span class="macro-nonterminal">U32</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">byteorder</span><span class="op">&gt;</span><span class="op">&gt;</span>();
             <span class="macro-nonterminal">$</span><span class="kw">fn</span>::<span class="op">&lt;</span><span class="macro-nonterminal">U64</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">byteorder</span><span class="op">&gt;</span><span class="op">&gt;</span>();
@@ -994,7 +994,7 @@ example of how it can be used for parsing UDP packets.
     }
 
     <span class="macro">macro_rules!</span> <span class="ident">call_for_unsigned_types</span> {
-        (<span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">byteorder</span>:<span class="ident">ident</span>) <span class="op">=</span><span class="op">&gt;</span> {
+        (<span class="macro-nonterminal">$</span><span class="kw">fn</span>:<span class="macro-nonterminal">ident</span>, <span class="macro-nonterminal">$</span><span class="macro-nonterminal">byteorder</span>:<span class="ident">ident</span>) =&gt; {
             <span class="macro-nonterminal">$</span><span class="kw">fn</span>::<span class="op">&lt;</span><span class="macro-nonterminal">U16</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">byteorder</span><span class="op">&gt;</span><span class="op">&gt;</span>();
             <span class="macro-nonterminal">$</span><span class="kw">fn</span>::<span class="op">&lt;</span><span class="macro-nonterminal">U32</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">byteorder</span><span class="op">&gt;</span><span class="op">&gt;</span>();
             <span class="macro-nonterminal">$</span><span class="kw">fn</span>::<span class="op">&lt;</span><span class="macro-nonterminal">U64</span><span class="op">&lt;</span><span class="macro-nonterminal">$</span><span class="macro-nonterminal">byteorder</span><span class="op">&gt;</span><span class="op">&gt;</span>();

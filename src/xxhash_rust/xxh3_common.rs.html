@@ -85,19 +85,19 @@
 ];
 
 <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">xorshift64</span>(<span class="ident">value</span>: <span class="ident">u64</span>, <span class="ident">shift</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">xorshift64</span>(<span class="ident">value</span>: <span class="ident">u64</span>, <span class="ident">shift</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
     <span class="ident">value</span> <span class="op">^</span> (<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="ident">shift</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">avalanche</span>(<span class="kw-2">mut</span> <span class="ident">value</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">avalanche</span>(<span class="kw-2">mut</span> <span class="ident">value</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
     <span class="ident">value</span> <span class="op">=</span> <span class="ident">xorshift64</span>(<span class="ident">value</span>, <span class="number">37</span>);
     <span class="ident">value</span> <span class="op">=</span> <span class="ident">value</span>.<span class="ident">wrapping_mul</span>(<span class="number">0x165667919E3779F9</span>);
     <span class="ident">xorshift64</span>(<span class="ident">value</span>, <span class="number">32</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">strong_avalanche</span>(<span class="kw-2">mut</span> <span class="ident">value</span>: <span class="ident">u64</span>, <span class="ident">len</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">strong_avalanche</span>(<span class="kw-2">mut</span> <span class="ident">value</span>: <span class="ident">u64</span>, <span class="ident">len</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
     <span class="ident">value</span> <span class="op">^</span><span class="op">=</span> <span class="ident">value</span>.<span class="ident">rotate_left</span>(<span class="number">49</span>) <span class="op">^</span> <span class="ident">value</span>.<span class="ident">rotate_left</span>(<span class="number">24</span>);
     <span class="ident">value</span> <span class="op">=</span> <span class="ident">value</span>.<span class="ident">wrapping_mul</span>(<span class="number">0x9FB21C651E98DF25</span>);
     <span class="ident">value</span> <span class="op">^</span><span class="op">=</span> (<span class="ident">value</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">35</span>).<span class="ident">wrapping_add</span>(<span class="ident">len</span>);
@@ -106,13 +106,13 @@
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">mul64_to128</span>(<span class="ident">left</span>: <span class="ident">u64</span>, <span class="ident">right</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">u64</span>, <span class="ident">u64</span>) {
+<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">mul64_to128</span>(<span class="ident">left</span>: <span class="ident">u64</span>, <span class="ident">right</span>: <span class="ident">u64</span>) -&gt; (<span class="ident">u64</span>, <span class="ident">u64</span>) {
     <span class="kw">let</span> <span class="ident">product</span> <span class="op">=</span> <span class="ident">left</span> <span class="kw">as</span> <span class="ident">u128</span> <span class="op">*</span> <span class="ident">right</span> <span class="kw">as</span> <span class="ident">u128</span>;
     (<span class="ident">product</span> <span class="kw">as</span> <span class="ident">u64</span>, (<span class="ident">product</span> <span class="op">&gt;</span><span class="op">&gt;</span> <span class="number">64</span>) <span class="kw">as</span> <span class="ident">u64</span>)
 }
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">mul128_fold64</span>(<span class="ident">left</span>: <span class="ident">u64</span>, <span class="ident">right</span>: <span class="ident">u64</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+<span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">mul128_fold64</span>(<span class="ident">left</span>: <span class="ident">u64</span>, <span class="ident">right</span>: <span class="ident">u64</span>) -&gt; <span class="ident">u64</span> {
     <span class="kw">let</span> (<span class="ident">low</span>, <span class="ident">high</span>) <span class="op">=</span> <span class="ident">mul64_to128</span>(<span class="ident">left</span>, <span class="ident">right</span>);
     <span class="ident">low</span> <span class="op">^</span> <span class="ident">high</span>
 }

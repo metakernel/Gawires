@@ -540,40 +540,40 @@
 <span class="kw">impl</span> <span class="ident">EventTx</span> {
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">event</span>: <span class="ident">RawEvent</span>) {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident">EventTx::Raw</span> { <span class="kw-2">ref</span> <span class="ident">tx</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EventTx::Raw</span> { <span class="kw-2">ref</span> <span class="ident">tx</span> } =&gt; {
                 <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">event</span>);
             }
             <span class="ident">EventTx::Debounced</span> {
                 <span class="kw-2">ref</span> <span class="ident">tx</span>,
                 <span class="kw-2">ref</span> <span class="kw-2">mut</span> <span class="ident">debounce</span>,
-            } <span class="op">=</span><span class="op">&gt;</span> {
+            } =&gt; {
                 <span class="kw">match</span> (<span class="ident">event</span>.<span class="ident">path</span>, <span class="ident">event</span>.<span class="ident">op</span>, <span class="ident">event</span>.<span class="ident">cookie</span>) {
-                    (<span class="prelude-val">None</span>, <span class="prelude-val">Ok</span>(<span class="ident">op::Op::RESCAN</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="prelude-val">None</span>, <span class="prelude-val">Ok</span>(<span class="ident">op::Op::RESCAN</span>), <span class="prelude-val">None</span>) =&gt; {
                         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">DebouncedEvent::Rescan</span>);
                     }
-                    (<span class="prelude-val">Some</span>(<span class="ident">path</span>), <span class="prelude-val">Ok</span>(<span class="ident">op</span>), <span class="ident">cookie</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="prelude-val">Some</span>(<span class="ident">path</span>), <span class="prelude-val">Ok</span>(<span class="ident">op</span>), <span class="ident">cookie</span>) =&gt; {
                         <span class="ident">debounce</span>.<span class="ident">event</span>(<span class="ident">path</span>, <span class="ident">op</span>, <span class="ident">cookie</span>);
                     }
-                    (<span class="prelude-val">None</span>, <span class="prelude-val">Ok</span>(<span class="ident">_op</span>), <span class="ident">_cookie</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="prelude-val">None</span>, <span class="prelude-val">Ok</span>(<span class="ident">_op</span>), <span class="ident">_cookie</span>) =&gt; {
                         <span class="comment">// TODO panic!(&quot;path is None: {:?} ({:?})&quot;, _op, _cookie);</span>
                     }
-                    (<span class="ident">path</span>, <span class="prelude-val">Err</span>(<span class="ident">e</span>), <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="ident">path</span>, <span class="prelude-val">Err</span>(<span class="ident">e</span>), <span class="kw">_</span>) =&gt; {
                         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">DebouncedEvent::Error</span>(<span class="ident">e</span>, <span class="ident">path</span>));
                     }
                 }
             }
-            <span class="ident">EventTx::DebouncedTx</span> { <span class="kw-2">ref</span> <span class="ident">tx</span> } <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">EventTx::DebouncedTx</span> { <span class="kw-2">ref</span> <span class="ident">tx</span> } =&gt; {
                 <span class="kw">match</span> (<span class="ident">event</span>.<span class="ident">path</span>, <span class="ident">event</span>.<span class="ident">op</span>, <span class="ident">event</span>.<span class="ident">cookie</span>) {
-                    (<span class="prelude-val">None</span>, <span class="prelude-val">Ok</span>(<span class="ident">op::Op::RESCAN</span>), <span class="prelude-val">None</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="prelude-val">None</span>, <span class="prelude-val">Ok</span>(<span class="ident">op::Op::RESCAN</span>), <span class="prelude-val">None</span>) =&gt; {
                         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">DebouncedEvent::Rescan</span>);
                     }
-                    (<span class="prelude-val">Some</span>(<span class="ident">_path</span>), <span class="prelude-val">Ok</span>(<span class="ident">_op</span>), <span class="ident">_cookie</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="prelude-val">Some</span>(<span class="ident">_path</span>), <span class="prelude-val">Ok</span>(<span class="ident">_op</span>), <span class="ident">_cookie</span>) =&gt; {
                         <span class="comment">// TODO debounce.event(_path, _op, _cookie);</span>
                     }
-                    (<span class="prelude-val">None</span>, <span class="prelude-val">Ok</span>(<span class="ident">_op</span>), <span class="ident">_cookie</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="prelude-val">None</span>, <span class="prelude-val">Ok</span>(<span class="ident">_op</span>), <span class="ident">_cookie</span>) =&gt; {
                         <span class="comment">// TODO panic!(&quot;path is None: {:?} ({:?})&quot;, _op, _cookie);</span>
                     }
-                    (<span class="ident">path</span>, <span class="prelude-val">Err</span>(<span class="ident">e</span>), <span class="kw">_</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    (<span class="ident">path</span>, <span class="prelude-val">Err</span>(<span class="ident">e</span>), <span class="kw">_</span>) =&gt; {
                         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">DebouncedEvent::Error</span>(<span class="ident">e</span>, <span class="ident">path</span>));
                     }
                 }
@@ -591,7 +591,7 @@
 }
 
 <span class="kw">impl</span> <span class="ident">Debounce</span> {
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">delay</span>: <span class="ident">Duration</span>, <span class="ident">tx</span>: <span class="ident">mpsc::Sender</span><span class="op">&lt;</span><span class="ident">DebouncedEvent</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Debounce</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">delay</span>: <span class="ident">Duration</span>, <span class="ident">tx</span>: <span class="ident">mpsc::Sender</span><span class="op">&lt;</span><span class="ident">DebouncedEvent</span><span class="op">&gt;</span>) -&gt; <span class="ident">Debounce</span> {
         <span class="kw">let</span> <span class="ident">operations_buffer</span>: <span class="ident">OperationsBuffer</span> <span class="op">=</span> <span class="ident">Arc::new</span>(<span class="ident">Mutex::new</span>(<span class="ident">HashMap::new</span>()));
 
         <span class="comment">// spawns new thread</span>
@@ -623,18 +623,18 @@
                 {
                     <span class="kw">if</span> <span class="self">self</span>.<span class="ident">rename_path</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>().<span class="ident">exists</span>() {
                         <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">operation</span> {
-                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) <span class="kw">if</span> <span class="ident">from_path</span>.<span class="ident">is_none</span>() <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) <span class="kw">if</span> <span class="ident">from_path</span>.<span class="ident">is_none</span>() =&gt; {
                                 <span class="comment">// file has been moved into the watched directory</span>
                                 <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">op::Op::CREATE</span>);
                                 <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
                             }
-                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) =&gt; {
                                 <span class="comment">// file has been moved removed before and has now been moved into</span>
                                 <span class="comment">// the watched directory</span>
                                 <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">op::Op::WRITE</span>);
                                 <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
                             }
-                            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="kw">_</span> =&gt; {
                                 <span class="comment">// this code can only be reached with fsevents because it may</span>
                                 <span class="comment">// repeat a rename event for a file that has been renamed before</span>
                                 <span class="comment">// (https://github.com/notify-rs/notify/issues/99)</span>
@@ -642,7 +642,7 @@
                         }
                     } <span class="kw">else</span> {
                         <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">operation</span> {
-                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::CREATE</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::CREATE</span>) =&gt; {
                                 <span class="comment">// file was just created, so just remove the operations_buffer</span>
                                 <span class="comment">// entry / no need to emit NoticeRemove because the file has just</span>
                                 <span class="comment">// been created.</span>
@@ -656,19 +656,19 @@
                                 <span class="ident">remove_path</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>);
                             }
                             <span class="prelude-val">Some</span>(<span class="ident">op::Op::WRITE</span>) <span class="op">|</span> <span class="comment">// change to remove event</span>
-                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::CHMOD</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="comment">// change to remove event</span>
+                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::CHMOD</span>) =&gt; { <span class="comment">// change to remove event</span>
                                 <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>);
                                 <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">DebouncedEvent::NoticeRemove</span>(<span class="ident">path</span>.<span class="ident">clone</span>()));
                                 <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
                             }
-                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) =&gt; {
 
                                 <span class="comment">// file has been renamed before, change to remove event / no need</span>
                                 <span class="comment">// to emit NoticeRemove because the file has been renamed before</span>
                                 <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>);
                                 <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
                             }
-                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) =&gt; {
 
                                 <span class="comment">// file has been renamed and then removed / keep write event</span>
                                 <span class="comment">// this code can only be reached with fsevents because it may</span>
@@ -677,7 +677,7 @@
                                 <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
                             }
                             <span class="comment">// CLOSE_WRITE and RESCAN aren&#39;t tracked by operations_buffer</span>
-                            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="kw">_</span> =&gt; {
                                 <span class="macro">unreachable!</span>();
                             }
                         }
@@ -728,22 +728,22 @@
                     <span class="comment">// file can&#39;t be renamed to before being created</span>
                     <span class="comment">// (repetitions are removed anyway),</span>
                     <span class="comment">// but with fsevents everything is possible</span>
-                    <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) <span class="op">=</span><span class="op">&gt;</span> {}
+                    <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) =&gt; {}
 
                     <span class="comment">// file has been removed and is now being re-created;</span>
                     <span class="comment">// convert this to a write event</span>
-                    <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) =&gt; {
                         <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">op::Op::WRITE</span>);
                         <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
                     }
 
                     <span class="comment">// operations_buffer entry didn&#39;t exist</span>
-                    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">None</span> =&gt; {
                         <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">op::Op::CREATE</span>);
                         <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
                     }
 
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">unreachable!</span>(); }
+                    <span class="kw">_</span> =&gt; { <span class="macro">unreachable!</span>(); }
                 }
             }
 
@@ -757,7 +757,7 @@
 
                     <span class="comment">// keep write event / not need to emit NoticeWrite because</span>
                     <span class="comment">// it already was a write event</span>
-                    <span class="prelude-val">Some</span>(<span class="ident">op::Op::WRITE</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">Some</span>(<span class="ident">op::Op::WRITE</span>) =&gt; {
                         <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
                     }
 
@@ -768,7 +768,7 @@
                     <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) <span class="op">|</span>
 
                     <span class="comment">// operations_buffer entry didn&#39;t exist</span>
-                    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">None</span> =&gt; {
                         <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">op::Op::WRITE</span>);
                         <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">DebouncedEvent::NoticeWrite</span>(<span class="ident">path</span>.<span class="ident">clone</span>()));
                         <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
@@ -776,9 +776,9 @@
 
                     <span class="comment">// writing to a deleted file is impossible,</span>
                     <span class="comment">// but with fsevents everything is possible</span>
-                    <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) <span class="op">=</span><span class="op">&gt;</span> {}
+                    <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) =&gt; {}
 
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">unreachable!</span>(); }
+                    <span class="kw">_</span> =&gt; { <span class="macro">unreachable!</span>(); }
                 }
             }
 
@@ -793,22 +793,22 @@
                     <span class="prelude-val">Some</span>(<span class="ident">op::Op::WRITE</span>) <span class="op">|</span>
 
                     <span class="comment">// keep chmod event</span>
-                    <span class="prelude-val">Some</span>(<span class="ident">op::Op::CHMOD</span>) <span class="op">=</span><span class="op">&gt;</span> { <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>); }
+                    <span class="prelude-val">Some</span>(<span class="ident">op::Op::CHMOD</span>) =&gt; { <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>); }
 
                     <span class="comment">// file has been renamed before, upgrade to chmod event</span>
                     <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) <span class="op">|</span>
 
                     <span class="comment">// operations_buffer entry didn&#39;t exist</span>
-                    <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                    <span class="prelude-val">None</span> =&gt; {
                         <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">op::Op::CHMOD</span>);
                         <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
                     }
 
                     <span class="comment">// changing a deleted file is impossible,</span>
                     <span class="comment">// but with fsevents everything is possible</span>
-                    <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) <span class="op">=</span><span class="op">&gt;</span> {}
+                    <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) =&gt; {}
 
-                    <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">unreachable!</span>(); }
+                    <span class="kw">_</span> =&gt; { <span class="macro">unreachable!</span>(); }
                 }
             }
 
@@ -816,7 +816,7 @@
                 <span class="comment">// unwrap is safe because rename_path is Some</span>
                 <span class="kw">if</span> <span class="self">self</span>.<span class="ident">rename_path</span>.<span class="ident">is_some</span>()
                     <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">rename_cookie</span>.<span class="ident">is_some</span>()
-                    <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">rename_cookie</span> <span class="op">=</span><span class="op">=</span> <span class="ident">cookie</span>
+                    <span class="op">&amp;&amp;</span> <span class="self">self</span>.<span class="ident">rename_cookie</span> <span class="op">==</span> <span class="ident">cookie</span>
                     <span class="op">&amp;&amp;</span> <span class="ident">op_buf</span>.<span class="ident">contains_key</span>(<span class="self">self</span>.<span class="ident">rename_path</span>.<span class="ident">as_ref</span>().<span class="ident">unwrap</span>())
                 {
                     <span class="comment">// This is the second part of a rename operation, the old path is stored in the</span>
@@ -839,7 +839,7 @@
 
                     <span class="kw">match</span> <span class="ident">from_operation</span> {
                         <span class="comment">// file has just been created, so move the create event to the new path</span>
-                        <span class="prelude-val">Some</span>(<span class="ident">op::Op::CREATE</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Some</span>(<span class="ident">op::Op::CREATE</span>) =&gt; {
                             <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="ident">from_operation</span>;
                             <span class="kw-2">*</span><span class="ident">from_path</span> <span class="op">=</span> <span class="prelude-val">None</span>;
                             <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
@@ -855,7 +855,7 @@
 
                         <span class="comment">// file has been renamed before, so move the event to the new path and</span>
                         <span class="comment">// update the from_path</span>
-                        <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) =&gt; {
                             <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="ident">from_operation</span>;
                             <span class="kw-2">*</span><span class="ident">from_path</span> <span class="op">=</span> <span class="ident">use_from_path</span>;
                             <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
@@ -863,9 +863,9 @@
 
                         <span class="comment">// file can&#39;t be renamed after being removed,</span>
                         <span class="comment">// but with fsevents everything is possible</span>
-                        <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) <span class="op">=</span><span class="op">&gt;</span> {}
+                        <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) =&gt; {}
 
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">unreachable!</span>(); }
+                        <span class="kw">_</span> =&gt; { <span class="macro">unreachable!</span>(); }
                     }
 
                     <span class="comment">// reset the rename_path</span>
@@ -886,7 +886,7 @@
                         <span class="comment">// file has been renamed before, so</span>
                         <span class="comment">// keep rename event / no need to emit NoticeRemove because</span>
                         <span class="comment">// the file has been renamed before</span>
-                        <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) =&gt; {
                             <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
                         }
 
@@ -894,13 +894,13 @@
                         <span class="prelude-val">Some</span>(<span class="ident">op::Op::WRITE</span>) <span class="op">|</span>
 
                         <span class="comment">// keep chmod event</span>
-                        <span class="prelude-val">Some</span>(<span class="ident">op::Op::CHMOD</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">Some</span>(<span class="ident">op::Op::CHMOD</span>) =&gt; {
                             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">DebouncedEvent::NoticeRemove</span>(<span class="ident">path</span>.<span class="ident">clone</span>()));
                             <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
                         }
 
                         <span class="comment">// operations_buffer entry didn&#39;t exist</span>
-                        <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                        <span class="prelude-val">None</span> =&gt; {
                             <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>);
                             <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">DebouncedEvent::NoticeRemove</span>(<span class="ident">path</span>.<span class="ident">clone</span>()));
                             <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>.<span class="ident">clone</span>(), <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
@@ -909,9 +909,9 @@
                         <span class="comment">// renaming a deleted file should be impossible,</span>
                         <span class="comment">// but with fsevents everything is possible</span>
                         <span class="comment">// (https://github.com/notify-rs/notify/issues/101)</span>
-                        <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) <span class="op">=</span><span class="op">&gt;</span> {}
+                        <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) =&gt; {}
 
-                        <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">unreachable!</span>(); }
+                        <span class="kw">_</span> =&gt; { <span class="macro">unreachable!</span>(); }
                     }
                 }
             }
@@ -944,7 +944,7 @@
                         <span class="kw">match</span> <span class="kw-2">*</span><span class="ident">operation</span> {
                             <span class="comment">// file was just created, so just remove the operations_buffer entry / no</span>
                             <span class="comment">// need to emit NoticeRemove because the file has just been created</span>
-                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::CREATE</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::CREATE</span>) =&gt; {
                                 <span class="comment">// ignore running timer</span>
                                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">timer_id</span>) <span class="op">=</span> <span class="kw-2">*</span><span class="ident">timer_id</span> {
                                     <span class="self">self</span>.<span class="ident">timer</span>.<span class="ident">ignore</span>(<span class="ident">timer_id</span>);
@@ -961,7 +961,7 @@
                             <span class="prelude-val">Some</span>(<span class="ident">op::Op::CHMOD</span>) <span class="op">|</span>
 
                             <span class="comment">// operations_buffer entry didn&#39;t exist</span>
-                            <span class="prelude-val">None</span> <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="prelude-val">None</span> =&gt; {
                                 <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>);
                                 <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">DebouncedEvent::NoticeRemove</span>(<span class="ident">path</span>.<span class="ident">clone</span>()));
                                 <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
@@ -969,22 +969,22 @@
 
                             <span class="comment">// file has been renamed before, change to remove event /</span>
                             <span class="comment">// no need to emit NoticeRemove because the file has been renamed before</span>
-                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) =&gt; {
                                 <span class="kw-2">*</span><span class="ident">operation</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>);
                                 <span class="ident">restart_timer</span>(<span class="ident">timer_id</span>, <span class="ident">path</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>.<span class="ident">timer</span>);
                             }
 
                             <span class="comment">// multiple remove events are possible if the file/directory</span>
                             <span class="comment">// is itself watched and in a watched directory</span>
-                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) <span class="op">=</span><span class="op">&gt;</span> {}
+                            <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) =&gt; {}
 
-                            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> { <span class="macro">unreachable!</span>(); }
+                            <span class="kw">_</span> =&gt; { <span class="macro">unreachable!</span>(); }
                         }
                     }
                 }
                 <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) <span class="op">=</span> <span class="ident">remove_path</span> {
                     <span class="ident">op_buf</span>.<span class="ident">remove</span>(<span class="kw-2">&amp;</span><span class="ident">path</span>);
-                    <span class="kw">if</span> <span class="self">self</span>.<span class="ident">rename_path</span> <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) {
+                    <span class="kw">if</span> <span class="self">self</span>.<span class="ident">rename_path</span> <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="ident">path</span>) {
                         <span class="self">self</span>.<span class="ident">rename_path</span> <span class="op">=</span> <span class="prelude-val">None</span>;
                     }
                 }
@@ -993,7 +993,7 @@
     }
 }
 
-<span class="kw">fn</span> <span class="ident">remove_repeated_events</span>(<span class="kw-2">mut</span> <span class="ident">op</span>: <span class="ident">op::Op</span>, <span class="ident">prev_op</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">op::Op</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">op::Op</span> {
+<span class="kw">fn</span> <span class="ident">remove_repeated_events</span>(<span class="kw-2">mut</span> <span class="ident">op</span>: <span class="ident">op::Op</span>, <span class="ident">prev_op</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">op::Op</span><span class="op">&gt;</span>) -&gt; <span class="ident">op::Op</span> {
     <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">prev_op</span>) <span class="op">=</span> <span class="ident">prev_op</span> {
         <span class="kw">if</span> <span class="ident">prev_op</span>.<span class="ident">intersects</span>(<span class="ident">op::Op::CREATE</span> <span class="op">|</span> <span class="ident">op::Op::WRITE</span> <span class="op">|</span> <span class="ident">op::Op::CHMOD</span> <span class="op">|</span> <span class="ident">op::Op::RENAME</span>) {
             <span class="ident">op</span>.<span class="ident">remove</span>(<span class="ident">op::Op::CREATE</span>);

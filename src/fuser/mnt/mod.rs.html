@@ -217,7 +217,7 @@
 <span class="doccomment">/// Helper function to provide options as a fuse_args struct</span>
 <span class="doccomment">/// (which contains an argc count and an argv pointer)</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;libfuse&quot;</span>, <span class="ident">test</span>))]</span>
-<span class="kw">fn</span> <span class="ident">with_fuse_args</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">fuse_args</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span>[<span class="ident">MountOption</span>], <span class="ident">f</span>: <span class="ident">F</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">T</span> {
+<span class="kw">fn</span> <span class="ident">with_fuse_args</span><span class="op">&lt;</span><span class="ident">T</span>, <span class="ident">F</span>: <span class="ident">FnOnce</span>(<span class="kw-2">&amp;</span><span class="ident">fuse_args</span>) -&gt; <span class="ident">T</span><span class="op">&gt;</span>(<span class="ident">options</span>: <span class="kw-2">&amp;</span>[<span class="ident">MountOption</span>], <span class="ident">f</span>: <span class="ident">F</span>) -&gt; <span class="ident">T</span> {
     <span class="kw">use</span> <span class="ident">mount_options::option_to_string</span>;
     <span class="kw">use</span> <span class="ident">std::ffi::CString</span>;
 
@@ -247,7 +247,7 @@
 
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;libfuse3&quot;</span>))]</span>
 <span class="attribute">#[<span class="ident">inline</span>]</span>
-<span class="kw">fn</span> <span class="ident">libc_umount</span>(<span class="ident">mnt</span>: <span class="kw-2">&amp;</span><span class="ident">CStr</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+<span class="kw">fn</span> <span class="ident">libc_umount</span>(<span class="ident">mnt</span>: <span class="kw-2">&amp;</span><span class="ident">CStr</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(
         <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>,
         <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;freebsd&quot;</span>,
@@ -277,7 +277,7 @@
 <span class="doccomment">/// Warning: This will return true if the filesystem has been detached (lazy unmounted), but not</span>
 <span class="doccomment">/// yet destroyed by the kernel.</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">test</span>, <span class="ident">not</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;libfuse&quot;</span>)))]</span>
-<span class="kw">fn</span> <span class="ident">is_mounted</span>(<span class="ident">fuse_device</span>: <span class="kw-2">&amp;</span><span class="ident">File</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">fn</span> <span class="ident">is_mounted</span>(<span class="ident">fuse_device</span>: <span class="kw-2">&amp;</span><span class="ident">File</span>) -&gt; <span class="ident">bool</span> {
     <span class="kw">use</span> <span class="ident">libc</span>::{<span class="ident">poll</span>, <span class="ident">pollfd</span>};
     <span class="kw">use</span> <span class="ident">std::os::unix::prelude::AsRawFd</span>;
 
@@ -289,11 +289,11 @@
     <span class="kw">loop</span> {
         <span class="kw">let</span> <span class="ident">res</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">poll</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">poll_result</span>, <span class="number">1</span>, <span class="number">0</span>) };
         <span class="kw">break</span> <span class="kw">match</span> <span class="ident">res</span> {
-            <span class="number">0</span> <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">true</span>,
-            <span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> (<span class="ident">poll_result</span>.<span class="ident">revents</span> <span class="op">&amp;</span> <span class="ident">libc::POLLERR</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>,
-            <span class="op">-</span><span class="number">1</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="number">0</span> =&gt; <span class="bool-val">true</span>,
+            <span class="number">1</span> =&gt; (<span class="ident">poll_result</span>.<span class="ident">revents</span> <span class="op">&amp;</span> <span class="ident">libc::POLLERR</span>) <span class="op">!</span><span class="op">=</span> <span class="number">0</span>,
+            <span class="op">-</span><span class="number">1</span> =&gt; {
                 <span class="kw">let</span> <span class="ident">err</span> <span class="op">=</span> <span class="ident">io::Error::last_os_error</span>();
-                <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">kind</span>() <span class="op">=</span><span class="op">=</span> <span class="ident">io::ErrorKind::Interrupted</span> {
+                <span class="kw">if</span> <span class="ident">err</span>.<span class="ident">kind</span>() <span class="op">==</span> <span class="ident">io::ErrorKind::Interrupted</span> {
                     <span class="kw">continue</span>;
                 } <span class="kw">else</span> {
                     <span class="comment">// This should never happen. The fd is guaranteed good as `File` owns it.</span>
@@ -302,7 +302,7 @@
                     <span class="macro">panic!</span>(<span class="string">&quot;Poll failed with error {}&quot;</span>, <span class="ident">err</span>)
                 }
             }
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="macro">unreachable!</span>(),
+            <span class="kw">_</span> =&gt; <span class="macro">unreachable!</span>(),
         };
     }
 }
@@ -331,7 +331,7 @@
             },
         );
     }
-    <span class="kw">fn</span> <span class="ident">cmd_mount</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="ident">String</span> {
+    <span class="kw">fn</span> <span class="ident">cmd_mount</span>() -&gt; <span class="ident">String</span> {
         <span class="ident">std::str::from_utf8</span>(
             <span class="ident">std::process::Command::new</span>(<span class="string">&quot;sh&quot;</span>)
                 .<span class="ident">arg</span>(<span class="string">&quot;-c&quot;</span>)

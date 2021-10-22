@@ -2496,7 +2496,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 
 <span class="attribute">#[<span class="ident">inline</span>]</span>
 <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_variables</span>)]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">enable_passcred</span>(<span class="ident">socket</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">enable_passcred</span>(<span class="ident">socket</span>: <span class="ident">i32</span>) -&gt; <span class="ident">bool</span> {
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>)))]</span>
     {
         <span class="kw">let</span> <span class="ident">passcred</span>: <span class="ident">c_int</span> <span class="op">=</span> <span class="number">1</span>;
@@ -2514,7 +2514,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     } <span class="comment">// Cannot have passcred on macOS and iOS.</span>
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>)))]</span>
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_peer_ucred</span>(<span class="ident">socket</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ucred</span><span class="op">&gt;</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">get_peer_ucred</span>(<span class="ident">socket</span>: <span class="ident">i32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">ucred</span><span class="op">&gt;</span> {
     <span class="comment">// SAFETY: it&#39;s safe for the ucred structure to be zero-initialized, since</span>
     <span class="comment">// it only contains integers</span>
     <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">cred</span>: <span class="ident">ucred</span> <span class="op">=</span> <span class="ident">mem::zeroed</span>();
@@ -2534,9 +2534,9 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="prelude-val">None</span>
     }
 }
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">raw_set_nonblocking</span>(<span class="ident">socket</span>: <span class="ident">i32</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">raw_set_nonblocking</span>(<span class="ident">socket</span>: <span class="ident">i32</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) -&gt; <span class="ident">bool</span> {
     <span class="kw">let</span> <span class="ident">old_flags</span> <span class="op">=</span> <span class="ident">libc::fcntl</span>(<span class="ident">socket</span>, <span class="ident">F_GETFL</span>, <span class="ident">ptr::null</span>::<span class="op">&lt;</span><span class="ident">c_void</span><span class="op">&gt;</span>());
-    <span class="kw">if</span> <span class="ident">old_flags</span> <span class="op">=</span><span class="op">=</span> <span class="op">-</span><span class="number">1</span> {
+    <span class="kw">if</span> <span class="ident">old_flags</span> <span class="op">==</span> <span class="op">-</span><span class="number">1</span> {
         <span class="kw">return</span> <span class="bool-val">false</span>;
     }
     <span class="kw">let</span> <span class="ident">new_flags</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">nonblocking</span> {
@@ -2546,7 +2546,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     };
     <span class="ident">libc::fcntl</span>(<span class="ident">socket</span>, <span class="ident">F_SETFL</span>, <span class="ident">new_flags</span>) <span class="op">!</span><span class="op">=</span> <span class="op">-</span><span class="number">1</span>
 }
-<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">raw_get_nonblocking</span>(<span class="ident">socket</span>: <span class="ident">i32</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
+<span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">raw_get_nonblocking</span>(<span class="ident">socket</span>: <span class="ident">i32</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
     <span class="kw">let</span> <span class="ident">flags</span> <span class="op">=</span> <span class="ident">libc::fcntl</span>(<span class="ident">socket</span>, <span class="ident">F_GETFL</span>, <span class="ident">ptr::null</span>::<span class="op">&lt;</span><span class="ident">c_void</span><span class="op">&gt;</span>());
     <span class="kw">if</span> <span class="ident">flags</span> <span class="op">!</span><span class="op">=</span> <span class="op">-</span><span class="number">1</span> {
         <span class="prelude-val">Some</span>(<span class="ident">flags</span> <span class="op">&amp;</span> <span class="ident">O_NONBLOCK</span> <span class="op">!</span><span class="op">=</span> <span class="number">0</span>)
@@ -2701,7 +2701,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [maximum socket path length]: const.MAX_UDSOCKET_PATH_LEN.html &quot; &quot;</span>
     <span class="doccomment">/// [socket namespace]: enum.UdSocketPath.html#namespaced &quot; &quot;</span>
     <span class="doccomment">/// [`ToUdSocketPath`]: trait.ToUdSocketPath.html &quot; &quot;</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bind</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">ToUdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bind</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">ToUdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">to_socket_path</span>()<span class="question-mark">?</span>; <span class="comment">// Shadow original by conversion</span>
         <span class="kw">let</span> (<span class="ident">addr</span>, <span class="ident">addrlen</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">addr</span>: <span class="ident">sockaddr_un</span> <span class="op">=</span> <span class="ident">zeroed</span>();
@@ -2782,7 +2782,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`incoming`]: #method.incoming &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdStream</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">accept</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdStream</span><span class="op">&gt;</span> {
         <span class="kw">let</span> (<span class="ident">success</span>, <span class="ident">fd</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">result</span> <span class="op">=</span> <span class="ident">libc::accept</span>(<span class="self">self</span>.<span class="ident">as_raw_fd</span>(), <span class="ident">zeroed</span>(), <span class="ident">zeroed</span>());
             (<span class="ident">result</span> <span class="op">!</span><span class="op">=</span> <span class="op">-</span><span class="number">1</span>, <span class="ident">result</span>)
@@ -2818,7 +2818,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// # Ok(()) }</span>
     <span class="doccomment">/// ```</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">incoming</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">Incoming</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">incoming</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">Incoming</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {
         <span class="ident">Incoming::from</span>(<span class="self">self</span>)
     }
 
@@ -2830,7 +2830,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`incoming`]: #method.incoming &quot; &quot;</span>
     <span class="doccomment">/// [`WouldBlock`]: https://doc.rust-lang.org/std/io/enum.ErrorKind.html#variant.WouldBlock &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">unsafe</span> { <span class="ident">raw_set_nonblocking</span>(<span class="self">self</span>.<span class="ident">fd</span>.<span class="number">0</span>, <span class="ident">nonblocking</span>) } {
             <span class="prelude-val">Ok</span>(())
         } <span class="kw">else</span> {
@@ -2839,12 +2839,12 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     }
     <span class="doccomment">/// Checks whether the socket is currently in nonblocking mode or not.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> { <span class="ident">raw_get_nonblocking</span>(<span class="self">self</span>.<span class="ident">fd</span>.<span class="number">0</span>) }.<span class="ident">ok_or_else</span>(<span class="ident">io::Error::last_os_error</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UdStreamListener</span> {
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;UdStreamListener&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;file_descriptor&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_raw_fd</span>())
             .<span class="ident">finish</span>()
@@ -2853,21 +2853,21 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">impl</span> <span class="ident">AsRawFd</span> <span class="kw">for</span> <span class="ident">UdStreamListener</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_raw_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">c_int</span> {
         <span class="self">self</span>.<span class="ident">fd</span>.<span class="ident">as_raw_fd</span>()
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">impl</span> <span class="ident">IntoRawFd</span> <span class="kw">for</span> <span class="ident">UdStreamListener</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_raw_fd</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+    <span class="kw">fn</span> <span class="ident">into_raw_fd</span>(<span class="self">self</span>) -&gt; <span class="ident">c_int</span> {
         <span class="self">self</span>.<span class="ident">fd</span>.<span class="ident">into_raw_fd</span>()
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">impl</span> <span class="ident">FromRawFd</span> <span class="kw">for</span> <span class="ident">UdStreamListener</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">fd</span>: <span class="ident">FdOps::new</span>(<span class="ident">fd</span>) }
     }
 }
@@ -2989,7 +2989,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`ToUdSocketPath`]: trait.ToUdSocketPath.html &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">ToUdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">ToUdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">to_socket_path</span>()<span class="question-mark">?</span>; <span class="comment">// Shadow original by conversion</span>
         <span class="kw">let</span> (<span class="ident">addr</span>, <span class="ident">addrlen</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">addr</span>: <span class="ident">sockaddr_un</span> <span class="op">=</span> <span class="ident">zeroed</span>();
@@ -3037,7 +3037,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`recv_vectored`]: #method.recv_vectored &quot; &quot;</span>
     <span class="comment">// TODO use read</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">fd</span>.<span class="ident">read</span>(<span class="ident">buf</span>)
     }
     <span class="doccomment">/// Receives bytes from the socket stream, making use of [scatter input] for the main data.</span>
@@ -3050,7 +3050,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`recv_ancillary_vectored`]: #method.recv_ancillary_vectored &quot; &quot;</span>
     <span class="comment">// TODO use readv</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recv_vectored</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recv_vectored</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">abuf</span> <span class="op">=</span> <span class="ident">AncillaryDataBuf::Owned</span>(<span class="ident">Vec::new</span>());
         <span class="self">self</span>.<span class="ident">recv_ancillary_vectored</span>(<span class="ident">bufs</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">abuf</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="number">0</span>)
     }
@@ -3065,7 +3065,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>],
         <span class="ident">abuf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">recv_ancillary_vectored</span>(<span class="kw-2">&amp;</span>[<span class="ident">IoSliceMut::new</span>(<span class="ident">buf</span>)], <span class="ident">abuf</span>)
     }
     <span class="doccomment">/// Receives bytes and ancillary data from the socket stream, making use of [scatter input] for the main data.</span>
@@ -3082,7 +3082,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSliceMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>],
         <span class="ident">abuf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">abuf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] <span class="op">=</span> <span class="ident">abuf</span>.<span class="ident">as_mut</span>();
         <span class="comment">// SAFETY: msghdr consists of integers and pointers, all of which are nullable</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hdr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">zeroed</span>::<span class="op">&lt;</span><span class="ident">msghdr</span><span class="op">&gt;</span>() };
@@ -3120,7 +3120,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`send_vectored`]: #method.send_vectored &quot; &quot;</span>
     <span class="comment">// TODO use write</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">fd</span>.<span class="ident">write</span>(<span class="ident">buf</span>)
     }
     <span class="doccomment">/// Sends bytes into the socket stream, making use of [gather output] for the main data.</span>
@@ -3133,7 +3133,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`send_ancillary_vectored`]: #method.send_ancillary_vectored &quot; &quot;</span>
     <span class="comment">// TODO use writev</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_vectored</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_vectored</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">send_ancillary_vectored</span>(<span class="ident">bufs</span>, <span class="ident">iter::empty</span>())
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="number">0</span>)
     }
@@ -3148,7 +3148,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
         <span class="ident">ancillary_data</span>: <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">send_ancillary_vectored</span>(<span class="kw-2">&amp;</span>[<span class="ident">IoSlice::new</span>(<span class="ident">buf</span>)], <span class="ident">ancillary_data</span>)
     }
 
@@ -3166,7 +3166,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>],
         <span class="ident">ancillary_data</span>: <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">abuf_value</span> <span class="op">=</span> <span class="ident">ancillary_data</span>
             .<span class="ident">into_iter</span>()
             .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">EncodedAncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
@@ -3206,7 +3206,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`incoming`]: #method.incoming &quot; &quot;</span>
     <span class="doccomment">/// [`WouldBlock`]: https://doc.rust-lang.org/std/io/enum.ErrorKind.html#variant.WouldBlock &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">unsafe</span> { <span class="ident">raw_set_nonblocking</span>(<span class="self">self</span>.<span class="ident">fd</span>.<span class="number">0</span>, <span class="ident">nonblocking</span>) } {
             <span class="prelude-val">Ok</span>(())
         } <span class="kw">else</span> {
@@ -3215,7 +3215,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     }
     <span class="doccomment">/// Checks whether the stream is currently in nonblocking mode or not.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> { <span class="ident">raw_get_nonblocking</span>(<span class="self">self</span>.<span class="ident">fd</span>.<span class="number">0</span>) }.<span class="ident">ok_or_else</span>(<span class="ident">io::Error::last_os_error</span>)
     }
 
@@ -3225,40 +3225,40 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;doc_cfg&quot;</span>,
         <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>))))
     )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_peer_credentials</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">ucred</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_peer_credentials</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">ucred</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> { <span class="ident">get_peer_ucred</span>(<span class="self">self</span>.<span class="ident">fd</span>.<span class="number">0</span>).<span class="ident">ok_or_else</span>(<span class="ident">io::Error::last_os_error</span>) }
     }
 }
 <span class="kw">impl</span> <span class="ident">Read</span> <span class="kw">for</span> <span class="ident">UdStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">fd</span>.<span class="ident">read</span>(<span class="ident">buf</span>)
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read_vectored</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read_vectored</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">abuf</span> <span class="op">=</span> <span class="ident">AncillaryDataBuf::Owned</span>(<span class="ident">Vec::new</span>());
         <span class="self">self</span>.<span class="ident">recv_ancillary_vectored</span>(<span class="ident">bufs</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">abuf</span>).<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="number">0</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">Write</span> <span class="kw">for</span> <span class="ident">UdStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">fd</span>.<span class="ident">write</span>(<span class="ident">buf</span>)
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">write_vectored</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_vectored</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">send_ancillary_vectored</span>(<span class="ident">bufs</span>, <span class="ident">iter::empty</span>())
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="number">0</span>)
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">flush</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="comment">// You cannot flush a socket</span>
         <span class="prelude-val">Ok</span>(())
     }
 }
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UdStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;UdStream&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;file_descriptor&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_raw_fd</span>())
             .<span class="ident">finish</span>()
@@ -3267,21 +3267,21 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">impl</span> <span class="ident">AsRawFd</span> <span class="kw">for</span> <span class="ident">UdStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_raw_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">c_int</span> {
         <span class="self">self</span>.<span class="ident">fd</span>.<span class="ident">as_raw_fd</span>()
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">impl</span> <span class="ident">IntoRawFd</span> <span class="kw">for</span> <span class="ident">UdStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_raw_fd</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+    <span class="kw">fn</span> <span class="ident">into_raw_fd</span>(<span class="self">self</span>) -&gt; <span class="ident">c_int</span> {
         <span class="self">self</span>.<span class="ident">fd</span>.<span class="ident">into_raw_fd</span>()
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">impl</span> <span class="ident">FromRawFd</span> <span class="kw">for</span> <span class="ident">UdStream</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">fd</span>: <span class="ident">FdOps::new</span>(<span class="ident">fd</span>) }
     }
 }
@@ -3307,7 +3307,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [maximum socket path length]: const.MAX_UDSOCKET_PATH_LEN.html &quot; &quot;</span>
     <span class="doccomment">/// [socket namespace]: enum.UdSocketPath.html#namespaced &quot; &quot;</span>
     <span class="doccomment">/// [`ToUdSocketPath`]: trait.ToUdSocketPath.html &quot; &quot;</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bind</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">ToUdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">bind</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">ToUdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">to_socket_path</span>()<span class="question-mark">?</span>; <span class="comment">// Shadow original by conversion</span>
         <span class="kw">let</span> (<span class="ident">addr</span>, <span class="ident">addrlen</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">addr</span>: <span class="ident">sockaddr_un</span> <span class="op">=</span> <span class="ident">zeroed</span>();
@@ -3371,7 +3371,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`ToUdSocketPath`]: trait.ToUdSocketPath.html &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">ToUdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">connect</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="ident">path</span>: <span class="kw">impl</span> <span class="ident">ToUdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">path</span> <span class="op">=</span> <span class="ident">path</span>.<span class="ident">to_socket_path</span>()<span class="question-mark">?</span>; <span class="comment">// Shadow original by conversion</span>
         <span class="kw">let</span> (<span class="ident">addr</span>, <span class="ident">addrlen</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">addr</span>: <span class="ident">sockaddr_un</span> <span class="op">=</span> <span class="ident">zeroed</span>();
@@ -3420,7 +3420,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`recv_vectored`]: #method.recv_vectored &quot; &quot;</span>
     <span class="comment">// TODO use read</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recv</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">recv_vectored</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut::new</span>(<span class="ident">buf</span>)])
     }
 
@@ -3434,7 +3434,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`recv_ancillary_vectored`]: #method.recv_ancillary_vectored &quot; &quot;</span>
     <span class="comment">// TODO use readv</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recv_vectored</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">recv_vectored</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">recv_ancillary_vectored</span>(<span class="ident">bufs</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">AncillaryDataBuf::Owned</span>(<span class="ident">Vec::new</span>()))
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> (<span class="ident">x</span>.<span class="number">0</span>, <span class="ident">x</span>.<span class="number">1</span>))
     }
@@ -3454,7 +3454,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>],
         <span class="ident">abuf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>, <span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>, <span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">recv_ancillary_vectored</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut::new</span>(<span class="ident">buf</span>)], <span class="ident">abuf</span>)
     }
 
@@ -3473,7 +3473,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">bufs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>],
         <span class="ident">abuf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>, <span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>, <span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">abuf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] <span class="op">=</span> <span class="ident">abuf</span>.<span class="ident">as_mut</span>();
         <span class="comment">// SAFETY: msghdr consists of integers and pointers, all of which are nullable</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hdr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">zeroed</span>::<span class="op">&lt;</span><span class="ident">msghdr</span><span class="op">&gt;</span>() };
@@ -3520,7 +3520,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>],
         <span class="ident">addr_buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">recv_from_vectored</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut::new</span>(<span class="ident">buf</span>)], <span class="ident">addr_buf</span>)
     }
 
@@ -3535,7 +3535,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">bufs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>],
         <span class="ident">addr_buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">recv_from_ancillary_vectored</span>(<span class="ident">bufs</span>, <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">AncillaryDataBuf::Owned</span>(<span class="ident">Vec::new</span>()), <span class="ident">addr_buf</span>)
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> (<span class="ident">x</span>.<span class="number">0</span>, <span class="ident">x</span>.<span class="number">1</span>))
     }
@@ -3554,7 +3554,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>],
         <span class="ident">abuf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
         <span class="ident">addr_buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;d</span> <span class="kw-2">mut</span> <span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;c</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>, <span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>, <span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">recv_from_ancillary_vectored</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut::new</span>(<span class="ident">buf</span>)], <span class="ident">abuf</span>, <span class="ident">addr_buf</span>)
     }
 
@@ -3574,7 +3574,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="ident">bufs</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">IoSliceMut</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>],
         <span class="ident">abuf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;b</span> <span class="kw-2">mut</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>,
         <span class="ident">addr_buf</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;d</span> <span class="kw-2">mut</span> <span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;c</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>, <span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">bool</span>, <span class="ident">usize</span>, <span class="ident">bool</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">abuf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] <span class="op">=</span> <span class="ident">abuf</span>.<span class="ident">as_mut</span>();
         <span class="comment">// SAFETY: msghdr consists of integers and pointers, all of which are nullable</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">hdr</span> <span class="op">=</span> <span class="kw">unsafe</span> { <span class="ident">zeroed</span>::<span class="op">&lt;</span><span class="ident">msghdr</span><span class="op">&gt;</span>() };
@@ -3623,7 +3623,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// - `recv`</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;doc_cfg&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>)))]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_msg_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">peek_msg_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> [<span class="number">0_u8</span>; <span class="number">0</span>];
         <span class="kw">let</span> (<span class="ident">success</span>, <span class="ident">size</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="kw">let</span> <span class="ident">size</span> <span class="op">=</span> <span class="ident">libc::recv</span>(
@@ -3650,7 +3650,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// [`send_vectored`]: #method.send_vectored &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">send_vectored</span>(<span class="kw-2">&amp;</span>[<span class="ident">IoSlice::new</span>(<span class="ident">buf</span>)])
     }
     <span class="doccomment">/// Sends a datagram into the socket, making use of [gather output] for the main data.</span>
@@ -3663,7 +3663,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [gather output]: https://en.wikipedia.org/wiki/Vectored_I/O &quot; &quot;</span>
     <span class="doccomment">/// [`send_ancillary_vectored`]: #method.send_ancillary_vectored &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_vectored</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">send_vectored</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">send_ancillary_vectored</span>(<span class="ident">bufs</span>, <span class="ident">iter::empty</span>())
             .<span class="ident">map</span>(<span class="op">|</span><span class="ident">x</span><span class="op">|</span> <span class="ident">x</span>.<span class="number">0</span>)
     }
@@ -3678,7 +3678,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">buf</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>],
         <span class="ident">ancillary_data</span>: <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="self">self</span>.<span class="ident">send_ancillary_vectored</span>(<span class="kw-2">&amp;</span>[<span class="ident">IoSlice::new</span>(<span class="ident">buf</span>)], <span class="ident">ancillary_data</span>)
     }
     <span class="doccomment">/// Sends a datagram and ancillary data into the socket, making use of [gather output] for the main data.</span>
@@ -3694,7 +3694,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="kw-2">&amp;</span><span class="self">self</span>,
         <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>],
         <span class="ident">ancillary_data</span>: <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
+    ) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>(<span class="ident">usize</span>, <span class="ident">usize</span>)<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">abuf_value</span> <span class="op">=</span> <span class="ident">ancillary_data</span>
             .<span class="ident">into_iter</span>()
             .<span class="ident">collect</span>::<span class="op">&lt;</span><span class="ident">EncodedAncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span><span class="op">&gt;</span>();
@@ -3734,7 +3734,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`incoming`]: #method.incoming &quot; &quot;</span>
     <span class="doccomment">/// [`WouldBlock`]: https://doc.rust-lang.org/std/io/enum.ErrorKind.html#variant.WouldBlock &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">set_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">nonblocking</span>: <span class="ident">bool</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="kw">unsafe</span> { <span class="ident">raw_set_nonblocking</span>(<span class="self">self</span>.<span class="ident">fd</span>.<span class="number">0</span>, <span class="ident">nonblocking</span>) } {
             <span class="prelude-val">Ok</span>(())
         } <span class="kw">else</span> {
@@ -3743,7 +3743,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     }
     <span class="doccomment">/// Checks whether the socket is currently in nonblocking mode or not.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_nonblocking</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> { <span class="ident">raw_get_nonblocking</span>(<span class="self">self</span>.<span class="ident">fd</span>.<span class="number">0</span>) }.<span class="ident">ok_or_else</span>(<span class="ident">io::Error::last_os_error</span>)
     }
 
@@ -3753,13 +3753,13 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;doc_cfg&quot;</span>,
         <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>))))
     )]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_peer_credentials</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">ucred</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_peer_credentials</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">ucred</span><span class="op">&gt;</span> {
         <span class="kw">unsafe</span> { <span class="ident">get_peer_ucred</span>(<span class="self">self</span>.<span class="ident">fd</span>.<span class="number">0</span>).<span class="ident">ok_or_else</span>(<span class="ident">io::Error::last_os_error</span>) }
     }
 }
 <span class="kw">impl</span> <span class="ident">Debug</span> <span class="kw">for</span> <span class="ident">UdSocket</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">fmt::Result</span> {
+    <span class="kw">fn</span> <span class="ident">fmt</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">f</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">Formatter</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>) -&gt; <span class="ident">fmt::Result</span> {
         <span class="ident">f</span>.<span class="ident">debug_struct</span>(<span class="string">&quot;UdSocket&quot;</span>)
             .<span class="ident">field</span>(<span class="string">&quot;file_descriptor&quot;</span>, <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">as_raw_fd</span>())
             .<span class="ident">finish</span>()
@@ -3768,7 +3768,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>)]</span>
 <span class="kw">impl</span> <span class="ident">ReliableReadMsg</span> <span class="kw">for</span> <span class="ident">UdSocket</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">read_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">read_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">msg_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">peek_msg_size</span>()<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="ident">msg_size</span> <span class="op">&gt;</span> <span class="ident">buf</span>.<span class="ident">len</span>() {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">new_buffer</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(<span class="ident">msg_size</span>);
@@ -3779,7 +3779,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         }
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">try_read_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">try_read_msg</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">buf</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="ident">usize</span>, <span class="ident">usize</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">msg_size</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">peek_msg_size</span>()<span class="question-mark">?</span>;
         <span class="kw">if</span> <span class="ident">msg_size</span> <span class="op">&gt;</span> <span class="ident">buf</span>.<span class="ident">len</span>() {
             <span class="prelude-val">Ok</span>(<span class="prelude-val">Err</span>(<span class="ident">msg_size</span>))
@@ -3793,21 +3793,21 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">impl</span> <span class="ident">AsRawFd</span> <span class="kw">for</span> <span class="ident">UdSocket</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_raw_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+    <span class="kw">fn</span> <span class="ident">as_raw_fd</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">c_int</span> {
         <span class="self">self</span>.<span class="ident">fd</span>.<span class="ident">as_raw_fd</span>()
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">impl</span> <span class="ident">IntoRawFd</span> <span class="kw">for</span> <span class="ident">UdSocket</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">into_raw_fd</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">c_int</span> {
+    <span class="kw">fn</span> <span class="ident">into_raw_fd</span>(<span class="self">self</span>) -&gt; <span class="ident">c_int</span> {
         <span class="self">self</span>.<span class="ident">fd</span>.<span class="ident">into_raw_fd</span>()
     }
 }
 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
 <span class="kw">impl</span> <span class="ident">FromRawFd</span> <span class="kw">for</span> <span class="ident">UdSocket</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">unsafe</span> <span class="kw">fn</span> <span class="ident">from_raw_fd</span>(<span class="ident">fd</span>: <span class="ident">c_int</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">fd</span>: <span class="ident">FdOps::new</span>(<span class="ident">fd</span>) }
     }
 }
@@ -3839,22 +3839,22 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Returns the path as a `CStr`. The resulting value does not include any indication of whether it&#39;s a namespaced socket name or a filesystem path.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_cstr</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">CStr</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">as_cstr</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">CStr</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">cow</span>,
+            <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">cow</span>) =&gt; <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">cow</span>,
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
-            <span class="ident"><span class="self">Self</span>::Namespaced</span>(<span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">cow</span>,
-            <span class="ident"><span class="self">Self</span>::Unnamed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">unsafe</span> { <span class="ident">CStr::from_bytes_with_nul_unchecked</span>(<span class="kw-2">&amp;</span>[<span class="number">0</span>]) },
+            <span class="ident"><span class="self">Self</span>::Namespaced</span>(<span class="ident">cow</span>) =&gt; <span class="kw-2">&amp;</span><span class="kw-2">*</span><span class="ident">cow</span>,
+            <span class="ident"><span class="self">Self</span>::Unnamed</span> =&gt; <span class="kw">unsafe</span> { <span class="ident">CStr::from_bytes_with_nul_unchecked</span>(<span class="kw-2">&amp;</span>[<span class="number">0</span>]) },
         }
     }
     <span class="doccomment">/// Returns the path as a `CString`. The resulting value does not include any indication of whether it&#39;s a namespaced socket name or a filesystem path.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_cstring</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">CString</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">into_cstring</span>(<span class="self">self</span>) -&gt; <span class="ident">CString</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cow</span>.<span class="ident">into_owned</span>(),
+            <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">cow</span>) =&gt; <span class="ident">cow</span>.<span class="ident">into_owned</span>(),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
-            <span class="ident"><span class="self">Self</span>::Namespaced</span>(<span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cow</span>.<span class="ident">into_owned</span>(),
-            <span class="ident"><span class="self">Self</span>::Unnamed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="ident">CString::new</span>(<span class="ident">Vec::new</span>())
+            <span class="ident"><span class="self">Self</span>::Namespaced</span>(<span class="ident">cow</span>) =&gt; <span class="ident">cow</span>.<span class="ident">into_owned</span>(),
+            <span class="ident"><span class="self">Self</span>::Unnamed</span> =&gt; <span class="ident">CString::new</span>(<span class="ident">Vec::new</span>())
                 .<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="kw">unsafe</span> { <span class="ident">std::hint::unreachable_unchecked</span>() }),
         }
     }
@@ -3864,24 +3864,24 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`Unnamed` variant]: #variant.Unnamed &quot; &quot;</span>
     <span class="doccomment">/// [`File`]: #file &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_owned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">make_owned</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">cow</span> {
-                <span class="ident">Cow::Owned</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
-                <span class="ident">Cow::Borrowed</span>(<span class="ident">slice</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">cow</span>) =&gt; <span class="kw">match</span> <span class="ident">cow</span> {
+                <span class="ident">Cow::Owned</span>(..) =&gt; <span class="bool-val">false</span>,
+                <span class="ident">Cow::Borrowed</span>(<span class="ident">slice</span>) =&gt; {
                     <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">Cow::Owned</span>(<span class="ident">slice</span>.<span class="ident">to_owned</span>()));
                     <span class="bool-val">true</span>
                 }
             },
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
-            <span class="ident"><span class="self">Self</span>::Namespaced</span>(<span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">match</span> <span class="ident">cow</span> {
-                <span class="ident">Cow::Owned</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="bool-val">false</span>,
-                <span class="ident">Cow::Borrowed</span>(<span class="ident">slice</span>) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident"><span class="self">Self</span>::Namespaced</span>(<span class="ident">cow</span>) =&gt; <span class="kw">match</span> <span class="ident">cow</span> {
+                <span class="ident">Cow::Owned</span>(..) =&gt; <span class="bool-val">false</span>,
+                <span class="ident">Cow::Borrowed</span>(<span class="ident">slice</span>) =&gt; {
                     <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::Namespaced</span>(<span class="ident">Cow::Owned</span>(<span class="ident">slice</span>.<span class="ident">to_owned</span>()));
                     <span class="bool-val">true</span>
                 }
             },
-            <span class="ident"><span class="self">Self</span>::Unnamed</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident"><span class="self">Self</span>::Unnamed</span> =&gt; {
                 <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">Cow::Owned</span>(
                     <span class="ident">CString::new</span>(<span class="ident">Vec::new</span>())
                         .<span class="ident">expect</span>(<span class="string">&quot;unexpected unrecoverable CString creation error&quot;</span>),
@@ -3893,7 +3893,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 
     <span class="doccomment">/// Returns a mutable reference to the underlying `CString`, cloning the borrowed path if it wasn&#39;t owned before.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_cstring_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">CString</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">get_cstring_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">CString</span> {
         <span class="self">self</span>.<span class="ident">make_owned</span>();
         <span class="self">self</span>.<span class="ident">try_get_cstring_mut</span>().<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="op">|</span> <span class="kw">unsafe</span> {
             <span class="comment">// SAFETY: the call to make_owned ensured that there is a CString</span>
@@ -3902,27 +3902,27 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     }
     <span class="doccomment">/// Returns a mutable reference to the underlying `CString` if it&#39;s available as owned, otherwise returns `None`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_get_cstring_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">CString</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">try_get_cstring_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">CString</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">cow</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cow</span>,
+            <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">cow</span>) =&gt; <span class="ident">cow</span>,
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
-            <span class="ident"><span class="self">Self</span>::Namespaced</span>(<span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cow</span>,
-            <span class="ident"><span class="self">Self</span>::Unnamed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="prelude-val">None</span>,
+            <span class="ident"><span class="self">Self</span>::Namespaced</span>(<span class="ident">cow</span>) =&gt; <span class="ident">cow</span>,
+            <span class="ident"><span class="self">Self</span>::Unnamed</span> =&gt; <span class="kw">return</span> <span class="prelude-val">None</span>,
         };
         <span class="kw">match</span> <span class="ident">cow</span> {
-            <span class="ident">Cow::Owned</span>(<span class="ident">cstring</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">cstring</span>),
-            <span class="ident">Cow::Borrowed</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+            <span class="ident">Cow::Owned</span>(<span class="ident">cstring</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">cstring</span>),
+            <span class="ident">Cow::Borrowed</span>(..) =&gt; <span class="prelude-val">None</span>,
         }
     }
 
     <span class="doccomment">/// Returns `true` if the path to the socket is stored as an owned `CString`, i.e. if `into_cstring` doesn&#39;t require cloning the path; `false` otherwise.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_owned</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">bool</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">is_owned</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">bool</span> {
         <span class="kw">let</span> <span class="ident">cow</span> <span class="op">=</span> <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cow</span>,
+            <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">cow</span>) =&gt; <span class="ident">cow</span>,
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
-            <span class="ident"><span class="self">Self</span>::Namespaced</span>(<span class="ident">cow</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cow</span>,
-            <span class="ident"><span class="self">Self</span>::Unnamed</span> <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> <span class="bool-val">false</span>,
+            <span class="ident"><span class="self">Self</span>::Namespaced</span>(<span class="ident">cow</span>) =&gt; <span class="ident">cow</span>,
+            <span class="ident"><span class="self">Self</span>::Unnamed</span> =&gt; <span class="kw">return</span> <span class="bool-val">false</span>,
         };
         <span class="macro">matches!</span>(<span class="ident">cow</span>, <span class="ident">Cow::Owned</span>(..))
     }
@@ -3932,8 +3932,8 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="kw">fn</span> <span class="ident">write_sockaddr_un_to_self</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="ident">sockaddr_un</span>, <span class="ident">addrlen</span>: <span class="ident">usize</span>) {
         <span class="kw">let</span> <span class="ident">sun_path_length</span> <span class="op">=</span> (<span class="ident">addrlen</span> <span class="kw">as</span> <span class="ident">isize</span>) <span class="op">-</span> (<span class="ident">mem::size_of_val</span>(<span class="kw-2">&amp;</span><span class="ident">addr</span>.<span class="ident">sun_family</span>) <span class="kw">as</span> <span class="ident">isize</span>);
         <span class="kw">let</span> <span class="ident">sun_path_length</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">usize::try_from</span>(<span class="ident">sun_path_length</span>) {
-            <span class="prelude-val">Ok</span>(<span class="ident">val</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">val</span>,
-            <span class="prelude-val">Err</span>(..) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="prelude-val">Ok</span>(<span class="ident">val</span>) =&gt; <span class="ident">val</span>,
+            <span class="prelude-val">Err</span>(..) =&gt; {
                 <span class="kw-2">*</span><span class="self">self</span> <span class="op">=</span> <span class="ident"><span class="self">Self</span>::Unnamed</span>;
                 <span class="kw">return</span>;
             }
@@ -3947,7 +3947,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
                     <span class="ident">CString::new</span>(<span class="ident">Vec::new</span>()).<span class="ident">unwrap_or_else</span>(<span class="op">|</span><span class="kw">_</span><span class="op">|</span> <span class="ident">std::process::abort</span>()),
                 );
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
-                <span class="kw">let</span> (<span class="ident">namespaced</span>, <span class="ident">src_ptr</span>, <span class="ident">path_length</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">addr</span>.<span class="ident">sun_path</span>[<span class="number">0</span>] <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+                <span class="kw">let</span> (<span class="ident">namespaced</span>, <span class="ident">src_ptr</span>, <span class="ident">path_length</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">addr</span>.<span class="ident">sun_path</span>[<span class="number">0</span>] <span class="op">==</span> <span class="number">0</span> {
                     (
                         <span class="bool-val">true</span>,
                         <span class="ident">addr</span>.<span class="ident">sun_path</span>.<span class="ident">as_ptr</span>().<span class="ident">offset</span>(<span class="number">1</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>,
@@ -3963,13 +3963,13 @@ if you wish to enable Unix domain socket support for it&quot;</span>
                 <span class="ident">vec</span>.<span class="ident">resize</span>(<span class="ident">path_length</span>, <span class="number">0</span>);
                 <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">src_ptr</span>, <span class="ident">vec</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">path_length</span>);
                 <span class="comment">// If the system added a nul byte as part of the length, remove the one we added ourselves.</span>
-                <span class="kw">if</span> <span class="ident">vec</span>.<span class="ident">last</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0</span>) <span class="op">&amp;&amp;</span> <span class="ident">vec</span>[<span class="ident">vec</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">2</span>] <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+                <span class="kw">if</span> <span class="ident">vec</span>.<span class="ident">last</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0</span>) <span class="op">&amp;&amp;</span> <span class="ident">vec</span>[<span class="ident">vec</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">2</span>] <span class="op">==</span> <span class="number">0</span> {
                     <span class="ident">vec</span>.<span class="ident">pop</span>();
                 }
                 <span class="comment">// Handle the error anyway — better be safe than sorry</span>
                 <span class="kw">let</span> <span class="ident">new_cstring</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">CString::new</span>(<span class="ident">vec</span>) {
-                    <span class="prelude-val">Ok</span>(<span class="ident">cstring</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cstring</span>,
-                    <span class="prelude-val">Err</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">std::process::abort</span>(),
+                    <span class="prelude-val">Ok</span>(<span class="ident">cstring</span>) =&gt; <span class="ident">cstring</span>,
+                    <span class="prelude-val">Err</span>(..) =&gt; <span class="ident">std::process::abort</span>(),
                 };
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
                 <span class="kw">let</span> <span class="ident">path_to_write</span> <span class="op">=</span> <span class="kw">if</span> <span class="ident">namespaced</span> {
@@ -3986,7 +3986,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         } <span class="kw">else</span> {
             <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">unused_variables</span>)]</span>
             <span class="kw">let</span> (<span class="ident">cstring</span>, <span class="ident">namespaced</span>) <span class="op">=</span> <span class="kw">unsafe</span> {
-                <span class="kw">let</span> (<span class="ident">namespaced</span>, <span class="ident">src_ptr</span>, <span class="ident">path_length</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">addr</span>.<span class="ident">sun_path</span>[<span class="number">0</span>] <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+                <span class="kw">let</span> (<span class="ident">namespaced</span>, <span class="ident">src_ptr</span>, <span class="ident">path_length</span>) <span class="op">=</span> <span class="kw">if</span> <span class="ident">addr</span>.<span class="ident">sun_path</span>[<span class="number">0</span>] <span class="op">==</span> <span class="number">0</span> {
                     (
                         <span class="bool-val">true</span>,
                         <span class="ident">addr</span>.<span class="ident">sun_path</span>.<span class="ident">as_ptr</span>().<span class="ident">offset</span>(<span class="number">1</span>) <span class="kw">as</span> <span class="kw-2">*</span><span class="kw">const</span> <span class="ident">u8</span>,
@@ -3998,12 +3998,12 @@ if you wish to enable Unix domain socket support for it&quot;</span>
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">vec</span> <span class="op">=</span> <span class="macro">vec!</span>[<span class="number">0</span>; <span class="ident">path_length</span>];
                 <span class="ident">ptr::copy_nonoverlapping</span>(<span class="ident">src_ptr</span>, <span class="ident">vec</span>.<span class="ident">as_mut_ptr</span>(), <span class="ident">path_length</span>);
                 <span class="comment">// If the system added a nul byte as part of the length, remove it.</span>
-                <span class="kw">if</span> <span class="ident">vec</span>.<span class="ident">last</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0</span>) {
+                <span class="kw">if</span> <span class="ident">vec</span>.<span class="ident">last</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0</span>) {
                     <span class="ident">vec</span>.<span class="ident">pop</span>();
                 }
                 <span class="kw">let</span> <span class="ident">cstring</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">CString::new</span>(<span class="ident">vec</span>) {
-                    <span class="prelude-val">Ok</span>(<span class="ident">cstring</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">cstring</span>,
-                    <span class="prelude-val">Err</span>(..) <span class="op">=</span><span class="op">&gt;</span> <span class="macro">panic!</span>(<span class="string">&quot;unrecoverable memory safety violation threat&quot;</span>),
+                    <span class="prelude-val">Ok</span>(<span class="ident">cstring</span>) =&gt; <span class="ident">cstring</span>,
+                    <span class="prelude-val">Err</span>(..) =&gt; <span class="macro">panic!</span>(<span class="string">&quot;unrecoverable memory safety violation threat&quot;</span>),
                 };
                 (<span class="ident">cstring</span>, <span class="ident">namespaced</span>)
             };
@@ -4021,11 +4021,11 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// Returns `addr_len` to pass to `bind`/`connect`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">unix</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">write_self_to_sockaddr_un</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sockaddr_un</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">write_self_to_sockaddr_un</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">addr</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="ident">sockaddr_un</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">is_namespaced</span>;
         <span class="kw">let</span> <span class="ident">len_of_self</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">as_cstr</span>().<span class="ident">to_bytes_with_nul</span>().<span class="ident">len</span>();
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident">UdSocketPath::File</span>(..) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">UdSocketPath::File</span>(..) =&gt; {
                 <span class="ident">is_namespaced</span> <span class="op">=</span> <span class="bool-val">false</span>;
                 <span class="kw">if</span> <span class="ident">len_of_self</span> <span class="op">&gt;</span> <span class="ident">MAX_UDSOCKET_PATH_LEN</span> {
                     <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
@@ -4038,7 +4038,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
                 }
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>)]</span>
-            <span class="ident">UdSocketPath::Namespaced</span>(..) <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">UdSocketPath::Namespaced</span>(..) =&gt; {
                 <span class="ident">is_namespaced</span> <span class="op">=</span> <span class="bool-val">true</span>;
                 <span class="kw">if</span> <span class="ident">len_of_self</span> <span class="op">&gt;</span> (<span class="ident">MAX_UDSOCKET_PATH_LEN</span> <span class="op">-</span> <span class="number">1</span>) {
                     <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
@@ -4050,7 +4050,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
                     ));
                 }
             }
-            <span class="ident">UdSocketPath::Unnamed</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">UdSocketPath::Unnamed</span> =&gt; {
                 <span class="kw">return</span> <span class="prelude-val">Err</span>(<span class="ident">io::Error::new</span>(
                     <span class="ident">io::ErrorKind::InvalidInput</span>,
                     <span class="string">&quot;must provide a proper name for the socket&quot;</span>,
@@ -4099,7 +4099,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`_ancillary_vectored`]: struct.UdSocket.html#method.recv_from_ancillary_vectored &quot; &quot;</span>
     <span class="doccomment">/// [`MAX_UDSOCKET_PATH_LEN`]: constant.MAX_UDSOCKET_PATH_LEN.html &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">buffer</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">buffer</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">Cow::Owned</span>(
             <span class="ident">CString::new</span>(<span class="macro">vec!</span>[<span class="number">0x2F</span>; <span class="ident">MAX_UDSOCKET_PATH_LEN</span> <span class="op">-</span> <span class="number">1</span>])
                 .<span class="ident">expect</span>(<span class="string">&quot;unexpected nul in newly created Vec, possible heap corruption&quot;</span>),
@@ -4108,14 +4108,14 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 
     <span class="doccomment">/// Constructs a `UdSocketPath::File` value from a `Vec` of bytes, wrapping `CString::new`.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">file_from_vec</span>(<span class="ident">vec</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">NulError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">file_from_vec</span>(<span class="ident">vec</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">NulError</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::File</span>(<span class="ident">Cow::Owned</span>(<span class="ident">CString::new</span>(<span class="ident">vec</span>)<span class="question-mark">?</span>)))
     }
     <span class="doccomment">/// Constructs a `UdSocketPath::Namespaced` value from a `Vec` of bytes, wrapping `CString::new`.</span>
     <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>, <span class="ident">doc</span>))]</span>
     <span class="attribute">#[<span class="ident">cfg_attr</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;doc_cfg&quot;</span>, <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>)))]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">namespaced_from_vec</span>(<span class="ident">vec</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">NulError</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">namespaced_from_vec</span>(<span class="ident">vec</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="prelude-ty">Result</span><span class="op">&lt;</span><span class="self">Self</span>, <span class="ident">NulError</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="ident"><span class="self">Self</span>::Namespaced</span>(<span class="ident">Cow::Owned</span>(<span class="ident">CString::new</span>(<span class="ident">vec</span>)<span class="question-mark">?</span>)))
     }
 }
@@ -4183,12 +4183,12 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 <span class="kw">pub</span> <span class="kw">trait</span> <span class="ident">ToUdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Performs the conversion from `self` to a Unix domain socket path.</span>
     <span class="attribute">#[<span class="ident">allow</span>(<span class="ident">clippy::wrong_self_convention</span>)]</span>
-    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>;
+    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span>;
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">ToUdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Accepts explicit `UdSocketPath`s in the `bind` constructor.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="prelude-val">Ok</span>(<span class="self">self</span>)
     }
 }
@@ -4199,10 +4199,10 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`File`]: enum.UdSocketPath.html#file &quot; &quot;</span>
     <span class="doccomment">/// [namespaced socket paths]: enum.UdSocketPath.html#namespaced &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="comment">// 0x40 is the ASCII code for @, and since UTF-8 is ASCII-compatible, it would work too</span>
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">to_bytes</span>().<span class="ident">first</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0x40</span>) {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">to_bytes</span>().<span class="ident">first</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0x40</span>) {
             <span class="kw">let</span> <span class="ident">without_at_sign</span> <span class="op">=</span> <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="ident">to_bytes_with_nul</span>()[<span class="number">1</span>..];
             <span class="kw">let</span> <span class="ident">without_at_sign</span> <span class="op">=</span> <span class="kw">unsafe</span> {
                 <span class="comment">// SAFETY: it&#39;s safe to assume that the second byte comes before the nul</span>
@@ -4222,9 +4222,9 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`File`]: enum.UdSocketPath.html#file &quot; &quot;</span>
     <span class="doccomment">/// [namespaced socket paths]: enum.UdSocketPath.html#namespaced &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">as_bytes</span>().<span class="ident">first</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0x40</span>) {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">as_bytes</span>().<span class="ident">first</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0x40</span>) {
             <span class="kw">let</span> <span class="ident">without_at_sign</span> <span class="op">=</span> {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">without_at_sign</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">into_bytes</span>();
                 <span class="ident">without_at_sign</span>.<span class="ident">remove</span>(<span class="number">0</span>);
@@ -4248,9 +4248,9 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`File`]: enum.UdSocketPath.html#file &quot; &quot;</span>
     <span class="doccomment">/// [namespaced socket paths]: enum.UdSocketPath.html#namespaced &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">as_bytes</span>().<span class="ident">first</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0x40</span>) {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">as_bytes</span>().<span class="ident">first</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0x40</span>) {
             <span class="kw">if</span> <span class="self">self</span>.<span class="ident">as_bytes</span>().<span class="ident">last</span>() <span class="op">!</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0</span>) {
                 <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">owned</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">to_owned</span>().<span class="ident">into_vec</span>();
                 <span class="ident">owned</span>.<span class="ident">remove</span>(<span class="number">0</span>);
@@ -4282,9 +4282,9 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`File`]: enum.UdSocketPath.html#file &quot; &quot;</span>
     <span class="doccomment">/// [namespaced socket paths]: enum.UdSocketPath.html#namespaced &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
-        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">as_os_str</span>().<span class="ident">as_bytes</span>().<span class="ident">first</span>() <span class="op">=</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0x40</span>) {
+        <span class="kw">if</span> <span class="self">self</span>.<span class="ident">as_os_str</span>().<span class="ident">as_bytes</span>().<span class="ident">first</span>() <span class="op">==</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0x40</span>) {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">without_at_sign</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">into_vec</span>();
             <span class="ident">without_at_sign</span>.<span class="ident">remove</span>(<span class="number">0</span>);
             <span class="kw">return</span> <span class="prelude-val">Ok</span>(<span class="ident">UdSocketPath::Namespaced</span>(<span class="ident">Cow::Owned</span>(<span class="ident">CString::new</span>(
@@ -4304,7 +4304,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`Path`]: https://doc.rust-lang.org/std/path/struct.Path.html &quot; &quot;</span>
     <span class="doccomment">/// [`UdSocketPath::File`]: struct.UdSocketPath.html#file &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">as_os_str</span>().<span class="ident">as_bytes</span>().<span class="ident">last</span>() <span class="op">!</span><span class="op">=</span> <span class="prelude-val">Some</span>(<span class="kw-2">&amp;</span><span class="number">0</span>) {
             <span class="kw">let</span> <span class="ident">osstring</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">to_owned</span>().<span class="ident">into_os_string</span>().<span class="ident">into_vec</span>();
             <span class="kw">let</span> <span class="ident">cstring</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="ident">osstring</span>)<span class="question-mark">?</span>;
@@ -4324,7 +4324,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`PathBuf`]: https://doc.rust-lang.org/std/path/struct.PathBuf.html &quot; &quot;</span>
     <span class="doccomment">/// [`UdSocketPath::File`]: struct.UdSocketPath.html#file &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">cstring</span> <span class="op">=</span> <span class="ident">CString::new</span>(<span class="self">self</span>.<span class="ident">into_os_string</span>().<span class="ident">into_vec</span>())<span class="question-mark">?</span>;
         <span class="prelude-val">Ok</span>(<span class="ident">UdSocketPath::File</span>(<span class="ident">Cow::Owned</span>(<span class="ident">cstring</span>)))
     }
@@ -4338,7 +4338,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`File`]: enum.UdSocketPath.html#file &quot; &quot;</span>
     <span class="doccomment">/// [namespaced socket paths]: enum.UdSocketPath.html#namespaced &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="comment">// Use chars().next() instead of raw indexing to account for UTF-8 with BOM</span>
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">starts_with</span>(<span class="string">&#39;@&#39;</span>) {
@@ -4373,7 +4373,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
     <span class="doccomment">/// [`File`]: enum.UdSocketPath.html#file &quot; &quot;</span>
     <span class="doccomment">/// [namespaced socket paths]: enum.UdSocketPath.html#namespaced &quot; &quot;</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">to_socket_path</span>(<span class="self">self</span>) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdSocketPath</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;linux&quot;</span>))]</span>
         <span class="kw">if</span> <span class="self">self</span>.<span class="ident">starts_with</span>(<span class="string">&#39;@&#39;</span>) {
             <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">without_at_sign</span> <span class="op">=</span> <span class="self">self</span>;
@@ -4439,7 +4439,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 
     <span class="doccomment">/// Calculates the size of an `AncillaryData::FileDescriptors` element with the specified amount of file descriptors when packed into the Unix ancillary data format. Useful for allocating a buffer when you expect to receive a specific amount of file descriptors.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">encoded_size_of_file_descriptors</span>(<span class="ident">num_descriptors</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">const</span> <span class="kw">fn</span> <span class="ident">encoded_size_of_file_descriptors</span>(<span class="ident">num_descriptors</span>: <span class="ident">usize</span>) -&gt; <span class="ident">usize</span> {
         <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">doc</span>))]</span>
         {
             <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">cmsghdr</span><span class="op">&gt;</span>() <span class="op">+</span> <span class="ident">num_descriptors</span> <span class="op">*</span> <span class="number">4</span>
@@ -4450,26 +4450,26 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 
     <span class="doccomment">/// Inexpensievly clones `self` by borrowing the `FileDescriptors` variant or copying the `Credentials` variant.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_ref</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">clone_ref</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="kw-2">*</span><span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::FileDescriptors</span>(<span class="kw-2">ref</span> <span class="ident">fds</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::FileDescriptors</span>(<span class="ident">Cow::Borrowed</span>(<span class="kw-2">&amp;</span><span class="ident">fds</span>)),
+            <span class="ident"><span class="self">Self</span>::FileDescriptors</span>(<span class="kw-2">ref</span> <span class="ident">fds</span>) =&gt; <span class="ident"><span class="self">Self</span>::FileDescriptors</span>(<span class="ident">Cow::Borrowed</span>(<span class="kw-2">&amp;</span><span class="ident">fds</span>)),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>,)),))]</span>
-            <span class="ident"><span class="self">Self</span>::Credentials</span> { <span class="ident">pid</span>, <span class="ident">uid</span>, <span class="ident">gid</span> } <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Credentials</span> { <span class="ident">pid</span>, <span class="ident">uid</span>, <span class="ident">gid</span> },
+            <span class="ident"><span class="self">Self</span>::Credentials</span> { <span class="ident">pid</span>, <span class="ident">uid</span>, <span class="ident">gid</span> } =&gt; <span class="ident"><span class="self">Self</span>::Credentials</span> { <span class="ident">pid</span>, <span class="ident">uid</span>, <span class="ident">gid</span> },
         }
     }
 
     <span class="doccomment">/// Returns the size of an ancillary data element when packed into the Unix ancillary data format.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encoded_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">usize</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">encoded_size</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">usize</span> {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::FileDescriptors</span>(<span class="ident">fds</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::encoded_size_of_file_descriptors</span>(<span class="ident">fds</span>.<span class="ident">len</span>()),
+            <span class="ident"><span class="self">Self</span>::FileDescriptors</span>(<span class="ident">fds</span>) =&gt; <span class="ident"><span class="self">Self</span>::encoded_size_of_file_descriptors</span>(<span class="ident">fds</span>.<span class="ident">len</span>()),
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>,)),))]</span>
-            <span class="ident"><span class="self">Self</span>::Credentials</span> { .. } <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::ENCODED_SIZE_OF_CREDENTIALS</span>,
+            <span class="ident"><span class="self">Self</span>::Credentials</span> { .. } =&gt; <span class="ident"><span class="self">Self</span>::ENCODED_SIZE_OF_CREDENTIALS</span>,
         }
     }
 
     <span class="doccomment">/// Encodes the ancillary data into `EncodedAncillaryData` which is ready to be sent via a Unix domain socket.</span>
-    <span class="kw">fn</span> <span class="ident">encode</span>(<span class="ident">op</span>: <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="self">Self</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">EncodedAncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">encode</span>(<span class="ident">op</span>: <span class="kw">impl</span> <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="self">Self</span><span class="op">&gt;</span>) -&gt; <span class="ident">EncodedAncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">items</span> <span class="op">=</span> <span class="ident">op</span>.<span class="ident">into_iter</span>();
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">buffer</span> <span class="op">=</span> <span class="ident">Vec::with_capacity</span>(
             {
@@ -4484,7 +4484,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
             <span class="kw">let</span> <span class="ident">cmsg_type_bytes</span>;
 
             <span class="kw">match</span> <span class="ident">i</span> {
-                <span class="ident">AncillaryData::FileDescriptors</span>(<span class="ident">fds</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">AncillaryData::FileDescriptors</span>(<span class="ident">fds</span>) =&gt; {
                     <span class="ident">cmsg_type_bytes</span> <span class="op">=</span> <span class="ident">SCM_RIGHTS</span>.<span class="ident">to_ne_bytes</span>();
                     <span class="ident">cmsg_len</span> <span class="op">+</span><span class="op">=</span> <span class="ident">fds</span>.<span class="ident">len</span>() <span class="op">*</span> <span class="number">4</span>;
                     <span class="comment">// #[cfg(target_pointer_width = &quot;64&quot;)]</span>
@@ -4500,7 +4500,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
                     }
                 }
                 <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>,)),))]</span>
-                <span class="ident">AncillaryData::Credentials</span> { <span class="ident">pid</span>, <span class="ident">uid</span>, <span class="ident">gid</span> } <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="ident">AncillaryData::Credentials</span> { <span class="ident">pid</span>, <span class="ident">uid</span>, <span class="ident">gid</span> } =&gt; {
                     <span class="ident">cmsg_type_bytes</span> <span class="op">=</span> <span class="ident">SCM_RIGHTS</span>.<span class="ident">to_ne_bytes</span>();
                     <span class="ident">cmsg_len</span> <span class="op">+</span><span class="op">=</span> <span class="ident">mem::size_of</span>::<span class="op">&lt;</span><span class="ident">ucred</span><span class="op">&gt;</span>();
                     <span class="comment">// #[cfg(target_pointer_width = &quot;64&quot;)]</span>
@@ -4530,7 +4530,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="ident">doc</span>(<span class="ident">cfg</span>(<span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>,)),))
     )]</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">credentials</span>() <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">credentials</span>() -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Credentials</span> {
             <span class="ident">pid</span>: <span class="kw">unsafe</span> { <span class="ident">libc::getpid</span>() },
             <span class="ident">uid</span>: <span class="kw">unsafe</span> { <span class="ident">libc::getuid</span>() },
@@ -4545,37 +4545,37 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 <span class="kw">struct</span> <span class="ident">EncodedAncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>(<span class="kw">pub</span> <span class="ident">Cow</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, [<span class="ident">u8</span>]<span class="op">&gt;</span>);
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EncodedAncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> [<span class="ident">u8</span>]) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">Cow::Borrowed</span>(<span class="ident">op</span>))
     }
 }
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EncodedAncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">Cow::Owned</span>(<span class="ident">op</span>))
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span> <span class="ident">FromIterator</span><span class="op">&lt;</span><span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EncodedAncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from_iter</span><span class="op">&lt;</span><span class="ident">I</span>: <span class="ident">IntoIterator</span><span class="op">&lt;</span><span class="ident">Item</span> <span class="op">=</span> <span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span>(<span class="ident">iter</span>: <span class="ident">I</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">AncillaryData::encode</span>(<span class="ident">iter</span>)
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EncodedAncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::from_iter</span>(<span class="ident">op</span>)
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span>: <span class="lifetime">&#39;c</span>, <span class="lifetime">&#39;c</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> [<span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EncodedAncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> [<span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;c</span> [<span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;b</span><span class="op">&gt;</span>]) -&gt; <span class="self">Self</span> {
         <span class="ident">op</span>.<span class="ident">iter</span>().<span class="ident">map</span>(<span class="ident">AncillaryData::clone_ref</span>).<span class="ident">collect</span>::<span class="op">&lt;</span><span class="self">Self</span><span class="op">&gt;</span>()
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">EncodedAncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
         <span class="kw-2">&amp;</span><span class="self">self</span>.<span class="number">0</span>
     }
 }
@@ -4600,14 +4600,14 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="doccomment">/// Creates an owned ancillary data buffer with the specified capacity.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">owned_with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">owned_with_capacity</span>(<span class="ident">capacity</span>: <span class="ident">usize</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Owned</span>(<span class="ident">Vec::with_capacity</span>(<span class="ident">capacity</span>))
     }
     <span class="doccomment">/// Creates a decoder which decodes the ancillary data buffer into a friendly representation of its contents.</span>
     <span class="doccomment">///</span>
     <span class="doccomment">/// All invalid ancillary data blocks are skipped — if there was garbage data in the buffer to begin with, the resulting buffer will either be empty or contain invalid credentials/file descriptors. This should normally never happen if the data is actually received from a Unix domain socket.</span>
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decode</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">AncillaryDataDecoder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">decode</span>(<span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>) -&gt; <span class="ident">AncillaryDataDecoder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
         <span class="ident">AncillaryDataDecoder</span> {
             <span class="ident">buffer</span>: <span class="self">self</span>.<span class="ident">as_ref</span>(),
             <span class="ident">i</span>: <span class="number">0</span>,
@@ -4616,40 +4616,40 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Borrowed</span>(<span class="ident">op</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">From</span><span class="op">&lt;</span><span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="ident">Vec</span><span class="op">&lt;</span><span class="ident">u8</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="ident"><span class="self">Self</span>::Owned</span>(<span class="ident">op</span>)
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">op</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="kw-2">mut</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="kw">match</span> <span class="ident">op</span> {
-            <span class="ident"><span class="self">Self</span>::Borrowed</span>(<span class="ident">slice</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Borrowed</span>(<span class="ident">slice</span>),
-            <span class="ident"><span class="self">Self</span>::Owned</span>(<span class="ident">vec</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident"><span class="self">Self</span>::Borrowed</span>(<span class="ident">vec</span>),
+            <span class="ident"><span class="self">Self</span>::Borrowed</span>(<span class="ident">slice</span>) =&gt; <span class="ident"><span class="self">Self</span>::Borrowed</span>(<span class="ident">slice</span>),
+            <span class="ident"><span class="self">Self</span>::Owned</span>(<span class="ident">vec</span>) =&gt; <span class="ident"><span class="self">Self</span>::Borrowed</span>(<span class="ident">vec</span>),
         }
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">AsRef</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
+    <span class="kw">fn</span> <span class="ident">as_ref</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span>[<span class="ident">u8</span>] {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::Borrowed</span>(<span class="ident">slice</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">slice</span>,
-            <span class="ident"><span class="self">Self</span>::Owned</span>(<span class="ident">vec</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">vec</span>,
+            <span class="ident"><span class="self">Self</span>::Borrowed</span>(<span class="ident">slice</span>) =&gt; <span class="ident">slice</span>,
+            <span class="ident"><span class="self">Self</span>::Owned</span>(<span class="ident">vec</span>) =&gt; <span class="ident">vec</span>,
         }
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">AsMut</span><span class="op">&lt;</span>[<span class="ident">u8</span>]<span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
+    <span class="kw">fn</span> <span class="ident">as_mut</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>] {
         <span class="kw">match</span> <span class="self">self</span> {
-            <span class="ident"><span class="self">Self</span>::Borrowed</span>(<span class="ident">slice</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">slice</span>,
-            <span class="ident"><span class="self">Self</span>::Owned</span>(<span class="ident">vec</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="ident">vec</span>,
+            <span class="ident"><span class="self">Self</span>::Borrowed</span>(<span class="ident">slice</span>) =&gt; <span class="ident">slice</span>,
+            <span class="ident"><span class="self">Self</span>::Owned</span>(<span class="ident">vec</span>) =&gt; <span class="ident">vec</span>,
         }
     }
 }
@@ -4667,19 +4667,19 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">AncillaryDataDecoder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">AncillaryDataBuf</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="ident">buffer</span>.<span class="ident">decode</span>()
     }
 }
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">AncillaryDataDecoder</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">AncillaryData</span><span class="op">&lt;</span><span class="lifetime">&#39;static</span><span class="op">&gt;</span>;
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">u32_from_slice</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u32</span> {
+        <span class="kw">fn</span> <span class="ident">u32_from_slice</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">u32</span> {
             <span class="ident">u32::from_ne_bytes</span>([<span class="ident">bytes</span>[<span class="number">0</span>], <span class="ident">bytes</span>[<span class="number">1</span>], <span class="ident">bytes</span>[<span class="number">2</span>], <span class="ident">bytes</span>[<span class="number">3</span>]])
         }
         <span class="attribute">#[<span class="ident">inline</span>]</span>
-        <span class="kw">fn</span> <span class="ident">u64_from_slice</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+        <span class="kw">fn</span> <span class="ident">u64_from_slice</span>(<span class="ident">bytes</span>: <span class="kw-2">&amp;</span>[<span class="ident">u8</span>]) -&gt; <span class="ident">u64</span> {
             <span class="ident">u64::from_ne_bytes</span>([
                 <span class="ident">bytes</span>[<span class="number">0</span>], <span class="ident">bytes</span>[<span class="number">1</span>], <span class="ident">bytes</span>[<span class="number">2</span>], <span class="ident">bytes</span>[<span class="number">3</span>], <span class="ident">bytes</span>[<span class="number">4</span>], <span class="ident">bytes</span>[<span class="number">5</span>], <span class="ident">bytes</span>[<span class="number">6</span>], <span class="ident">bytes</span>[<span class="number">7</span>],
             ])
@@ -4688,7 +4688,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
         <span class="kw">let</span> <span class="ident">end</span> <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">len</span>() <span class="op">-</span> <span class="number">1</span>;
 
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">diff</span>) <span class="op">=</span> <span class="ident">bytes</span>.<span class="ident">len</span>().<span class="ident">checked_sub</span>(<span class="self">self</span>.<span class="ident">i</span>) {
-            <span class="kw">if</span> <span class="ident">diff</span> <span class="op">=</span><span class="op">=</span> <span class="number">0</span> {
+            <span class="kw">if</span> <span class="ident">diff</span> <span class="op">==</span> <span class="number">0</span> {
                 <span class="self">self</span>.<span class="ident">i</span> <span class="op">=</span> <span class="ident">end</span>;
                 <span class="kw">return</span> <span class="prelude-val">None</span>;
             }
@@ -4733,7 +4733,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 
         <span class="comment">// SAFETY: those are ints lmao</span>
         <span class="kw">match</span> <span class="ident">element_type</span> <span class="kw">as</span> <span class="ident">i32</span> {
-            <span class="ident">SCM_RIGHTS</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SCM_RIGHTS</span> =&gt; {
                 <span class="comment">// We&#39;re reading one or multiple descriptors from the ancillary data payload.</span>
                 <span class="comment">// All descriptors are 4 bytes in size — leftover bytes are discarded thanks</span>
                 <span class="comment">// to integer division rules</span>
@@ -4750,7 +4750,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
                 <span class="prelude-val">Some</span>(<span class="ident">AncillaryData::FileDescriptors</span>(<span class="ident">Cow::Owned</span>(<span class="ident">descriptors</span>)))
             }
             <span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">any</span>(<span class="ident">doc</span>, <span class="ident">not</span>(<span class="ident">any</span>(<span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;macos&quot;</span>, <span class="ident">target_os</span> <span class="op">=</span> <span class="string">&quot;ios&quot;</span>,)),))]</span>
-            <span class="ident">SCM_CREDENTIALS</span> <span class="op">=</span><span class="op">&gt;</span> {
+            <span class="ident">SCM_CREDENTIALS</span> =&gt; {
                 <span class="comment">// We&#39;re reading a single ucred structure from the ancillary data payload.</span>
                 <span class="comment">// SAFETY: those are still ints</span>
                 <span class="kw">let</span> <span class="ident">pid_offset</span> <span class="op">=</span> <span class="ident">element_offset</span>;
@@ -4763,7 +4763,7 @@ if you wish to enable Unix domain socket support for it&quot;</span>
                 <span class="kw">let</span> <span class="ident">gid</span>: <span class="ident">gid_t</span> <span class="op">=</span> <span class="ident">u32_from_slice</span>(<span class="kw-2">&amp;</span><span class="ident">bytes</span>[<span class="ident">gid_offset</span>..<span class="ident">gid_offset</span> <span class="op">+</span> <span class="number">4</span>]);
                 <span class="prelude-val">Some</span>(<span class="ident">AncillaryData::Credentials</span> { <span class="ident">pid</span>, <span class="ident">uid</span>, <span class="ident">gid</span> })
             }
-            <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="self">self</span>.<span class="ident">next</span>(), <span class="comment">// Do nothing if we hit corrupted data.</span>
+            <span class="kw">_</span> =&gt; <span class="self">self</span>.<span class="ident">next</span>(), <span class="comment">// Do nothing if we hit corrupted data.</span>
         }
     }
 }
@@ -4781,18 +4781,18 @@ if you wish to enable Unix domain socket support for it&quot;</span>
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">Iterator</span> <span class="kw">for</span> <span class="ident">Incoming</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="kw">type</span> <span class="ident">Item</span> <span class="op">=</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">UdStream</span><span class="op">&gt;</span>;
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">next</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>) -&gt; <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident"><span class="self">Self</span>::Item</span><span class="op">&gt;</span> {
         <span class="prelude-val">Some</span>(<span class="self">self</span>.<span class="ident">listener</span>.<span class="ident">accept</span>())
     }
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
+    <span class="kw">fn</span> <span class="ident">size_hint</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; (<span class="ident">usize</span>, <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span>) {
         (<span class="ident">usize::MAX</span>, <span class="prelude-val">None</span>)
     }
 }
 <span class="kw">impl</span> <span class="ident">FusedIterator</span> <span class="kw">for</span> <span class="ident">Incoming</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span> {}
 <span class="kw">impl</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> <span class="ident">From</span><span class="op">&lt;</span><span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">UdStreamListener</span><span class="op">&gt;</span> <span class="kw">for</span> <span class="ident">Incoming</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span><span class="op">&gt;</span> {
     <span class="attribute">#[<span class="ident">inline</span>]</span>
-    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">listener</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">UdStreamListener</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">fn</span> <span class="ident">from</span>(<span class="ident">listener</span>: <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="ident">UdStreamListener</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span> { <span class="ident">listener</span> }
     }
 }

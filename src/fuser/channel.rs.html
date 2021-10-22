@@ -76,12 +76,12 @@
     <span class="doccomment">/// Create a new communication channel to the kernel driver by mounting the</span>
     <span class="doccomment">/// given path. The kernel driver will delegate filesystem operations of</span>
     <span class="doccomment">/// the given path to the channel.</span>
-    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">device</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="self">Self</span> {
+    <span class="kw">pub</span>(<span class="kw">crate</span>) <span class="kw">fn</span> <span class="ident">new</span>(<span class="ident">device</span>: <span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span>) -&gt; <span class="self">Self</span> {
         <span class="self">Self</span>(<span class="ident">device</span>)
     }
 
     <span class="doccomment">/// Receives data up to the capacity of the given buffer (can block).</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">receive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">receive</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">buffer</span>: <span class="kw-2">&amp;</span><span class="kw-2">mut</span> [<span class="ident">u8</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span><span class="ident">usize</span><span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">libc::read</span>(
                 <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_raw_fd</span>(),
@@ -99,7 +99,7 @@
     <span class="doccomment">/// Returns a sender object for this channel. The sender object can be</span>
     <span class="doccomment">/// used to send to the channel. Multiple sender objects can be used</span>
     <span class="doccomment">/// and they can safely be sent to other threads.</span>
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sender</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">ChannelSender</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">sender</span>(<span class="kw-2">&amp;</span><span class="self">self</span>) -&gt; <span class="ident">ChannelSender</span> {
         <span class="comment">// Since write/writev syscalls are threadsafe, we can simply create</span>
         <span class="comment">// a sender by using the same file and use it in other threads.</span>
         <span class="ident">ChannelSender</span>(<span class="self">self</span>.<span class="number">0</span>.<span class="ident">clone</span>())
@@ -110,7 +110,7 @@
 <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">ChannelSender</span>(<span class="ident">Arc</span><span class="op">&lt;</span><span class="ident">File</span><span class="op">&gt;</span>);
 
 <span class="kw">impl</span> <span class="ident">ReplySender</span> <span class="kw">for</span> <span class="ident">ChannelSender</span> {
-    <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">io::IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
+    <span class="kw">fn</span> <span class="ident">send</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">bufs</span>: <span class="kw-2">&amp;</span>[<span class="ident">io::IoSlice</span><span class="op">&lt;</span><span class="lifetime">&#39;_</span><span class="op">&gt;</span>]) -&gt; <span class="ident">io::Result</span><span class="op">&lt;</span>()<span class="op">&gt;</span> {
         <span class="kw">let</span> <span class="ident">rc</span> <span class="op">=</span> <span class="kw">unsafe</span> {
             <span class="ident">libc::writev</span>(
                 <span class="self">self</span>.<span class="number">0</span>.<span class="ident">as_raw_fd</span>(),

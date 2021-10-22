@@ -225,7 +225,7 @@
         <span class="kw-2">&amp;</span><span class="lifetime">&#39;a</span> <span class="self">self</span>,
         <span class="ident">now</span>: <span class="ident">Instant</span>,
         <span class="ident">state</span>: <span class="ident">MutexGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">WorkerSharedState</span><span class="op">&gt;</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> (<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Instant</span><span class="op">&gt;</span>, <span class="ident">MutexGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">WorkerSharedState</span><span class="op">&gt;</span>) {
+    ) -&gt; (<span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">Instant</span><span class="op">&gt;</span>, <span class="ident">MutexGuard</span><span class="op">&lt;</span><span class="lifetime">&#39;a</span>, <span class="ident">WorkerSharedState</span><span class="op">&gt;</span>) {
         <span class="comment">// simple deadlock avoidance loop.</span>
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="prelude-val">Some</span>(<span class="ident">state</span>);
         <span class="kw">let</span> (<span class="kw-2">mut</span> <span class="ident">state</span>, <span class="kw-2">mut</span> <span class="ident">op_buf</span>) <span class="op">=</span> <span class="kw">loop</span> {
@@ -234,9 +234,9 @@
             <span class="comment">// To avoid deadlock, we do a `try_lock`, and on `WouldBlock`, we unlock the</span>
             <span class="comment">// events Mutex, and retry after yielding.</span>
             <span class="kw">match</span> <span class="self">self</span>.<span class="ident">operations_buffer</span>.<span class="ident">try_lock</span>() {
-                <span class="prelude-val">Ok</span>(<span class="ident">op_buf</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">break</span> (<span class="ident">state</span>, <span class="ident">op_buf</span>),
-                <span class="prelude-val">Err</span>(<span class="ident">::std::sync::TryLockError::Poisoned</span> { .. }) <span class="op">=</span><span class="op">&gt;</span> <span class="kw">return</span> (<span class="prelude-val">None</span>, <span class="ident">state</span>),
-                <span class="prelude-val">Err</span>(<span class="ident">::std::sync::TryLockError::WouldBlock</span>) <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Ok</span>(<span class="ident">op_buf</span>) =&gt; <span class="kw">break</span> (<span class="ident">state</span>, <span class="ident">op_buf</span>),
+                <span class="prelude-val">Err</span>(<span class="ident">::std::sync::TryLockError::Poisoned</span> { .. }) =&gt; <span class="kw">return</span> (<span class="prelude-val">None</span>, <span class="ident">state</span>),
+                <span class="prelude-val">Err</span>(<span class="ident">::std::sync::TryLockError::WouldBlock</span>) =&gt; {
                     <span class="comment">// drop the lock before yielding to give other threads a chance to complete</span>
                     <span class="comment">// their work.</span>
                     <span class="ident">drop</span>(<span class="ident">state</span>);
@@ -271,18 +271,18 @@
                     .<span class="ident">unwrap</span>();
             }
             <span class="kw">let</span> <span class="ident">message</span> <span class="op">=</span> <span class="kw">match</span> <span class="ident">op</span> {
-                <span class="prelude-val">Some</span>(<span class="ident">op::Op::CREATE</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">DebouncedEvent::Create</span>(<span class="ident">path</span>)),
-                <span class="prelude-val">Some</span>(<span class="ident">op::Op::WRITE</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">DebouncedEvent::Write</span>(<span class="ident">path</span>)),
-                <span class="prelude-val">Some</span>(<span class="ident">op::Op::CHMOD</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">DebouncedEvent::Chmod</span>(<span class="ident">path</span>)),
-                <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">Some</span>(<span class="ident">DebouncedEvent::Remove</span>(<span class="ident">path</span>)),
-                <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) <span class="kw">if</span> <span class="ident">is_partial_rename</span> <span class="op">=</span><span class="op">&gt;</span> {
+                <span class="prelude-val">Some</span>(<span class="ident">op::Op::CREATE</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">DebouncedEvent::Create</span>(<span class="ident">path</span>)),
+                <span class="prelude-val">Some</span>(<span class="ident">op::Op::WRITE</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">DebouncedEvent::Write</span>(<span class="ident">path</span>)),
+                <span class="prelude-val">Some</span>(<span class="ident">op::Op::CHMOD</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">DebouncedEvent::Chmod</span>(<span class="ident">path</span>)),
+                <span class="prelude-val">Some</span>(<span class="ident">op::Op::REMOVE</span>) =&gt; <span class="prelude-val">Some</span>(<span class="ident">DebouncedEvent::Remove</span>(<span class="ident">path</span>)),
+                <span class="prelude-val">Some</span>(<span class="ident">op::Op::RENAME</span>) <span class="kw">if</span> <span class="ident">is_partial_rename</span> =&gt; {
                     <span class="kw">if</span> <span class="ident">path</span>.<span class="ident">exists</span>() {
                         <span class="prelude-val">Some</span>(<span class="ident">DebouncedEvent::Create</span>(<span class="ident">path</span>))
                     } <span class="kw">else</span> {
                         <span class="prelude-val">Some</span>(<span class="ident">DebouncedEvent::Remove</span>(<span class="ident">path</span>))
                     }
                 }
-                <span class="kw">_</span> <span class="op">=</span><span class="op">&gt;</span> <span class="prelude-val">None</span>,
+                <span class="kw">_</span> =&gt; <span class="prelude-val">None</span>,
             };
             <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">m</span>) <span class="op">=</span> <span class="ident">message</span> {
                 <span class="kw">let</span> <span class="kw">_</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">tx</span>.<span class="ident">send</span>(<span class="ident">m</span>);
@@ -326,7 +326,7 @@
         <span class="ident">tx</span>: <span class="ident">mpsc::Sender</span><span class="op">&lt;</span><span class="ident">DebouncedEvent</span><span class="op">&gt;</span>,
         <span class="ident">operations_buffer</span>: <span class="ident">OperationsBuffer</span>,
         <span class="ident">delay</span>: <span class="ident">Duration</span>,
-    ) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">WatchTimer</span> {
+    ) -&gt; <span class="ident">WatchTimer</span> {
         <span class="kw">let</span> <span class="ident">state</span> <span class="op">=</span> <span class="ident">Arc::new</span>((<span class="ident">Mutex::new</span>(<span class="ident">WorkerSharedState::default</span>()), <span class="ident">Condvar::new</span>()));
 
         <span class="kw">let</span> <span class="ident">worker_state</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">clone</span>();
@@ -346,7 +346,7 @@
         }
     }
 
-    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">schedule</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="ident">PathBuf</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u64</span> {
+    <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">schedule</span>(<span class="kw-2">&amp;</span><span class="kw-2">mut</span> <span class="self">self</span>, <span class="ident">path</span>: <span class="ident">PathBuf</span>) -&gt; <span class="ident">u64</span> {
         <span class="self">self</span>.<span class="ident">counter</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">counter</span>.<span class="ident">wrapping_add</span>(<span class="number">1</span>);
 
         {
@@ -364,7 +364,7 @@
 
     <span class="kw">pub</span> <span class="kw">fn</span> <span class="ident">ignore</span>(<span class="kw-2">&amp;</span><span class="self">self</span>, <span class="ident">id</span>: <span class="ident">u64</span>) {
         <span class="kw">let</span> <span class="kw-2">mut</span> <span class="ident">state</span> <span class="op">=</span> <span class="self">self</span>.<span class="ident">state</span>.<span class="number">0</span>.<span class="ident">lock</span>().<span class="ident">unwrap</span>();
-        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">events</span>.<span class="ident">iter</span>().<span class="ident">rposition</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">id</span> <span class="op">=</span><span class="op">=</span> <span class="ident">id</span>);
+        <span class="kw">let</span> <span class="ident">index</span> <span class="op">=</span> <span class="ident">state</span>.<span class="ident">events</span>.<span class="ident">iter</span>().<span class="ident">rposition</span>(<span class="op">|</span><span class="ident">e</span><span class="op">|</span> <span class="ident">e</span>.<span class="ident">id</span> <span class="op">==</span> <span class="ident">id</span>);
         <span class="kw">if</span> <span class="kw">let</span> <span class="prelude-val">Some</span>(<span class="ident">index</span>) <span class="op">=</span> <span class="ident">index</span> {
             <span class="ident">state</span>.<span class="ident">events</span>.<span class="ident">remove</span>(<span class="ident">index</span>);
         }
