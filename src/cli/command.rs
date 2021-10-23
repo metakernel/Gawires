@@ -1,7 +1,6 @@
 use structopt::StructOpt;
 
     ///track new assets or changes, add tags and other operations.
-    #[doc(hidden)]
     #[derive(Debug, PartialEq, StructOpt)]
     pub struct Add{
         /// Stage assets changes in a given path

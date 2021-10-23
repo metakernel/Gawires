@@ -6,6 +6,7 @@ authors = ["Vincent Roy"]
 license = "GPLv3"
 readme = "README.md"
 repository = "https://github.com/metakernel/Gawires"
+default-run = "gawires"
 
 [[bin]]
 name = "gawires"
@@ -25,6 +26,7 @@ xxhash-rust = {version = "0.8.2", features = ["xxh3"]}
 structopt = {version = "0.3", features = ["paw"]}
 paw = "1.0.0"
 interprocess = "1.1.1"
+log = "0.4.14"
 
 
 [target.'cfg(unix)'.dependencies]
@@ -34,3 +36,7 @@ fuser = "0.9.1"
 [target.'cfg(windows)'.dependencies]
 # Used for the filesystem in windows
 dokan = "0.2.0+dokan150"
+windows = "0.21.1"
+
+[target.'cfg(windows)'.build-dependencies]
+windows = "0.21.1"
