@@ -23,7 +23,7 @@ crate-type = ["cdylib","rlib"]
 notify = "4.0.17"
 libloading = "0.7.0"
 xxhash-rust = {version = "0.8.2", features = ["xxh3"]}
-structopt = {version = "0.3", features = ["paw"]}
+clap = "3.0.0-beta.5"
 paw = "1.0.0"
 interprocess = "1.1.1"
 log = "0.4.14"
