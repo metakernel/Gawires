@@ -43,7 +43,7 @@ use clap::{Parser};
             pub ignore_path: Option<std::path::PathBuf>,
 
             /// Add a tag to the assets with the given name
-            #[clap(name = "Path",short = 't', long = "--tag")]
+            #[clap(name = "Tag name",short = 't', long = "--tag")]
             pub tag_name: Option<String>,
     }
 
