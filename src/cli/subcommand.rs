@@ -1,5 +1,6 @@
 use clap::{Parser};
 
+/// Enum of all possible subcommands
 #[derive(Debug, PartialEq,Parser)]
     pub enum Subcommand{
         Add(Add),
