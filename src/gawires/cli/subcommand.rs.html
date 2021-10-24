@@ -174,8 +174,10 @@
 <span id="174">174</span>
 <span id="175">175</span>
 <span id="176">176</span>
+<span id="177">177</span>
 </pre><pre class="rust"><code><span class="kw">use</span> <span class="ident">clap</span>::{<span class="ident">Parser</span>};
 
+<span class="doccomment">/// Enum of all possible subcommands</span>
 <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>,<span class="ident">Parser</span>)]</span>
     <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Subcommand</span>{
         <span class="ident">Add</span>(<span class="ident">Add</span>),
@@ -230,7 +232,7 @@
         <span class="kw">pub</span> <span class="ident">path</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">std::path::PathBuf</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Option use to specify if a lock should be put on the assets, this will tell central to lock them. (On by default, WARNING: if centralized you should use &quot;gawires checkout --clone&quot; if you dont want any conflict issues)</span>
         <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;Lock&quot;</span>,<span class="ident">short</span> <span class="op">=</span> <span class="string">&#39;l&#39;</span>, <span class="ident">long</span> <span class="op">=</span> <span class="string">&quot;--lock&quot;</span>)]</span>
-        <span class="kw">pub</span> <span class="ident">lock_assets</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
+        <span class="kw">pub</span> <span class="ident">lock_remote</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
         <span class="doccomment">/// Can be use to specify that the checkout must clone the assets instead of synchronizing them.(Will need to initiate a push request each time you try to synchronize)</span>
         <span class="kw">pub</span> <span class="ident">clone</span>: <span class="prelude-ty">Option</span><span class="op">&lt;</span><span class="ident">bool</span><span class="op">&gt;</span>,
 
