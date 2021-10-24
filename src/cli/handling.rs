@@ -1,5 +1,5 @@
 use super::subcommand::Subcommand;
-
+// Its a nasty implementation for the moment, the printlines are useless placeholders and log should be done by the executing functions
 pub fn handle_subcmd(subcmd: Subcommand) {
     match subcmd {
         Subcommand::Add(add) => {
@@ -11,22 +11,28 @@ pub fn handle_subcmd(subcmd: Subcommand) {
             else if add.path.is_none() && add.all {
                 println!("Staging all changes and untracked files to workspace");
             }
-            // The user wants to stage an asset from path
+            // The user wants to stage an asset from path or using Fileglobs and other wildcards
             else if add.path.is_some() && !add.all {
                 let path = add.path.unwrap();
-                println!("Staging {} to workspace", path.display());
+                let is_dir = path.is_dir();
+
+                if is_dir {
+                    println!("Adding all files under {} to workspace", path.display());
+                } else {println!("Adding {} to workspace", path.display());}
             }
 
-            // The user wants to stage all assets from dir at path
+            // The user wants to stage all assets with the following path
             else if add.path.is_some() && add.all {
                 let path = add.path.unwrap();
                 let is_dir = path.is_dir();
 
                  if is_dir {
                      println!("Adding all files under {} for tracking", path.display());
-                    }
+                    }else {println!("Adding all occurence of {} for tracking", path.display());}
             }
-            println!("Adding");
+            else {
+                println!("Wrong subcommand specified, use --help to get some more informations");
+            }
         }
         Subcommand::Checkout(checkout) => {
             println!("Removing");
