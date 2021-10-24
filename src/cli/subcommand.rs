@@ -55,7 +55,7 @@ use clap::{Parser};
         pub path: Option<std::path::PathBuf>,
         /// Option use to specify if a lock should be put on the assets, this will tell central to lock them. (On by default, WARNING: if centralized you should use "gawires checkout --clone" if you dont want any conflict issues)
         #[clap(name = "Lock",short = 'l', long = "--lock")]
-        pub lock_assets: Option<bool>,
+        pub lock_remote: Option<bool>,
         /// Can be use to specify that the checkout must clone the assets instead of synchronizing them.(Will need to initiate a push request each time you try to synchronize)
         pub clone: Option<bool>,
 
