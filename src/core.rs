@@ -3,3 +3,8 @@ pub mod workspace;
 pub mod user;
 pub mod config;
 pub mod tree;
+pub mod asset;
+pub mod extension;
+pub mod filesystem;
+pub mod process;
+pub mod wire;
