@@ -29,6 +29,9 @@ interprocess = "1.1.1"
 log = "0.4.14"
 dirs = "4.0.0"
 diffs = "0.4.1"
+rdiff = "0.1.2"
+diffy = "0.2.1"
+bidiff = "1.0.0"
 
 
 [target.'cfg(unix)'.dependencies]
