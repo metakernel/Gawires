@@ -28,6 +28,7 @@ paw = "1.0.0"
 interprocess = "1.1.1"
 log = "0.4.14"
 dirs = "4.0.0"
+diffs = "0.4.1"
 
 
 [target.'cfg(unix)'.dependencies]
