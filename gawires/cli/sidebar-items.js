@@ -1,1 +1,1 @@
-initSidebarItems({"derive":[["StructOpt","Generates the `StructOpt` impl."]],"enum":[["Opt",""]],"mod":[["command",""]],"trait":[["StructOpt","A struct that is converted from command line arguments."]]});
+initSidebarItems({"derive":[["Parser","Generates the `Parser` implementation."]],"enum":[["AppSettings","Application level settings, which affect how `App` operates"]],"mod":[["handling",""],["subcommand",""]],"struct":[["Opts",""]],"trait":[["Parser","Parse command-line arguments into `Self`."]]});

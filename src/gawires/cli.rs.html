@@ -10,63 +10,17 @@
 <span id="10">10</span>
 <span id="11">11</span>
 <span id="12">12</span>
-<span id="13">13</span>
-<span id="14">14</span>
-<span id="15">15</span>
-<span id="16">16</span>
-<span id="17">17</span>
-<span id="18">18</span>
-<span id="19">19</span>
-<span id="20">20</span>
-<span id="21">21</span>
-<span id="22">22</span>
-<span id="23">23</span>
-<span id="24">24</span>
-<span id="25">25</span>
-<span id="26">26</span>
-<span id="27">27</span>
-<span id="28">28</span>
-<span id="29">29</span>
-<span id="30">30</span>
-<span id="31">31</span>
-<span id="32">32</span>
-<span id="33">33</span>
-<span id="34">34</span>
-<span id="35">35</span>
-</pre><pre class="rust"><code><span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">command</span>;
+</pre><pre class="rust"><code><span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">subcommand</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">handling</span>;
 
-<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">structopt::StructOpt</span>;
-<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cli::command</span>::<span class="kw-2">*</span>;
+<span class="kw">pub</span> <span class="kw">use</span> <span class="ident">clap</span>::{<span class="ident">AppSettings</span>,<span class="ident">Parser</span>};
+<span class="kw">use</span> <span class="ident"><span class="kw">crate</span>::cli::subcommand::Subcommand</span>;
 
-    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">StructOpt</span>)]</span>
-    <span class="attribute">#[<span class="ident">structopt</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;gawires&quot;</span>, <span class="ident">about</span> <span class="op">=</span> <span class="string">&quot;Please use -h or --help to know more about gawires commands&quot;</span>)]</span>
-    <span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Opt</span>{
-        <span class="ident">Add</span>(<span class="ident">Add</span>),
-        <span class="ident">Checkout</span>(<span class="ident">Checkout</span>),
-        <span class="ident">Release</span>(<span class="ident">Release</span>),
-        <span class="ident">Init</span>(<span class="ident">Init</span>),
-        <span class="ident">Sync</span>(<span class="ident">Sync</span>),
-        <span class="ident">Status</span>(<span class="ident">Status</span>),
-        <span class="ident">Channel</span>(<span class="ident">Channel</span>),
-        <span class="ident">Push</span>(<span class="ident">Push</span>),
-        <span class="ident">Pull</span>(<span class="ident">Pull</span>),
-        <span class="ident">Workspace</span>(<span class="ident">Workspace</span>),
-        <span class="ident">Preview</span>(<span class="ident">Preview</span>),
-        <span class="ident">Reset</span>(<span class="ident">Reset</span>),
-        <span class="ident">Remove</span>(<span class="ident">Remove</span>),
-        <span class="ident">Branch</span>(<span class="ident">Branch</span>),
-        <span class="ident">Tag</span>(<span class="ident">Tag</span>),
-        <span class="ident">Wire</span>(<span class="ident">Wire</span>),
-        <span class="ident">Connect</span>(<span class="ident">Connect</span>),
-        <span class="ident">Filter</span>(<span class="ident">Filter</span>),
-        <span class="ident">Rebase</span>(<span class="ident">Rebase</span>),
-        <span class="ident">Merge</span>(<span class="ident">Merge</span>),
-        <span class="ident">Clean</span>(<span class="ident">Clean</span>),
-        <span class="ident">Central</span>(<span class="ident">Central</span>),
-        <span class="ident">Install</span>(<span class="ident">Install</span>),
-        <span class="ident">Uninstall</span>(<span class="ident">Uninstall</span>),
-        <span class="ident">Gist</span>(<span class="ident">Gist</span>),
-        
+    <span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Parser</span>)]</span>
+    <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">name</span> <span class="op">=</span> <span class="string">&quot;gawires&quot;</span>, <span class="ident">about</span> <span class="op">=</span> <span class="string">&quot;Please use -h or --help to know more about gawires subcommands&quot;</span>)]</span>
+    <span class="kw">pub</span> <span class="kw">struct</span> <span class="ident">Opts</span> {
+        <span class="attribute">#[<span class="ident">clap</span>(<span class="ident">subcommand</span>)]</span>
+        <span class="kw">pub</span> <span class="ident">subcommand</span>: <span class="ident">Subcommand</span>,
     }</code></pre></div>
 </section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="gawires" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
     <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
