@@ -41,6 +41,10 @@ use clap::{Parser};
             /// Stop tracking the assets from a given path
             #[clap(name = "Path",short = 'i', long = "--ignore")]
             pub ignore_path: Option<std::path::PathBuf>,
+
+            /// Add a tag to the assets with the given name
+            #[clap(name = "Path",short = 't', long = "--tag")]
+            pub tag_name: Option<String>,
     }
 
     /// Checkout assets in local workspace. When assets are checkout, they are locked by default when in centralized mode.
