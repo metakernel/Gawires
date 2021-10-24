@@ -8,3 +8,4 @@ pub mod extension;
 pub mod filesystem;
 pub mod process;
 pub mod wire;
+pub mod diff;
