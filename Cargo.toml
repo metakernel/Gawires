@@ -21,12 +21,12 @@ crate-type = ["cdylib","rlib"]
 
 [dependencies]
 notify = "4.0.17"
-libloading = "0.7.0"
-xxhash-rust = {version = "0.8.2", features = ["xxh3"]}
-clap = "3.0.0-beta.5"
+libloading = "0.7.3"
+xxhash-rust = {version = "0.8.5", features = ["xxh3"]}
+clap = {version = "3.1.18", features = ["derive"]}
 paw = "1.0.0"
 interprocess = "1.1.1"
-log = "0.4.14"
+log = "0.4.17"
 dirs = "4.0.0"
 
 # Specific dependencies for the gawires kernel
