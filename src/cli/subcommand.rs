@@ -6,7 +6,7 @@ use clap::{Parser};
 #[derive(Debug, PartialEq,Parser)]
     pub enum Subcommand{
         Add(Add), // Add new a files or folder content to the staging area, can be local, remote or one already followed by the gist.
-        Checkout(Checkout), // Checkout specific files
+        Checkout(Checkout), // Checkout contents from a remote workspace.
         Release(Release), // Release a workspace
         Init(Init), // Initialize a connection to a remote project(For a centralized repos) or create a new project locally (For a distributed repos).
         Sync(Sync), // Sync the workspace with the distant repository (Will Pull & Push for a distributed repos).
