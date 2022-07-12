@@ -21,7 +21,7 @@ use clap::{Parser};
         Branch(Branch), // Create a new branch inside the workspace
         Tag(Tag), // Add a tag to files or folders in the workspace
         Wire(Wire), // Commands related to Wires creation and configuration. Wires are bound to assets and can be used to specify how those assets are handled.
-        Connect(Connect), // Bind files or folders to an asset wire. This can be per file, per folder or per extension.
+        Connect(Connect), // Start a LiveWire connection beetween local and remote workspace.
         Filter(Filter), // Filter files or folders in the workspace or project and return the filtered list
         Rebase(Rebase), // Rebase a workspace branch on another branch
         Merge(Merge), // Merge a workspace branch on another branch
