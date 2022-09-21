@@ -1,6 +1,8 @@
 use std::{collections::HashMap, path::PathBuf};
 use dirs::home_dir;
 
+/// TODO - Put this in UserConfig.rs instead of here
+
 /// The user configuration file path.
 
 /// Data structure for the user's configuration.
