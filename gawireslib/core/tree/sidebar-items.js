@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["ArenaTree","Represents a tree of nodes that use indexes instead of refs/pointers."],["Node","Represent a node inside a tree data structure"]]};

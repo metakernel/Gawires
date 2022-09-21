@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"struct":[["UserConfig","The user configuration file path. Data structure for the user’s configuration."]]};

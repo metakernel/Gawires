@@ -1,3 +1,4 @@
-(function() {var implementors = {};
-implementors["gawires"] = [{"text":"impl <a class=\"trait\" href=\"https://docs.rs/clap/3.0.0-beta.5/clap/derive/trait.Subcommand.html\" title=\"trait clap::derive::Subcommand\">Subcommand</a> for <a class=\"enum\" href=\"gawires/cli/subcommand/enum.Subcommand.html\" title=\"enum gawires::cli::subcommand::Subcommand\">Subcommand</a>","synthetic":false,"types":["gawires::cli::subcommand::Subcommand"]}];
-if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()
+(function() {var implementors = {
+"gawires":[["impl Subcommand for <a class=\"enum\" href=\"gawires/cli/subcommand/enum.Subcommand.html\" title=\"enum gawires::cli::subcommand::Subcommand\">Subcommand</a>"]],
+"gawireslib":[["impl Subcommand for <a class=\"enum\" href=\"gawireslib/cli/subcommand/enum.Subcommand.html\" title=\"enum gawireslib::cli::subcommand::Subcommand\">Subcommand</a>"]]
+};if (window.register_implementors) {window.register_implementors(implementors);} else {window.pending_implementors = implementors;}})()

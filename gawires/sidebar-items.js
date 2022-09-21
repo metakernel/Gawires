@@ -1,1 +1,1 @@
-initSidebarItems({"derive":[["Parser","Generates the `Parser` implementation."]],"fn":[["main","The main entry point for Gawires."]],"mod":[["cli",""]],"trait":[["Parser","Parse command-line arguments into `Self`."]]});
+window.SIDEBAR_ITEMS = {"derive":[["Parser","Generates the `Parser` implementation."]],"fn":[["main","The main entry point for Gawires."]],"mod":[["cli",""]],"trait":[["Parser","Parse command-line arguments into `Self`."]]};
