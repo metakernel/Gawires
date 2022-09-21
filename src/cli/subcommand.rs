@@ -1,33 +1,35 @@
 use clap::{Parser};
 
+// This is a work in progress. Most of those commands serve just as placeholders for future development. Still researching the best way to manage projects.
+
 /// Enum of all possible subcommands
 #[derive(Debug, PartialEq,Parser)]
     pub enum Subcommand{
-        Add(Add),
-        Checkout(Checkout),
-        Release(Release),
-        Init(Init),
-        Sync(Sync),
-        Status(Status),
-        Channel(Channel),
-        Push(Push),
-        Pull(Pull),
-        Workspace(Workspace),
-        Preview(Preview),
-        Reset(Reset),
-        Remove(Remove),
-        Branch(Branch),
-        Tag(Tag),
-        Wire(Wire),
-        Connect(Connect),
-        Filter(Filter),
-        Rebase(Rebase),
-        Merge(Merge),
-        Clean(Clean),
-        Central(Central),
+        Add(Add), // Add new a files or folder content to the staging area, can be local, remote or one already followed by the gist.
+        Checkout(Checkout), // Checkout contents from a remote workspace.
+        Release(Release), // Release a workspace
+        Init(Init), // Initialize a connection to a remote project(For a centralized repos) or create a new project locally (For a distributed repos).
+        Sync(Sync), // Sync the workspace with the distant repository (Will Pull & Push for a distributed repos).
+        Status(Status), // Display the status of the local workspace
+        Channel(Channel), // Change or create content channel for the workspace (This enables to switch between different versions of the same project)
+        Push(Push), // Push the local workspace changes to the distant repository
+        Pull(Pull), // Pull the distant repository changes to the local workspace
+        Workspace(Workspace), // Display the workspace information or create/change to another workspace.
+        Preview(Preview), 
+        Reset(Reset), // Reset the local workspace to a specific commit (If non use the latest), can use --preserve to keep the local changes or --overwrite to delete them.
+        Remove(Remove), // Remove a file or folder from the local workspace
+        Branch(Branch), // Create a new branch inside the workspace
+        Tag(Tag), // Add a tag to files or folders in the workspace
+        Wire(Wire), // Commands related to Wires creation and configuration. Wires are bound to assets and can be used to specify how those assets are handled.
+        Connect(Connect), // Start a LiveWire connection beetween local and remote workspace.
+        Filter(Filter), // Filter files or folders in the workspace or project and return the filtered list
+        Rebase(Rebase), // Rebase a workspace branch on another branch
+        Merge(Merge), // Merge a workspace branch on another branch
+        Clean(Clean), // Clean the workspace
+        Central(Central), 
         Install(Install),
         Uninstall(Uninstall),
-        Gist(Gist),
+        Gist(Gist), // Gist and per asset actions.
         
     }
 
