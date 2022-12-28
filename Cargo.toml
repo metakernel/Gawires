@@ -20,14 +20,16 @@ crate-type = ["cdylib","rlib"]
 
 
 [dependencies]
-notify = "4.0.17"
-libloading = "0.7.3"
-xxhash-rust = {version = "0.8.5", features = ["xxh3"]}
-clap = {version = "3.1.18", features = ["derive"]}
+notify = "5.0.0"
+libloading = "0.7.4"
+xxhash-rust = {version = "0.8.6", features = ["xxh3"]}
+clap = {version = "4.0.32", features = ["derive"]}
 paw = "1.0.0"
-interprocess = "1.1.1"
+interprocess = "1.2.1"
 log = "0.4.17"
 dirs = "4.0.0"
+petgraph = "0.6.2"
+blake2 = "0.10.6"
 
 # Specific dependencies for the gawires kernel
 gawires-diff = { git = "https://github.com/metakernel/gawires-diff"}

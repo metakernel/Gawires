@@ -1,7 +1,7 @@
 pub mod subcommand;
 pub mod handling;
 
-pub use clap::{AppSettings,Parser};
+pub use clap::{Parser};
 use crate::cli::subcommand::Subcommand;
 
     #[derive(Debug, PartialEq, Parser)]
