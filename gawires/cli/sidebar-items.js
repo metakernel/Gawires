@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"derive":[["Parser","Generates the `Parser` implementation."]],"enum":[["AppSettings","Application level settings, which affect how `Command` operates"]],"mod":[["handling",""],["subcommand",""]],"struct":[["Opts",""]],"trait":[["Parser","Parse command-line arguments into `Self`."]]};
+window.SIDEBAR_ITEMS = {"derive":[["Parser","Generates the `Parser` implementation."]],"mod":[["handling",""],["subcommand",""]],"struct":[["Opts",""]],"trait":[["Parser","Parse command-line arguments into `Self`."]]};
