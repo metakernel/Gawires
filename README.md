@@ -19,7 +19,7 @@ Feel free to join me if you have any questions or want to give an hand! Thanks :
 
 In Gawires, each tracked assets have their own tree structure that represent their changes and versions.
 
-The **Asset Gist** is in charge of keeping all records of the assets modifications but when using Gawires, the users don't directly access the **Gist**. They will act on a specific set of workplaces part of their repository, workplaces can track project wide assets or have their own forks of those.
+The **Asset Gist** is in charge of keeping all records of the assets modifications but when using Gawires, the users don't directly access the **Gist**. They will act on a specific set of workspaces part of their repository, worspaces can track project wide assets or have their own forks of those.
 
 Since the gist is the global manager of any assets, even multiple projects can share the same assets without the need to store multiple copies.
 
