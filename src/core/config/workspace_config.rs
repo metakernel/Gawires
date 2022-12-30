@@ -1,0 +1,2 @@
+/// In gawires each workspace have their own configurations that are stored in Gawires .gaw folder that can be found in the root.
+/// This file is a json file that contains the configurations of the workspace.

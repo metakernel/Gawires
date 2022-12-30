@@ -1,3 +1,6 @@
+/// In Gawires a workspace is a slice of a project that can be worked on independently, each workspace can act on a subset of the project assets.
+/// From a local perspective a gawires Workspace is a folder that contains assets and a .gaw folder that contains the workspace configuration and metadata.
+
 use crate::core::repository::{Repository, Remote};
 
 #[derive(Debug, Clone, PartialEq, Eq)]
