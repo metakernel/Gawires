@@ -35,10 +35,10 @@ pub fn handle_subcmd(subcmd: Subcommand) {
             }
         }
         Subcommand::Checkout(checkout) => {
-            println!("Removing");
+            println!("Checking out");
         }
         Subcommand::Release(release) => {
-            println!("Removing");
+            println!("Releasing");
         }
         Subcommand::Init(_) => todo!(),
         Subcommand::Sync(_) => todo!(),
@@ -46,6 +46,7 @@ pub fn handle_subcmd(subcmd: Subcommand) {
         Subcommand::Channel(_) => todo!(),
         Subcommand::Push(_) => todo!(),
         Subcommand::Pull(_) => todo!(),
+        Subcommand::Clone(_) => todo!(),
         Subcommand::Workspace(_) => todo!(),
         Subcommand::Preview(_) => todo!(),
         Subcommand::Reset(_) => todo!(),

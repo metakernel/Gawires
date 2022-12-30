@@ -6,10 +6,10 @@ authors = ["Vincent Roy"]
 license = "GPLv3"
 readme = "README.md"
 repository = "https://github.com/metakernel/Gawires"
-default-run = "gawires"
+default-run = "gaw"
 
 [[bin]]
-name = "gawires"
+name = "gaw"
 path = "src/main.rs"
 
 [lib]

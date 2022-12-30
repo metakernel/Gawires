@@ -8,8 +8,9 @@ use clap::{Parser};
         Add(Add), // Add new a files or folder content to the staging area, can be local, remote or one already followed by the gist.
         Checkout(Checkout), // Checkout contents from a remote workspace.
         Release(Release), // Release a workspace
-        Init(Init), // Initialize a connection to a remote project(For a centralized repos) or create a new project locally (For a distributed repos).
-        Sync(Sync), // Sync the workspace with the distant repository (Will Pull & Push for a distributed repos).
+        Init(Init), // Initialize a connection to a remote project or workspace(For a centralized workflow) or create a new workspace locally (For a distributed workflow).
+        Sync(Sync), // Sync the workspace with the distant repository (Will Pull & Push for a distributed workflow).
+        Clone(Clone), // Clone a remote workspace locally, it will clone a complete copy of it.
         Status(Status), // Display the status of the local workspace
         Channel(Channel), // Change or create content channel for the workspace (This enables to switch between different versions of the same project)
         Push(Push), // Push the local workspace changes to the distant repository
@@ -38,25 +39,25 @@ use clap::{Parser};
     pub struct Add{
         /// Stage assets changes in a given path
             pub path: Option<std::path::PathBuf>,
-            /// Stage all changes that are not ignored
-            #[clap(short, long)]
+            /// Stage all changes in workspace that are not ignored
+            #[clap(short = 'a', long = "all")]
             pub all: bool,
             /// Stop tracking the assets from a given path
-            #[clap(name = "Path",short = 'i', long = "--ignore")]
+            #[clap(name = "Path",short = 'i', long = "ignore")]
             pub ignore_path: Option<std::path::PathBuf>,
 
             /// Add a tag to the assets with the given name
-            #[clap(name = "Tag name",short = 't', long = "--tag")]
+            #[clap(name = "Tag name",short = 't', long = "tag")]
             pub tag_name: Option<String>,
     }
 
-    /// Checkout assets in local workspace. When assets are checkout, they are locked by default when in centralized mode.
+    /// Checkout assets in local workspace from a source like . When assets are checkout, they are locked by default when in centralized mode.
     #[derive(Debug, PartialEq, Parser)]
     pub struct Checkout{
         /// Specific assets or complete directory structure can be checkout
         pub path: Option<std::path::PathBuf>,
-        /// Option use to specify if a lock should be put on the assets, this will tell central to lock them. (On by default, WARNING: if centralized you should use "gawires checkout --clone" if you dont want any conflict issues)
-        #[clap(name = "Lock",short = 'l', long = "--lock")]
+        /// Option use to specify if a lock should be put on the assets, this will tell central to lock them. (On by default if centralized, WARNING: If not set to lock you should clone the workspace instead "gawires checkout --clone" if you dont want any conflict issues)
+        #[clap(name = "Lock",short = 'l', long = "lock")]
         pub lock_remote: Option<bool>,
         /// Can be use to specify that the checkout must clone the assets instead of synchronizing them.(Will need to initiate a push request each time you try to synchronize)
         pub clone: Option<bool>,
@@ -66,7 +67,7 @@ use clap::{Parser};
     #[derive(Debug, PartialEq, Parser)]
     pub struct Release{
     }
-    /// Initialize a new project workspace
+    /// Initialize a new local workspace that can be connected to a central workspace
     #[derive(Debug, PartialEq, Parser)]
     pub struct Init{
     }
@@ -81,17 +82,17 @@ use clap::{Parser};
     pub struct Status{
     }
 
-    /// Create and manage channels, channels are used to have specific assets versions or representation of a same project.
+    /// Create and manage channels, channels are used to have specific assets versions or representation of a same remote workspace.
     #[derive(Debug, PartialEq, Parser)]
     pub struct Channel{
     }
 
-    /// Used in a distributed workspace to push local changes to remote.
+    /// Used in a distributed workspace to push local changes to remote, will use Sync in centralized.
     #[derive(Debug, PartialEq, Parser)]
     pub struct Push{
     }
 
-    /// Used in a distributed workspace to pull localy changes from remote.
+    /// Used in a distributed workspace to pull localy changes from remote, will use Sync in centralized.
     #[derive(Debug, PartialEq, Parser)]
     pub struct Pull{
     }
@@ -99,6 +100,11 @@ use clap::{Parser};
     /// Commands to manage workspace
     #[derive(Debug, PartialEq, Parser)]
     pub struct Workspace{
+    }
+
+    /// Clone a remote workspace locally, it will clone a complete copy of it.
+    #[derive(Debug, PartialEq, Parser)]
+    pub struct Clone{
     }
 
     /// Preview and compare different types of asset
@@ -163,12 +169,12 @@ use clap::{Parser};
     pub struct Central{
     }
 
-    /// Install a Gawire extensions.
+    /// Install a Gawire extension in current workspace.
     #[derive(Debug, PartialEq, Parser)]
     pub struct Install{
     }
 
-    /// Uninstall a Gawire extensions.
+    /// Uninstall a Gawire extension in current workspace.
     #[derive(Debug, PartialEq, Parser)]
     pub struct Uninstall{
     }

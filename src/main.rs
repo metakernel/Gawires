@@ -11,7 +11,7 @@ use crate::cli::handling::handle_subcmd;
 #[paw::main]
 fn main(_args: Args) {
     let opt = Opts::parse();
-    //println!("{:#?}", opt);
+    //println!("{:#?}", opt);  
 
     handle_subcmd(opt.subcommand);
 }
