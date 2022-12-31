@@ -1,36 +1,35 @@
-use clap::{Parser};
+use clap::{Parser,Subcommand};
 
 // This is a work in progress. Most of those commands serve just as placeholders for future development. Still researching the best way to manage projects.
 
 /// Enum of all possible subcommands
-#[derive(Debug, PartialEq,Parser)]
-    pub enum Subcommand{
-        Add(Add), // Add new a files or folder content to the staging area, can be local, remote or one already followed by the gist.
+#[derive(Debug, PartialEq,Subcommand)]
+    pub enum Commands{
+        Add(Add), // Add new assets or changes to the workspace, add tags and other operations.
         Checkout(Checkout), // Checkout contents from a remote workspace.
         Release(Release), // Release a workspace
-        Init(Init), // Initialize a connection to a remote project or workspace(For a centralized workflow) or create a new workspace locally (For a distributed workflow).
+        Init(Init), // Initialize a connection to a remote project or workspace(For a centralized workflow).
         Sync(Sync), // Sync the workspace with the distant repository (Will Pull & Push for a distributed workflow).
         Clone(Clone), // Clone a remote workspace locally, it will clone a complete copy of it.
         Status(Status), // Display the status of the local workspace
-        Channel(Channel), // Change or create content channel for the workspace (This enables to switch between different versions of the same project)
+        Layout(Layout), // Change or create content layout for the workspace (This enables to switch between different layout for the same workspace)
         Push(Push), // Push the local workspace changes to the distant repository
         Pull(Pull), // Pull the distant repository changes to the local workspace
         Workspace(Workspace), // Display the workspace information or create/change to another workspace.
-        Preview(Preview), 
+        Preview(Preview), // Preview and compare different commit or assets
         Reset(Reset), // Reset the local workspace to a specific commit (If non use the latest), can use --preserve to keep the local changes or --overwrite to delete them.
         Remove(Remove), // Remove a file or folder from the local workspace
         Branch(Branch), // Create a new branch inside the workspace
-        Tag(Tag), // Add a tag to files or folders in the workspace
         Wire(Wire), // Commands related to Wires creation and configuration. Wires are bound to assets and can be used to specify how those assets are handled.
         Connect(Connect), // Start a LiveWire connection beetween local and remote workspace.
         Filter(Filter), // Filter files or folders in the workspace or project and return the filtered list
         Rebase(Rebase), // Rebase a workspace branch on another branch
         Merge(Merge), // Merge a workspace branch on another branch
         Clean(Clean), // Clean the workspace
-        Central(Central), 
+        Project(Project), 
         Install(Install),
         Uninstall(Uninstall),
-        Gist(Gist), // Gist and per asset actions.
+        Asset(Asset),
         
     }
 
@@ -40,14 +39,14 @@ use clap::{Parser};
         /// Stage assets changes in a given path
             pub path: Option<std::path::PathBuf>,
             /// Stage all changes in workspace that are not ignored
-            #[clap(short = 'a', long = "all")]
+            #[arg(short = 'a', long = "all")]
             pub all: bool,
             /// Stop tracking the assets from a given path
-            #[clap(name = "Path",short = 'i', long = "ignore")]
+            #[arg(name = "Path",short = 'i', long = "ignore")]
             pub ignore_path: Option<std::path::PathBuf>,
 
             /// Add a tag to the assets with the given name
-            #[clap(name = "Tag name",short = 't', long = "tag")]
+            #[arg(name = "Tag name",short = 't', long = "tag")]
             pub tag_name: Option<String>,
     }
 
@@ -82,9 +81,9 @@ use clap::{Parser};
     pub struct Status{
     }
 
-    /// Create and manage channels, channels are used to have specific assets versions or representation of a same remote workspace.
+    /// Change or create content layout for the workspace (This enables to switch between different layout for the same workspace)
     #[derive(Debug, PartialEq, Parser)]
-    pub struct Channel{
+    pub struct Layout{
     }
 
     /// Used in a distributed workspace to push local changes to remote, will use Sync in centralized.
@@ -97,7 +96,7 @@ use clap::{Parser};
     pub struct Pull{
     }
 
-    /// Commands to manage workspace
+    /// Commands to manage workspace, change or create workspace layout and other operations.
     #[derive(Debug, PartialEq, Parser)]
     pub struct Workspace{
     }
@@ -126,11 +125,6 @@ use clap::{Parser};
     /// Operations on branches
     #[derive(Debug, PartialEq, Parser)]
     pub struct Branch{
-    }
-
-    /// Add or remove tags from assets or project version
-    #[derive(Debug, PartialEq, Parser)]
-    pub struct Tag{
     }
 
     /// Create or configure wires.
@@ -164,9 +158,9 @@ use clap::{Parser};
     pub struct Clean{
     }
 
-    /// Commands related to the creation or management of a Gawires Central Server.
+    /// Commands related to Project management
     #[derive(Debug, PartialEq, Parser)]
-    pub struct Central{
+    pub struct Project{
     }
 
     /// Install a Gawire extension in current workspace.
@@ -179,7 +173,7 @@ use clap::{Parser};
     pub struct Uninstall{
     }
 
-    /// Operations over local or remote asset's gist
+    /// Commands related to Assets management
     #[derive(Debug, PartialEq, Parser)]
-    pub struct Gist{
+    pub struct Asset{
     }

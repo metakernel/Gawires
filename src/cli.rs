@@ -1,12 +1,12 @@
-pub mod subcommand;
+pub mod commands;
 pub mod handling;
 
 pub use clap::{Parser};
-use crate::cli::subcommand::Subcommand;
+use crate::cli::commands::Commands;
 
     #[derive(Debug, PartialEq, Parser)]
-    #[clap(name = "gawires", about = "Please use -h or --help to know more about gawires subcommands")]
-    pub struct Opts {
-        #[clap(subcommand)]
-        pub subcommand: Subcommand,
+    #[command(name = "gawires", version,  about = "Please use -h or --help to know more about gawires subcommands")]
+    pub struct Cli {
+        #[command(subcommand)]
+        pub commands: Option<Commands>,
     }

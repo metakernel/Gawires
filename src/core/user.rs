@@ -1,4 +1,4 @@
-use crate::core::config::UserConfig;
+use crate::core::config::user_config::UserConfig;
 
 /// A User Stamp is some informations used to identify a user in the system.
 #[derive(Debug, Clone, PartialEq, Eq)]

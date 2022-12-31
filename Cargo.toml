@@ -22,14 +22,13 @@ crate-type = ["cdylib","rlib"]
 [dependencies]
 notify = "5.0.0"
 libloading = "0.7.4"
-xxhash-rust = {version = "0.8.6", features = ["xxh3"]}
 clap = {version = "4.0.32", features = ["derive"]}
 paw = "1.0.0"
 interprocess = "1.2.1"
-log = "0.4.17"
 dirs = "4.0.0"
 petgraph = "0.6.2"
 blake2 = "0.10.6"
+uuid = "1.2.2"
 
 # Specific dependencies for the gawires kernel
 gawires-diff = { git = "https://github.com/metakernel/gawires-diff"}
@@ -38,12 +37,12 @@ gawires-patch = { git = "https://github.com/metakernel/gawires-diff"}
 
 [target.'cfg(unix)'.dependencies]
 # Used for the filesystem in linux and macos
-fuser = "0.9.1"
+fuser = "0.12.0"
 
 [target.'cfg(windows)'.dependencies]
 # Used for the filesystem in windows
-dokan = "0.2.0+dokan150"
-windows = "0.21.1"
+dokan = "0.3.1+dokan206"
+windows = "0.43.0"
 
 [target.'cfg(windows)'.build-dependencies]
-windows = "0.21.1"
+windows = "0.43.0"

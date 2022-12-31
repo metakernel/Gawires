@@ -9,4 +9,3 @@ pub mod filesystem;
 pub mod process;
 pub mod wire;
 pub mod diff;
-pub mod uuid;
