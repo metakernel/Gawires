@@ -1,5 +1,3 @@
-#![feature(const_option)]
-
 mod cli;
 use paw::Args;
 pub use clap::Parser;

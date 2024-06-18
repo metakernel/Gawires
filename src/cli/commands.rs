@@ -26,17 +26,17 @@ use clap::{Parser,Subcommand};
         Rebase(Rebase), // Rebase a workspace branch on another branch
         Merge(Merge), // Merge a workspace branch on another branch
         Clean(Clean), // Clean the workspace
-        Project(Project), 
+        Project(Project),
         Install(Install),
         Uninstall(Uninstall),
         Asset(Asset),
         
     }
 
-    ///track new assets or changes, add tags and other operations.
+    ///track new file, add tags and other operations.
     #[derive(Debug, PartialEq, Parser)]
     pub struct Add{
-        /// Stage assets changes in a given path
+        /// Tracks new file
             pub path: Option<std::path::PathBuf>,
             /// Stage all changes in workspace that are not ignored
             #[arg(short = 'a', long = "all")]
@@ -47,7 +47,7 @@ use clap::{Parser,Subcommand};
 
             /// Add a tag to the assets with the given name
             #[arg(name = "Tag name",short = 't', long = "tag")]
-            pub tag_name: Option<String>,
+            pub tag_name: Option<Vec<String>>,
     }
 
     /// Checkout assets in local workspace from a source like . When assets are checkout, they are locked by default when in centralized mode.
@@ -66,7 +66,7 @@ use clap::{Parser,Subcommand};
     #[derive(Debug, PartialEq, Parser)]
     pub struct Release{
     }
-    /// Initialize a new local workspace that can be connected to a central workspace
+    /// Initialize a new local workspace that can be connected to a project
     #[derive(Debug, PartialEq, Parser)]
     pub struct Init{
     }

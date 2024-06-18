@@ -41,7 +41,7 @@ impl UserConfig{
 
     /// Get the configuration root path.
     pub fn get_gawires_configs_root() -> PathBuf {
-        home_dir().unwrap().join(".gawires/")
+        home_dir().unwrap().join(".gaw/")
     } 
 
     // Get the user configuration default path.
