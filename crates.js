@@ -1,1 +1,1 @@
-window.ALL_CRATES = ["gawires","gawireslib"];
+window.ALL_CRATES = ["gaw","gawires"];

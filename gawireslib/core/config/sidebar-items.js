@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"struct":[["UserConfig","TODO - Put this in UserConfig.rs instead of here The user configuration file path. Data structure for the user’s configuration."]]};

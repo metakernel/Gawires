@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"enum":["DiffData","DiffType"],"mod":["difftree","hash"],"struct":["AddDiff","Diff","ModifyDiff","RemoveDiff"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"enum":[["DiffData",""],["DiffType",""]],"mod":[["difftree",""],["hash",""]],"struct":[["AddDiff","A diff that adds a new value to the asset."],["Diff",""],["ModifyDiff","A diff that modifies a value in the asset."],["RemoveDiff","A diff that removes a value from the asset."]]};

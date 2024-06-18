@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cli/handling.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>handling.rs - source</title><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Regular-1f7d512b176f0f72.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Regular-018c141bf0843ffd.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/FiraSans-Medium-8f9a781e4970d388.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceSerif4-Bold-124a1ca42af929b6.ttf.woff2"><link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2"><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b07ed6aaa412307b.css" id="mainThemeStyle"><link rel="stylesheet" id="themeStyle" href="../../../static.files/light-d695502c06d5afea.css"><link rel="stylesheet" disabled href="../../../static.files/dark-aa222ca57e08648b.css"><link rel="stylesheet" disabled href="../../../static.files/ayu-d5b7bae5e01694db.css"><script id="default-settings" ></script><script src="../../../static.files/storage-d43fa987303ecbbb.js"></script><script defer src="../../../static.files/source-script-ea63cb6500f71309.js"></script><script defer src="../../../source-files.js"></script><script defer src="../../../static.files/main-4a084badb5778746.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-13285aec31fa243e.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-16x16-8b506e7a72182f1c.png"><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"></nav><main><nav class="sub"><a class="sub-logo-container" href="../../../gawires/index.html"><img class="rust-logo" src="../../../static.files/rust-logo-151179464ae7ed46.svg" alt="logo"></a><form class="search-form"><span></span><input class="search-input" name="search" aria-label="Run search in the documentation" autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"><div id="help-button" title="help" tabindex="-1"><a href="../../../help.html">?</a></div><div id="settings-menu" tabindex="-1"><a href="../../../settings.html" title="settings"><img width="22" height="22" alt="Change settings" src="../../../static.files/wheel-5ec35bf9ca753509.svg"></a></div></form></nav><section id="main-content" class="content"><div class="example-wrap"><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cli/handling.rs`."><title>handling.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-dd39b87e5fcfba68.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gawires" data-themes="" data-resource-suffix="" data-rustdoc-version="1.81.0-nightly (59e2c01c2 2024-06-17)" data-channel="nightly" data-search-js="search-0fe7219eb170c82e.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-20a3ad099b048cf2.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -64,70 +64,69 @@
 <a href="#64" id="64">64</a>
 <a href="#65" id="65">65</a>
 <a href="#66" id="66">66</a>
-</pre><pre class="rust"><code><span class="kw">use </span><span class="kw">super</span>::subcommand::Subcommand;
+</pre></div><pre class="rust"><code><span class="kw">use </span><span class="kw">super</span>::commands::Commands;
 <span class="comment">// Its a nasty implementation for the moment, the printlines are useless placeholders and log should be done by the executing functions
-</span><span class="kw">pub fn </span>handle_subcmd(subcmd: Subcommand) {
-    <span class="kw">match </span>subcmd {
-        Subcommand::Add(add) =&gt; {
+</span><span class="kw">pub fn </span>handle_cmds(cmds: Commands) {
+    <span class="kw">match </span><span class="kw-2">&amp;</span>cmds {
+        Commands::Add(add) =&gt; {
             <span class="comment">// if the user put nothing to add tell him this is an error
             </span><span class="kw">if </span>add.path.is_none() &amp;&amp; !add.all {
-                <span class="macro">println!</span>(<span class="string">&quot;No asset specified, use --help to get some more informations&quot;</span>);
+                <span class="macro">println!</span>(<span class="string">"No asset specified, use --help to get some more informations"</span>);
             } 
             <span class="comment">// The user wants to stage all assets in the current workspace
             </span><span class="kw">else if </span>add.path.is_none() &amp;&amp; add.all {
-                <span class="macro">println!</span>(<span class="string">&quot;Staging all changes and untracked files to workspace&quot;</span>);
+                <span class="macro">println!</span>(<span class="string">"Staging all changes and untracked files to workspace"</span>);
             }
             <span class="comment">// The user wants to stage an asset from path or using Fileglobs and other wildcards
             </span><span class="kw">else if </span>add.path.is_some() &amp;&amp; !add.all {
-                <span class="kw">let </span>path = add.path.unwrap();
-                <span class="kw">let </span>is_dir = path.is_dir();
+                <span class="kw">let </span>path = <span class="kw-2">&amp;</span>add.path;
+                <span class="kw">let </span>is_dir = path.as_ref().expect(<span class="string">"Path is not correct"</span>).is_dir();
 
                 <span class="kw">if </span>is_dir {
-                    <span class="macro">println!</span>(<span class="string">&quot;Adding all files under {} to workspace&quot;</span>, path.display());
-                } <span class="kw">else </span>{<span class="macro">println!</span>(<span class="string">&quot;Adding {} to workspace&quot;</span>, path.display());}
+                    <span class="macro">println!</span>(<span class="string">"Adding all files under {} to workspace"</span>, path.as_ref().unwrap().display());
+                } <span class="kw">else </span>{<span class="macro">println!</span>(<span class="string">"Adding {} to workspace"</span>, path.as_ref().unwrap().display());}
             }
 
             <span class="comment">// The user wants to stage all assets with the following path
             </span><span class="kw">else if </span>add.path.is_some() &amp;&amp; add.all {
-                <span class="kw">let </span>path = add.path.unwrap();
-                <span class="kw">let </span>is_dir = path.is_dir();
+                <span class="kw">let </span>path = <span class="kw-2">&amp;</span>add.path;
+                <span class="kw">let </span>is_dir = path.as_ref().expect(<span class="string">"Path is not correct"</span>).is_dir();
 
                  <span class="kw">if </span>is_dir {
-                     <span class="macro">println!</span>(<span class="string">&quot;Adding all files under {} for tracking&quot;</span>, path.display());
-                    }<span class="kw">else </span>{<span class="macro">println!</span>(<span class="string">&quot;Adding all occurence of {} for tracking&quot;</span>, path.display());}
+                     <span class="macro">println!</span>(<span class="string">"Adding all files under {} for tracking"</span>, path.as_ref().unwrap().display());
+                    } <span class="kw">else </span>{<span class="macro">println!</span>(<span class="string">"Adding all occurence of {} for tracking"</span>,  path.as_ref().unwrap().display());}
             }
             <span class="kw">else </span>{
-                <span class="macro">println!</span>(<span class="string">&quot;Wrong subcommand specified, use --help to get some more informations&quot;</span>);
+                <span class="macro">println!</span>(<span class="string">"Wrong Commands specified, use --help to get some more informations"</span>);
             }
         }
-        Subcommand::Checkout(checkout) =&gt; {
-            <span class="macro">println!</span>(<span class="string">&quot;Removing&quot;</span>);
+        Commands::Checkout(checkout) =&gt; {
+            <span class="macro">println!</span>(<span class="string">"Checking out"</span>);
         }
-        Subcommand::Release(release) =&gt; {
-            <span class="macro">println!</span>(<span class="string">&quot;Removing&quot;</span>);
+        Commands::Release(release) =&gt; {
+            <span class="macro">println!</span>(<span class="string">"Releasing"</span>);
         }
-        Subcommand::Init(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Sync(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Status(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Channel(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Push(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Pull(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Workspace(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Preview(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Reset(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Remove(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Branch(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Tag(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Wire(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Connect(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Filter(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Rebase(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Merge(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Clean(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Central(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Install(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Uninstall(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
-        Subcommand::Gist(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Init(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Sync(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Status(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Layout(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Push(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Pull(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Clone(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Workspace(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Preview(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Reset(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Remove(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Branch(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Wire(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Connect(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Filter(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Rebase(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Merge(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Clean(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Project(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Install(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Uninstall(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
+        Commands::Asset(<span class="kw">_</span>) =&gt; <span class="macro">todo!</span>(),
     }
-}</code></pre></div>
-</section></main><div id="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gawires" data-themes="" data-resource-suffix="" data-rustdoc-version="1.68.0-nightly (92c1937a9 2022-12-27)" data-search-js="search-181581080540673f.js" data-settings-js="settings-bebeae96e00e4617.js" data-settings-css="settings-58836c674e2f7bd2.css" ></div></body></html>
+}</code></pre></div></section></main></body></html>
