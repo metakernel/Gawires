@@ -23,18 +23,25 @@ path = "src/lib.rs"
 
 [dependencies]
 notify = "6.1.1"
-libloading = "0.8.3"
-clap = {version = "4.5.7", features = ["derive"]}
+libloading = "0.8.5"
+clap = {version = "4.5.15", features = ["derive"]}
 paw = "1.0.0"
-interprocess = "2.2.0"
+interprocess = "2.2.1"
 dirs = "5.0.1"
 petgraph = "0.6.5"
 blake2 = "0.10.6"
-uuid = "1.8.0"
 
 # Specific dependencies for the gawires kernel
 gawires-diff = { git = "https://github.com/metakernel/gawires-diff"}
 gawires-patch = { git = "https://github.com/metakernel/gawires-diff"}
+
+[dependencies.uuid]
+version = "1.10.0"
+features = [
+    "v4",                # Lets you generate random UUIDs
+    "fast-rng",          # Use a faster (but still sufficiently random) RNG
+    "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
+]
 
 
 [target.'cfg(unix)'.dependencies]
@@ -44,7 +51,7 @@ fuser = "0.14.0"
 [target.'cfg(windows)'.dependencies]
 # Used for the filesystem in windows
 dokan = "0.3.1+dokan206"
-windows = "0.57.0"
+windows = "0.58.0"
 
 [target.'cfg(windows)'.build-dependencies]
-windows = "0.57.0"
+windows = "0.58.0"
