@@ -1,0 +1,1 @@
+window.SIDEBAR_ITEMS = {"mod":["entity_component"],"struct":["Entity"]};
