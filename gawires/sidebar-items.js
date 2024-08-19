@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"mod":["cli","core"]};
+window.SIDEBAR_ITEMS = {"mod":["cli"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"derive":["Parser"],"mod":["commands","handling"],"struct":["Cli"],"trait":["Parser"]};

@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"mod":["asset_proxy","asset_tag","entity","version_graph"],"struct":["Asset"]};

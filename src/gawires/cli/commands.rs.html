@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cli/commands.rs`."><title>commands.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-d10b2a06af903387.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gawires" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (730d5d409 2024-08-10)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-04a29ac50d05d0b1.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-df360f571f6edeae.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src/cli/commands.rs`."><title>commands.rs - source</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-46f98efaafac5295.ttf.woff2,FiraSans-Regular-018c141bf0843ffd.woff2,FiraSans-Medium-8f9a781e4970d388.woff2,SourceCodePro-Regular-562dcc5011b6de7d.ttf.woff2,SourceCodePro-Semibold-d899c5a5c4aeb14a.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../../static.files/normalize-76eba96aa4d2e634.css"><link rel="stylesheet" href="../../../static.files/rustdoc-b25d77b18a16a9a4.css"><meta name="rustdoc-vars" data-root-path="../../../" data-static-root-path="../../../static.files/" data-current-crate="gawires" data-themes="" data-resource-suffix="" data-rustdoc-version="1.82.0-nightly (feeba198f 2024-08-17)" data-channel="nightly" data-search-js="search-ef54e092fea9c776.js" data-settings-js="settings-4313503d2e1961c2.js" ><script src="../../../static.files/storage-118b08c4c78b968e.js"></script><script defer src="../../../static.files/src-script-e66d777a5a92e9b2.js"></script><script defer src="../../../src-files.js"></script><script defer src="../../../static.files/main-cb0df477c2d67d00.js"></script><noscript><link rel="stylesheet" href="../../../static.files/noscript-3b12f09e550e0385.css"></noscript><link rel="alternate icon" type="image/png" href="../../../static.files/favicon-32x32-422f7d1d52889060.png"><link rel="icon" type="image/svg+xml" href="../../../static.files/favicon-2c020d218678b618.svg"></head><body class="rustdoc src"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="src-sidebar-title"><h2>Files</h2></div></nav><div class="sidebar-resizer"></div><main><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="example-wrap"><div data-nosnippet><pre class="src-line-numbers"><a href="#1" id="1">1</a>
 <a href="#2" id="2">2</a>
 <a href="#3" id="3">3</a>
 <a href="#4" id="4">4</a>
@@ -176,7 +176,6 @@
 <a href="#176" id="176">176</a>
 <a href="#177" id="177">177</a>
 <a href="#178" id="178">178</a>
-<a href="#179" id="179">179</a>
 </pre></div><pre class="rust"><code><span class="kw">use </span>clap::{Parser,Subcommand};
 
 <span class="comment">// This is a work in progress. Most of those commands serve just as placeholders for future development. Still researching the best way to manage projects.
@@ -184,27 +183,26 @@
 </span><span class="doccomment">/// Enum of all possible subcommands
 </span><span class="attr">#[derive(Debug, PartialEq,Subcommand)]
     </span><span class="kw">pub enum </span>Commands{
-        Add(Add), <span class="comment">// Add new assets or changes to the workspace, add tags and other operations.
-        </span>Checkout(Checkout), <span class="comment">// Checkout contents from a remote workspace.
-        </span>Release(Release), <span class="comment">// Release a workspace
-        </span>Init(Init), <span class="comment">// Initialize a connection to a remote project or workspace(For a centralized workflow).
-        </span>Sync(Sync), <span class="comment">// Sync the workspace with the distant repository (Will Pull &amp; Push for a distributed workflow).
-        </span>Clone(Clone), <span class="comment">// Clone a remote workspace locally, it will clone a complete copy of it.
-        </span>Status(Status), <span class="comment">// Display the status of the local workspace
-        </span>Layout(Layout), <span class="comment">// Change or create content layout for the workspace (This enables to switch between different layout for the same workspace)
-        </span>Push(Push), <span class="comment">// Push the local workspace changes to the distant repository
-        </span>Pull(Pull), <span class="comment">// Pull the distant repository changes to the local workspace
-        </span>Workspace(Workspace), <span class="comment">// Display the workspace information or create/change to another workspace.
+        Add(Add), <span class="comment">// Add new assets or changes to the workpod, add tags and other operations.
+        </span>Checkout(Checkout), <span class="comment">// Checkout contents from a remote workpod.
+        </span>Init(Init), <span class="comment">// Initialize a connection to a remote project or workpod(For a centralized workflow).
+        </span>Sync(Sync), <span class="comment">// Sync the workpod with the distant repository (Will Pull &amp; Push for a distributed workflow).
+        </span>Clone(Clone), <span class="comment">// Clone a remote workpod locally, it will clone a complete copy of it.
+        </span>Status(Status), <span class="comment">// Display the status of the local workpod
+        </span>Layout(Layout), <span class="comment">// Change or create content layout for the workpod (This enables to switch between different layout for the same workpod)
+        </span>Push(Push), <span class="comment">// Push the local workpod changes to the distant repository
+        </span>Pull(Pull), <span class="comment">// Pull the distant repository changes to the local workpod
+        </span>Workpod(Workpod), <span class="comment">// Display the workpod information or create/change to another workpod.
         </span>Preview(Preview), <span class="comment">// Preview and compare different commit or assets
-        </span>Reset(Reset), <span class="comment">// Reset the local workspace to a specific commit (If non use the latest), can use --preserve to keep the local changes or --overwrite to delete them.
-        </span>Remove(Remove), <span class="comment">// Remove a file or folder from the local workspace
-        </span>Branch(Branch), <span class="comment">// Create a new branch inside the workspace
+        </span>Reset(Reset), <span class="comment">// Reset objects in local workpod to a specific commit (If non use the latest), can use --preserve to keep the local changes or --overwrite to delete them.
+        </span>Remove(Remove), <span class="comment">// Remove a file or folder from the local workpod
+        </span>Branch(Branch), <span class="comment">// Create a new branch inside the workpod
         </span>Wire(Wire), <span class="comment">// Commands related to Wires creation and configuration. Wires are bound to assets and can be used to specify how those assets are handled.
-        </span>Connect(Connect), <span class="comment">// Start a LiveWire connection beetween local and remote workspace.
-        </span>Filter(Filter), <span class="comment">// Filter files or folders in the workspace or project and return the filtered list
-        </span>Rebase(Rebase), <span class="comment">// Rebase a workspace branch on another branch
-        </span>Merge(Merge), <span class="comment">// Merge a workspace branch on another branch
-        </span>Clean(Clean), <span class="comment">// Clean the workspace
+        </span>Connect(Connect), <span class="comment">// Start a LiveWire connection beetween local and remote workpod.
+        </span>Filter(Filter), <span class="comment">// Filter files or folders in the workpod or project and return the filtered list
+        </span>Rebase(Rebase), <span class="comment">// Rebase a workpod branch on another branch
+        </span>Merge(Merge), <span class="comment">// Merge a workpod branch on another branch
+        </span>Clean(Clean), <span class="comment">// Clean the workpod
         </span>Project(Project),
         Install(Install),
         Uninstall(Uninstall),
@@ -217,7 +215,7 @@
     </span><span class="kw">pub struct </span>Add{
         <span class="doccomment">/// Tracks new file
             </span><span class="kw">pub </span>path: <span class="prelude-ty">Option</span>&lt;std::path::PathBuf&gt;,
-            <span class="doccomment">/// Stage all changes in workspace that are not ignored
+            <span class="doccomment">/// Stage all changes in workpod that are not ignored
             </span><span class="attr">#[arg(short = <span class="string">'a'</span>, long = <span class="string">"all"</span>)]
             </span><span class="kw">pub </span>all: bool,
             <span class="doccomment">/// Stop tracking the assets from a given path
@@ -229,58 +227,58 @@
             </span><span class="kw">pub </span>tag_name: <span class="prelude-ty">Option</span>&lt;Vec&lt;String&gt;&gt;,
     }
 
-    <span class="doccomment">/// Checkout assets in local workspace from a source like . When assets are checkout, they are locked by default when in centralized mode.
+    <span class="doccomment">/// Checkout assets in local workpod from a source like . When assets are checkout, they are locked by default when in centralized mode.
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Checkout{
         <span class="doccomment">/// Specific assets or complete directory structure can be checkout
         </span><span class="kw">pub </span>path: <span class="prelude-ty">Option</span>&lt;std::path::PathBuf&gt;,
-        <span class="doccomment">/// Option use to specify if a lock should be put on the assets, this will tell central to lock them. (On by default if centralized, WARNING: If not set to lock you should clone the workspace instead "gawires checkout --clone" if you dont want any conflict issues)
+        <span class="doccomment">/// Option use to specify if a lock should be put on the assets, this will tell central to lock them. (On by default if centralized, WARNING: If not set to lock you should clone the workpod instead "gawires checkout --clone" if you dont want any conflict issues)
         </span><span class="attr">#[clap(name = <span class="string">"Lock"</span>,short = <span class="string">'l'</span>, long = <span class="string">"lock"</span>)]
         </span><span class="kw">pub </span>lock_remote: <span class="prelude-ty">Option</span>&lt;bool&gt;,
         <span class="doccomment">/// Can be use to specify that the checkout must clone the assets instead of synchronizing them.(Will need to initiate a push request each time you try to synchronize)
         </span><span class="kw">pub </span>clone: <span class="prelude-ty">Option</span>&lt;bool&gt;,
 
     }
-    <span class="doccomment">/// Release checkout assets from local workspace.
+    <span class="doccomment">/// Release checkout assets from local workpod.
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Release{
     }
-    <span class="doccomment">/// Initialize a new local workspace that can be connected to a project
+    <span class="doccomment">/// Initialize a new local workpod that can be connected to a project
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Init{
     }
 
-    <span class="doccomment">/// While used in a distributed workspace this will fetch the remote, while in centralized workspace this will synchronize local workspace state with remote.
+    <span class="doccomment">/// While used in a distributed workpod this will fetch the remote, while in centralized workpod this will synchronize local workpod state with remote.
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Sync{
     }
 
-    <span class="doccomment">/// Log and fetch information about local workspace
+    <span class="doccomment">/// Log and fetch information about local workpod
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Status{
     }
 
-    <span class="doccomment">/// Change or create content layout for the workspace (This enables to switch between different layout for the same workspace)
+    <span class="doccomment">/// Change or create content layout for the workpod (This enables to switch between different layout for the same workpod)
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Layout{
     }
 
-    <span class="doccomment">/// Used in a distributed workspace to push local changes to remote, will use Sync in centralized.
+    <span class="doccomment">/// Used in a distributed workpod to push local changes to remote, will use Sync in centralized.
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Push{
     }
 
-    <span class="doccomment">/// Used in a distributed workspace to pull localy changes from remote, will use Sync in centralized.
+    <span class="doccomment">/// Used in a distributed workpod to pull localy changes from remote, will use Sync in centralized.
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Pull{
     }
 
-    <span class="doccomment">/// Commands to manage workspace, change or create workspace layout and other operations.
+    <span class="doccomment">/// Commands to manage workpod, change or create workpod layout and other operations.
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
-    </span><span class="kw">pub struct </span>Workspace{
+    </span><span class="kw">pub struct </span>Workpod{
     }
 
-    <span class="doccomment">/// Clone a remote workspace locally, it will clone a complete copy of it.
+    <span class="doccomment">/// Clone a remote workpod locally, it will clone a complete copy of it.
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Clone{
     }
@@ -290,7 +288,7 @@
     </span><span class="kw">pub struct </span>Preview{
     }
 
-    <span class="doccomment">/// Reset workspace assets to an earlier state
+    <span class="doccomment">/// Reset workpod assets to an earlier state
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Reset{
     }
@@ -311,7 +309,7 @@
     </span><span class="kw">pub struct </span>Wire{
     }
 
-    <span class="doccomment">/// Connect and sync a Centralized Workspace.
+    <span class="doccomment">/// Connect and sync a Centralized Workpod.
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Connect{
     }
@@ -322,17 +320,17 @@
     }
 
 
-    <span class="doccomment">/// Rebase a branch or a centralized workspace
+    <span class="doccomment">/// Rebase a branch or a centralized workpod
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Rebase{
     }
 
-    <span class="doccomment">/// Merge changes between 2 branches or centralized workspaces
+    <span class="doccomment">/// Merge changes between 2 branches or centralized workpods
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Merge{
     }
 
-    <span class="doccomment">/// Cleanup tools for local workspace
+    <span class="doccomment">/// Cleanup tools for local workpod
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Clean{
     }
@@ -342,12 +340,12 @@
     </span><span class="kw">pub struct </span>Project{
     }
 
-    <span class="doccomment">/// Install a Gawire extension in current workspace.
+    <span class="doccomment">/// Install a Gawire extension in current workpod.
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Install{
     }
 
-    <span class="doccomment">/// Uninstall a Gawire extension in current workspace.
+    <span class="doccomment">/// Uninstall a Gawire extension in current workpod.
     </span><span class="attr">#[derive(Debug, PartialEq, Parser)]
     </span><span class="kw">pub struct </span>Uninstall{
     }
