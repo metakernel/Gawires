@@ -1,4 +1,4 @@
-use super::workspace::Workspace;
+use super::workpod::Workpod;
 
 use super::user::UserStamp;
 
@@ -13,7 +13,7 @@ pub struct Repository<'a> {
     /// Repository owner.
     pub owner: UserStamp,
     /// Ref of repository workplaces.
-    pub workspaces: Vec<&'a Workspace<'a>>,
+    pub workpods: Vec<&'a Workpod<'a>>,
 }
 
 #[derive(Debug, Clone, PartialEq, Eq)]

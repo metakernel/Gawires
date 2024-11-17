@@ -1,5 +1,5 @@
 [workspace]
-members = ["gawires-gist"]
+members = ["gawcore", "gwctl"]
 
 [package]
 name = "gawires"
@@ -19,39 +19,20 @@ path = "src/main.rs"
 name = "gawires"
 path = "src/lib.rs"
 
-
-
 [dependencies]
-notify = "6.1.1"
-libloading = "0.8.5"
-clap = {version = "4.5.15", features = ["derive"]}
-paw = "1.0.0"
+gawcore ={ path = "./gawcore"}
+gwctl ={ path = "./gwctl"}
+
+clap ={workspace = true}
+paw = {workspace = true}
+
+[workspace.dependencies]
+notify = "7.0.0"
 interprocess = "2.2.1"
 dirs = "5.0.1"
 petgraph = "0.6.5"
 blake2 = "0.10.6"
 
-# Specific dependencies for the gawires kernel
-gawires-diff = { git = "https://github.com/metakernel/gawires-diff"}
-gawires-patch = { git = "https://github.com/metakernel/gawires-diff"}
-
-[dependencies.uuid]
-version = "1.10.0"
-features = [
-    "v4",                # Lets you generate random UUIDs
-    "fast-rng",          # Use a faster (but still sufficiently random) RNG
-    "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
-]
-
-
-[target.'cfg(unix)'.dependencies]
-# Used for the filesystem in linux and macos
-fuser = "0.14.0"
-
-[target.'cfg(windows)'.dependencies]
-# Used for the filesystem in windows
-dokan = "0.3.1+dokan206"
-windows = "0.58.0"
-
-[target.'cfg(windows)'.build-dependencies]
-windows = "0.58.0"
+clap = {version = "4.5.15", features = ["derive"]}
+paw = "1.0.0"
+axum = "0.7.5"

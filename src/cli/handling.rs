@@ -1,4 +1,5 @@
-use super::commands::Commands;
+use crate::cli::commands::Commands;
+
 // Its a nasty implementation for the moment, the printlines are useless placeholders and log should be done by the executing functions
 pub fn handle_cmds(cmds: Commands) {
     match &cmds {
@@ -37,9 +38,6 @@ pub fn handle_cmds(cmds: Commands) {
         Commands::Checkout(checkout) => {
             println!("Checking out");
         }
-        Commands::Release(release) => {
-            println!("Releasing");
-        }
         Commands::Init(_) => todo!(),
         Commands::Sync(_) => todo!(),
         Commands::Status(_) => todo!(),
@@ -47,6 +45,7 @@ pub fn handle_cmds(cmds: Commands) {
         Commands::Push(_) => todo!(),
         Commands::Pull(_) => todo!(),
         Commands::Clone(_) => todo!(),
+        Commands::Workpod(_) => todo!(),
         Commands::Workspace(_) => todo!(),
         Commands::Preview(_) => todo!(),
         Commands::Reset(_) => todo!(),

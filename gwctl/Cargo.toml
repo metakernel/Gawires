@@ -1,0 +1,15 @@
+[package]
+name = "gwctl"
+version = "0.1.0"
+edition = "2021"
+description = "Gawires central server"
+
+[[bin]]
+name = "gwctl"
+path = "src/main.rs"
+
+[dependencies]
+gawcore = {path = "../gawcore"}
+clap = {workspace = true}
+axum = {workspace = true}
+tokio = { version = "1.39.3", features = ["macros", "rt-multi-thread"] }

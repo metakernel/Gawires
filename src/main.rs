@@ -1,9 +1,8 @@
-mod cli;
 use paw::Args;
 pub use clap::Parser;
 
-use crate::cli::Cli;
-use crate::cli::handling::handle_cmds;
+use gawires::cli::Cli;
+use gawires::cli::handling::handle_cmds;
 
 /// The main entry point for Gawires.
 #[paw::main]

@@ -1,0 +1,42 @@
+[package]
+name = "gawcore"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "gawcore"
+path = "src/lib.rs"
+crate-type = ["staticlib"]
+
+[dependencies]
+notify = {workspace = true}
+interprocess = {workspace = true}
+dirs = {workspace = true}
+petgraph = {workspace = true}
+blake2 = {workspace = true}
+
+# Specific dependencies for the gawires kernel
+gawires-diff = { git = "https://github.com/metakernel/gawires-diff"}
+gawires-patch = { git = "https://github.com/metakernel/gawires-diff"}
+git2 = "0.19.0"
+
+[dependencies.uuid]
+version = "1.10.0"
+features = [
+    "v4",                # Lets you generate random UUIDs
+    "fast-rng",          # Use a faster (but still sufficiently random) RNG
+    "macro-diagnostics", # Enable better diagnostics for compile-time UUIDs
+]
+
+
+[target.'cfg(unix)'.dependencies]
+# Used for the filesystem in linux and macos
+# fuser = "0.14.0"
+
+[target.'cfg(windows)'.dependencies]
+# Used for the filesystem in windows
+# dokan = "0.3.1+dokan206"
+# windows = "0.58.0"
+
+[target.'cfg(windows)'.build-dependencies]
+# windows = "0.58.0"
