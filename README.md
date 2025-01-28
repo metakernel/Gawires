@@ -15,10 +15,6 @@ Feel free to join me if you have any questions or want to give an hand! Thanks :
 
 ![alt text](.github/medias/GawiresArch_Concept.png)
 
-## (NEW) Git as backend
-
-Gawires want to build itself on top of the Git ecosystem but abstract the complexities so that non-technical users can easily jump in.
-
 ## Setting up Gawires Central
 
 
