@@ -1,12 +1,12 @@
 [workspace]
-members = [ "gawcentral","gawcore", "gwctl"]
+members = [ "gawcentral","gawcore"]
 
 [package]
 name = "gawires"
 version = "0.1.0"
 edition = "2021"
 authors = ["Vincent Roy"]
-license = "GPLv3"
+license = "AGPLv3"
 readme = "README.md"
 repository = "https://github.com/metakernel/Gawires"
 default-run = "gaw"
@@ -21,18 +21,16 @@ path = "src/lib.rs"
 
 [dependencies]
 gawcore ={ path = "./gawcore"}
-gwctl ={ path = "./gwctl"}
 
 clap ={workspace = true}
 paw = {workspace = true}
 
 [workspace.dependencies]
-notify = "7.0.0"
-interprocess = "2.2.1"
-dirs = "5.0.1"
-petgraph = "0.6.5"
+notify = "8.0.0"
+interprocess = "2.2.2"
+dirs = "6.0.0"
+petgraph = "0.7.1"
 blake2 = "0.10.6"
 
 clap = {version = "4.5.15", features = ["derive"]}
 paw = "1.0.0"
-axum = "0.7.5"

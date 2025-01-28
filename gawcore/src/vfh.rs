@@ -1,0 +1,1 @@
+/// A Virtual File Hiearchy (VFH) is a data structure that represents a file system where files and directories are stored in a tree-like structure. This enable files to be stored anywhere and reused accross project without having to copy them.

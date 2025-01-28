@@ -1,4 +1,4 @@
-pub mod repository;
+pub mod project;
 pub mod workpod;
 pub mod user;
 pub mod arenatree;

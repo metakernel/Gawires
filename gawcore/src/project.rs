@@ -5,7 +5,7 @@ use super::user::UserStamp;
 
 /// Data structure for storing project information.
 #[derive(Debug, Clone, PartialEq, Eq)]
-pub struct Repository<'a> {
+pub struct Project<'a> {
     /// Repository name.
     pub name: String,
     /// Repository description.
