@@ -1,5 +1,5 @@
 [workspace]
-members = ["gawcore", "gwctl"]
+members = [ "gawcentral","gawcore", "gwctl"]
 
 [package]
 name = "gawires"
