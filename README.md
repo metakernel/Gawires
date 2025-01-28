@@ -3,7 +3,7 @@
 > **Gawires is still in its design phase (yea... Been a while!) and is actually unusable. I am currently pretty busy with my company Deuzspark Technologies, but i am hoping to have some more time soon to explain the concept and design in a github page! If you're tired of perforce prohibitiveness, find git lacking for project with lot of binaries and want to join me for development feel free to reach out :)**
 
 ![alt text](.github/medias/Github_Repos_1280x640.png)
-Gawires(a.k.a *Game (Or Git...) Assets Wires*) is a new genre version control system designed around making the management of large projects like video games simpler.
+Gawires(a.k.a *Game Assets Wires*) is a new genre version control system designed around making the management of large projects like video games simpler.
 
 Gawires is written entirely in *Rust-Lang* to provide the best performance. It is also my first project ever using rust but i think this is an incredible langage that fit into the goal of gawires!
 
