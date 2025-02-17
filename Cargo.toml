@@ -1,5 +1,5 @@
 [workspace]
-members = [ "gawcentral","gawcore"]
+members = [ "server","core"]
 
 [package]
 name = "gawires"
@@ -20,7 +20,7 @@ name = "gawires"
 path = "src/lib.rs"
 
 [dependencies]
-gawcore ={ path = "./gawcore"}
+gawcore ={ path = "./core"}
 
 clap ={workspace = true}
 paw = {workspace = true}

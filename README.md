@@ -13,9 +13,20 @@ This will be a long road but i think that the arts and game industry needs somet
 
 Feel free to join me if you have any questions or want to give an hand! Thanks :)
 
-![alt text](.github/medias/GawiresArch_Concept.png)
 
-## Setting up Gawires Central
 
+## Setting up Gawires Server
+
+TODO
 
 ## Start with the GAW CLI
+
+TODO
+
+## Building from source
+
+On Windows, Since SurrealDB make use of RockDB for persistence you will need llvm that can be installed with winget:
+
+```bash
+winget install LLVM.LLVM
+```
