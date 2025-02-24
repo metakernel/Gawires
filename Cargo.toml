@@ -1,5 +1,5 @@
 [workspace]
-members = [ "server","core"]
+members = [ "server","core", "workspace", "asset", "project"]
 
 [package]
 name = "gawires"
@@ -15,15 +15,13 @@ default-run = "gaw"
 name = "gaw"
 path = "src/main.rs"
 
-[lib]
-name = "gawires"
-path = "src/lib.rs"
-
 [dependencies]
 gawcore ={ path = "./core"}
 
 clap ={workspace = true}
 paw = {workspace = true}
+ratatui = "0.29.0"
+crossterm = "0.28.1"
 
 [workspace.dependencies]
 notify = "8.0.0"
@@ -32,5 +30,5 @@ dirs = "6.0.0"
 petgraph = "0.7.1"
 blake2 = "0.10.6"
 
-clap = {version = "4.5.15", features = ["derive"]}
+clap = {version = "4.5.30", features = ["derive"]}
 paw = "1.0.0"

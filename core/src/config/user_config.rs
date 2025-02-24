@@ -1,6 +1,10 @@
 use std::{collections::HashMap, path::PathBuf};
 use dirs::home_dir;
 
+pub fn get_default_user_config_path() -> PathBuf {
+    home_dir().unwrap().join(".gaw/localuser.conf")
+}
+
 /// TODO - Put this in UserConfig.rs instead of here
 
 /// The user configuration file path.
