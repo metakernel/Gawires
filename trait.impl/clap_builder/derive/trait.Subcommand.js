@@ -1,9 +1,9 @@
 (function() {
-    var implementors = Object.fromEntries([["gawires",[["impl Subcommand for <a class=\"enum\" href=\"gawires/cli/commands/enum.Commands.html\" title=\"enum gawires::cli::commands::Commands\">Commands</a>"]]]]);
+    const implementors = Object.fromEntries([["gaw",[["impl Subcommand for <a class=\"enum\" href=\"gaw/cli/commands/enum.Commands.html\" title=\"enum gaw::cli::commands::Commands\">Commands</a>",0]]]]);
     if (window.register_implementors) {
         window.register_implementors(implementors);
     } else {
         window.pending_implementors = implementors;
     }
 })()
-//{"start":57,"fragment_lengths":[165]}
+//{"start":59,"fragment_lengths":[155]}

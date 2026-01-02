@@ -1,3 +1,2 @@
-var srcIndex = new Map(JSON.parse('[["gaw",["",[],["main.rs"]]],["gawires",["",[["cli",[],["commands.rs","handling.rs"]]],["cli.rs","lib.rs"]]]]'));
-createSrcSidebar();
-//{"start":36,"fragment_lengths":[27,80]}
+createSrcSidebar('[["gaw",["",[["cli",[],["commands.rs","handling.rs"]]],["cli.rs","main.rs"]]]]');
+//{"start":19,"fragment_lengths":[76]}
