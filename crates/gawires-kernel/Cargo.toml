@@ -1,12 +1,7 @@
 [package]
-name = "gawcore"
+name = "gawires-kernel"
 version = "0.1.0"
-edition = "2021"
-
-[lib]
-name = "gawcore"
-path = "src/lib.rs"
-crate-type = ["staticlib"]
+edition = "2024"
 
 [dependencies]
 notify = {workspace = true}
@@ -18,10 +13,10 @@ blake2 = {workspace = true}
 # Specific dependencies for the gawires kernel
 gawires-diff = { git = "https://github.com/metakernel/gawires-diff"}
 gawires-patch = { git = "https://github.com/metakernel/gawires-diff"}
-git2 = "0.20.0"
+git2 = "0.20.3"
 
 [dependencies.uuid]
-version = "1.10.0"
+version = "1.19.0"
 features = [
     "v4",                # Lets you generate random UUIDs
     "fast-rng",          # Use a faster (but still sufficiently random) RNG

@@ -11,7 +11,7 @@ pub struct Workpod<'a> {
 
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub enum WorkpodType {
-    Sync, // Sync Workpod is a Workpod that is connected to a remote Workspace
+    Synced, // Sync Workpod is a Workpod that is connected to a remote Workspace
     Clone, // Clone Workpod is a Workpod that is a copy of a remote Workspace
 }
 

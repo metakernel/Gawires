@@ -1,34 +1,24 @@
 [workspace]
-members = [ "server","core", "workspace", "asset", "project"]
+resolver = "3"
+members = ["crates/gawires-kernel", "crates/gawires-workspace", "crates/gawires-asset", "crates/gawires-project", "crates/gawires-cli", "crates/gawires-nexus", "crates/gawires"]
 
-[package]
-name = "gawires"
-version = "0.1.0"
-edition = "2021"
-authors = ["Vincent Roy"]
-license = "AGPLv3"
-readme = "README.md"
-repository = "https://github.com/metakernel/Gawires"
-default-run = "gaw"
-
-[[bin]]
-name = "gaw"
-path = "src/main.rs"
-
-[dependencies]
-gawcore ={ path = "./core"}
-
-clap ={workspace = true}
-paw = {workspace = true}
-ratatui = "0.29.0"
-crossterm = "0.28.1"
+[workspace.package]
+license = "Apache-2.0 OR MIT"
 
 [workspace.dependencies]
-notify = "8.0.0"
-interprocess = "2.2.2"
+notify = "8.2.0"
+interprocess = "2.2.3"
 dirs = "6.0.0"
-petgraph = "0.7.1"
+petgraph = "0.8.3"
 blake2 = "0.10.6"
 
-clap = {version = "4.5.30", features = ["derive"]}
+clap = {version = "4.5.53", features = ["derive"]}
 paw = "1.0.0"
+
+gawires = { path = "./crates/gawires" }
+gawires-kernel = { path = "./crates/gawires-kernel" }
+gawires-workspace = { path = "./crates/gawires-workspace" }
+gawires-asset = { path = "./crates/gawires-asset" }
+gawires-project = { path = "./crates/gawires-project" }
+gawires-nexus = { path = "./crates/gawires-nexus" }
+gawires-cli = { path = "./crates/gawires-cli" }

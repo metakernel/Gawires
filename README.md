@@ -5,7 +5,7 @@
 ![alt text](.github/medias/Github_Repos_1280x640.png)
 Gawires(a.k.a *Game Assets Wires*) is a new genre version control system designed around making the management of large projects like video games simpler.
 
-Gawires is written entirely in *Rust-Lang* to provide the best performance. It is also my first project ever using rust but i think this is an incredible langage that fit into the goal of gawires!
+Gawires is written entirely in *Rust-Lang* to provide the best performance.It was also my first project with Rust and i wanted to learn it well by doing something useful for the game development community.
 
 This vcs try to solves the problem of other vcs like git, that is challenging in large project with larger teams and Perforce that add much useless complexity(And is pretty expensive).
 

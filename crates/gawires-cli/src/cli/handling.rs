@@ -35,7 +35,7 @@ pub fn handle_cmds(cmds: Commands) {
                 println!("Wrong Commands specified, use --help to get some more informations");
             }
         }
-        Commands::Checkout(checkout) => {
+        Commands::Checkout(_checkout) => {
             println!("Checking out");
         }
         Commands::Init(_) => todo!(),

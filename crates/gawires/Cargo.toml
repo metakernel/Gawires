@@ -1,0 +1,11 @@
+[package]
+name = "gawires"
+version = "0.1.0"
+edition = "2024"
+license.workspace = true
+
+[dependencies]
+gawires-kernel = { workspace = true }
+gawires-workspace = { workspace = true }
+gawires-asset = { workspace = true }
+gawires-project = { workspace = true }

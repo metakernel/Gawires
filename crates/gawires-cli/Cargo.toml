@@ -1,0 +1,17 @@
+[package]
+name = "gawires-cli"
+version = "0.1.0"
+edition = "2024"
+authors = ["Vincent Roy"]
+license = "Apache-2.0 OR MIT"
+readme = "README.md"
+repository = "https://github.com/metakernel/Gawires"
+
+[[bin]]
+name = "gaw"
+path = "src/main.rs"
+
+[dependencies]
+clap ={ workspace = true}
+paw = { workspace = true}
+gawires = { workspace = true }
