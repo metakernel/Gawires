@@ -1,6 +1,7 @@
 # Gawires
 
-> **Gawires is still in its design phase (yea... Been a while!) and is actually unusable. I am currently pretty busy with my company Deuzspark Technologies, but i am hoping to have some more time soon to explain the concept and design in a github page! If you're tired of perforce prohibitiveness, find git lacking for project with lot of binaries and want to join me for development feel free to reach out :)**
+![IMPORTANT]
+With the release of [Lore](https://github.com/EpicGames/lore) by Epic Games and the fact that i just did not have the times to materialise Gawires in the past years, i dedided that it was time to archive Gawires and instead contribute on Lore for now-on. By reading the whole Lore specification, it also gave me the idea to build a complete game design, writting and world building toolkit that would be built on top of it and will give more details about this project in the coming weeks or months.
 
 ![alt text](.github/medias/Github_Repos_1280x640.png)
 Gawires(a.k.a *Game Assets Wires*) is a new genre version control system designed around making the management of large projects like video games simpler.
